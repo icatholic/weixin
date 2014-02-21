@@ -3,7 +3,7 @@
 namespace Weixin\Manager\Msg;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Manager\Msg;
 
 /**

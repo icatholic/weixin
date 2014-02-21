@@ -3,7 +3,7 @@
 namespace Weixin\Manager\Msg;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Manager\Msg;
 
 /**
@@ -40,7 +40,7 @@ class Custom {
 		$rst = $this->msgManager->getWeixin ()->post ( $this->_url . '?access_token=' . $access_token, $json );
 		// 返回结果
 		if (! empty ( $rst ['errcode'] )) {
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			return $rst;
 		}

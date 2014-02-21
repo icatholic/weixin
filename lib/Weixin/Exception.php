@@ -7,7 +7,7 @@ namespace Weixin;
  *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinException extends \Exception {
+class Exception extends \Exception {
 	private $_error_info = array (
 			"-1" => "系统繁忙",
 			"0" => "请求成功",

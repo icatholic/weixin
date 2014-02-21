@@ -3,7 +3,7 @@
 namespace Weixin\Manager;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Client;
 
 /**
@@ -97,7 +97,7 @@ class Menu {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时的返回JSON数据包如下（示例为无效菜单名长度）：
 			// {"errcode":40018,"errmsg":"invalid button name size"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明
 			// 正确时的返回JSON数据包如下：
@@ -119,7 +119,7 @@ class Menu {
 		$rst = $this->weixin->get ( $this->_url . 'get', $params );
 		// 返回说明
 		if (! empty ( $rst ['errcode'] )) {
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 对应创建接口，正确的Json返回结果:
 			// {
@@ -183,7 +183,7 @@ class Menu {
 		$rst = $this->weixin->get ( $this->_url . 'delete', $params );
 		// 返回说明
 		if (! empty ( $rst ['errcode'] )) {
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 对应创建接口，正确的Json返回结果:
 			// {"errcode":0,"errmsg":"ok"}

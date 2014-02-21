@@ -3,7 +3,7 @@
 namespace Weixin\Manager\Sns;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\SnsClient;
 
 /**
@@ -68,7 +68,7 @@ class User {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时微信会返回JSON数据包如下（示例为openid无效）:
 			// {"errcode":40003,"errmsg":" invalid openid "}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 正确时返回的JSON数据包如下：
 			// {

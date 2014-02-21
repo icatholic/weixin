@@ -3,7 +3,7 @@
 namespace Weixin\Manager;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Client;
 
 /**
@@ -40,7 +40,7 @@ class Groups {
 			// 错误时的JSON数据包示例（该示例为AppID无效错误）：
 			
 			// {"errcode":40013,"errmsg":"invalid appid"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明 正常时的返回JSON数据包示例：
 			// {
@@ -107,7 +107,7 @@ class Groups {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时的JSON数据包示例（该示例为AppID无效错误）：
 			// {"errcode":40013,"errmsg":"invalid appid"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明 正常时的返回JSON数据包示例：
 			// {
@@ -153,7 +153,7 @@ class Groups {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时的JSON数据包示例（该示例为AppID无效错误）：
 			// {"errcode":40013,"errmsg":"invalid appid"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明 正常时的返回JSON数据包示例：
 			// {"errcode": 0, "errmsg": "ok"}
@@ -190,7 +190,7 @@ class Groups {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时的JSON数据包示例（该示例为AppID无效错误）：
 			// {"errcode":40013,"errmsg":"invalid appid"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明 正常时的返回JSON数据包示例：
 			// {"errcode": 0, "errmsg": "ok"}

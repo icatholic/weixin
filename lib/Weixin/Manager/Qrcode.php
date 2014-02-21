@@ -3,7 +3,7 @@
 namespace Weixin\Manager;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Client;
 
 /**
@@ -70,7 +70,7 @@ class Qrcode {
 		$rst = $this->weixin->post ( $this->_url . 'create?access_token=' . $access_token, $json );
 		
 		if (! empty ( $rst ['errcode'] )) {
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明
 			// 正确的Json返回结果:

@@ -3,7 +3,7 @@
 namespace Weixin\Manager;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Client;
 
 /**
@@ -39,7 +39,7 @@ class User {
 		$params ['openid'] = $openid;
 		$rst = $this->weixin->get ( $this->_url . 'info', $params );
 		if (! empty ( $rst ['errcode'] )) {
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			/*
 			 * { "subscribe": 1, "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
@@ -72,7 +72,7 @@ class User {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时返回JSON数据包（示例为无效AppID错误）：
 			// {"errcode":40013,"errmsg":"invalid appid"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 正确时返回JSON数据包：
 			/*

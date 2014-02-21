@@ -4,7 +4,7 @@ namespace Weixin;
 
 use Weixin\Helpers;
 use Weixin\WeixinOAuthRequest;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Manager\Sns\User;
 
 /**
@@ -140,7 +140,7 @@ class SnsClient {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时微信会返回JSON数据包如下（示例为Code无效错误）:
 			// {"errcode":40029,"errmsg":"invalid code"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 正确时返回的JSON数据包如下：
 			// {
@@ -188,7 +188,7 @@ class SnsClient {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时微信会返回JSON数据包如下（示例为Code无效错误）:
 			// {"errcode":40029,"errmsg":"invalid code"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 正确时返回的JSON数据包如下：
 			// {

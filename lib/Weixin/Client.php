@@ -3,7 +3,7 @@
 namespace Weixin;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Manager\Groups;
 use Weixin\Manager\Media;
 use Weixin\Manager\Menu;
@@ -71,7 +71,7 @@ class Client {
 	/**
 	 * GET GroupsManager object.
 	 *
-	 * @return GroupsManager
+	 * @return Groups
 	 */
 	public function getGroupsManager() {
 		return $this->groupsManager;
@@ -80,7 +80,7 @@ class Client {
 	/**
 	 * GET MediaManager object.
 	 *
-	 * @return MediaManager
+	 * @return Media
 	 */
 	public function getMediaManager() {
 		return $this->mediaManager;

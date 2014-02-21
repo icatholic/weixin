@@ -3,7 +3,7 @@
 namespace Weixin\Manager;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 use Weixin\Client;
 
 /**
@@ -63,7 +63,7 @@ class Media {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误情况下的返回JSON数据包示例如下（示例为无效媒体类型错误）：
 			// {"errcode":40004,"errmsg":"invalid media type"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明
 			// 正确情况下的返回JSON数据包结果如下：
@@ -113,7 +113,7 @@ class Media {
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误情况下的返回JSON数据包示例如下（示例为无效媒体ID错误）：:
 			// {"errcode":40007,"errmsg":"invalid media_id"}
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 正确情况下的返回HTTP头如下：
 			// HTTP/1.1 200 OK

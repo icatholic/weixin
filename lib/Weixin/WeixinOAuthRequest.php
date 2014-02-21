@@ -119,7 +119,7 @@ class WeixinOAuthRequest
      */
     public function postJson($url,$json) {
 //     	if(!self::isJson($json))
-//     		throw new WeixinException("不是有效地Json格式数据");
+//     		throw new Exception("不是有效地Json格式数据");
     
 //     	$client = new Zend_Http_Client();
 //     	$client->setUri($url);

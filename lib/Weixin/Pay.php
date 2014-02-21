@@ -3,7 +3,7 @@
 namespace Weixin\PayManager;
 
 use Weixin\Helpers;
-use Weixin\WeixinException;
+use Weixin\Exception;
 
 /**
  * 微信支付接口
@@ -129,7 +129,7 @@ class PayManager {
 		$rst = Helpers::post ( $this->_url . 'delivernotify?access_token=' . $access_token, $json );
 		if (! empty ( $rst ['errcode'] )) {
 			// 如果有异常，会在errcode 和errmsg 描述出来。
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明 正常时的返回JSON数据包示例：
 			// 微信公众平台在校验ok 之后，会返回数据表明是否通知成功，例如：
@@ -199,7 +199,7 @@ class PayManager {
 		$rst = Helpers::post ( $this->_url . 'delivernotify?access_token=' . $access_token, $json );
 		if (! empty ( $rst ['errcode'] )) {
 			// 如果有异常，会在errcode 和errmsg 描述出来。
-			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
 		} else {
 			// 返回说明 正常时的返回JSON数据包示例：
 			// 微信公众平台在校验ok 之后，会返回数据表明是否通知成功，例如：
