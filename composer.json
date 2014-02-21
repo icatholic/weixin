@@ -2,7 +2,7 @@
     "name": "icatholic/weixin",
     "type": "library",
     "description": "A simple PHP client library for weixin",
-    "keywords": ["weixin"],
+    "keywords": ["weixin","icatholic"],
     "homepage": "http://github.com/icatholic/weixin",
     "license": "MIT",
     "authors": [
