@@ -25,12 +25,12 @@ use Weixin\Manager\Msg;
  */
 class Reply
 {
-	protected $weixinMsgManager;
+	protected $msgManager;
 	/**
-	 * @param WeixinMsgManager $weixinMsgManager Connection factory object.
+	 * @param MsgManager $msgManager Connection factory object.
 	 */
-	public function __construct(WeixinMsgManager $weixinMsgManager,$options=array()) {
-		$this->weixinMsgManager = $weixinMsgManager;
+	public function __construct(MsgManager $msgManager,$options=array()) {
+		$this->msgManager = $msgManager;
 	}
 	
 	/**
@@ -172,7 +172,7 @@ class Reply
 	 	$articleCount = count($articles);
 		foreach($articles as $article) {
 		 	if(mb_strlen($article['description'],'utf-8') > $this->_length) {
-		 		$article['description'] = mb_substr($article['description'], 0, $this->WeixinMsgManager->getLength(), 'utf-8').'……';
+		 		$article['description'] = mb_substr($article['description'], 0, $this->MsgManager->getLength(), 'utf-8').'……';
 		 	}
 		 	$items .= "
 		 	<item>

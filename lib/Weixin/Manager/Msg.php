@@ -21,9 +21,9 @@ class Msg
 
 	protected  $weixin;
 	/**
-	 * GET WeixinClient object.
+	 * GET Client object.
 	 *
-	 * @return WeixinClient
+	 * @return Client
 	 */
 	public function getWeixin()
 	{
@@ -52,7 +52,7 @@ class Msg
 		return $this->weixinCustomMsgSender;
 	}
 
-	public function __construct(WeixinClient $weixin,$options=array()) {
+	public function __construct(Client $weixin,$options=array()) {
 		$this->weixin = $weixin;
 		//发送被动响应消息发射器
 		$this->weixinReplyMsgSender = new WeixinReplyMsgSender($this,$options);

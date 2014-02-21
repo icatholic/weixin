@@ -24,7 +24,7 @@ class Qrcode
 	protected $weixin;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/qrcode/';
 
-	public function __construct(WeixinClient $weixin,$options=array()) {
+	public function __construct(Client $weixin,$options=array()) {
 		$this->weixin  = $weixin;
 	}
 

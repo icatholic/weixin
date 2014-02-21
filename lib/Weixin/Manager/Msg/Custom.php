@@ -17,11 +17,11 @@ use Weixin\Manager\Msg;
  */
 class Custom
 {
-	protected $weixinMsgManager;
+	protected $msgManager;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send';
 	
-	public function __construct(WeixinMsgManager $weixinMsgManager,$options=array()) {
-		$this->weixinMsgManager = $weixinMsgManager;
+	public function __construct(MsgManager $msgManager,$options=array()) {
+		$this->msgManager = $msgManager;
 	}
 
 	/**
@@ -32,11 +32,11 @@ class Custom
 	 */
 	public function send($msg)
 	{
-		$access_token = $this->weixinMsgManager->getWeixin()->getToken();
+		$access_token = $this->msgManager->getWeixin()->getToken();
 		if(is_array($msg)){
 			$json = json_encode($msg,JSON_UNESCAPED_UNICODE);
 		}
-		$rst = $this->weixinMsgManager->getWeixin()->post($this->_url.'?access_token='.$access_token, $json);
+		$rst = $this->msgManager->getWeixin()->post($this->_url.'?access_token='.$access_token, $json);
 		// 返回结果
 		if(!empty($rst['errcode']))
 		{
@@ -143,7 +143,7 @@ class Custom
 		$articleCount = count($articles);
 		foreach($articles as $article) {
 			if(mb_strlen($article['description'],'utf-8') > $this->_length) {
-				$article['description'] = mb_substr($article['description'], 0,  $this->WeixinMsgManager->getLength(), 'utf-8').'……';
+				$article['description'] = mb_substr($article['description'], 0,  $this->MsgManager->getLength(), 'utf-8').'……';
 			}
 			$items[] = array('title'=>$article['title'],'description'=>$article['description'],'url'=>$article['url'],'picurl'=>$article['picurl']);
 		}

@@ -24,81 +24,81 @@ class Client
 	private $_refresh_token = null;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 	
-    protected $weixinMsgManager;
+    protected $msgManager;
     /**
-     * GET WeixinMsgManager object.
+     * GET MsgManager object.
      *
-     * @return WeixinMsgManager
+     * @return MsgManager
      */
-    public function getWeixinMsgManager()
+    public function getMsgManager()
     {
-    	return $this->weixinMsgManager;
+    	return $this->msgManager;
     }
     
-    protected $weixinUserManager;
+    protected $userManager;
     /**
-     * GET WeixinUserManager object.
+     * GET UserManager object.
      *
-     * @return WeixinUserManager
+     * @return UserManager
      */
-    public function getWeixinUserManager()
+    public function getUserManager()
     {
-    	return $this->weixinUserManager;
+    	return $this->userManager;
     }
 
-    protected $weixinQrcodeManager;
+    protected $qrcodeManager;
     /**
-     * GET WeixinQrcodeManager object.
+     * GET QrcodeManager object.
      *
-     * @return WeixinQrcodeManager
+     * @return QrcodeManager
      */
-    public function getWeixinQrcodeManager()
+    public function getQrcodeManager()
     {
-    	return $this->weixinQrcodeManager;
+    	return $this->qrcodeManager;
     }
     
-    protected $weixinMenuManager;
+    protected $menuManager;
     /**
-     * GET WeixinMenuManager object.
+     * GET MenuManager object.
      *
-     * @return WeixinMenuManager
+     * @return MenuManager
      */
-    public function getWeixinMenuManager()
+    public function getMenuManager()
     {
-    	return $this->weixinMenuManager;
+    	return $this->menuManager;
     }
 
-    protected $weixinGroupsManager;
+    protected $groupsManager;
     /**
-     * GET WeixinGroupsManager object.
+     * GET GroupsManager object.
      *
-     * @return WeixinGroupsManager
+     * @return GroupsManager
      */
-    public function getWeixinGroupsManager()
+    public function getGroupsManager()
     {
-    	return $this->weixinGroupsManager;
+    	return $this->groupsManager;
     }
     
-    protected $weixinMediaManager;
+    protected $mediaManager;
     /**
-     * GET WeixinMediaManager object.
+     * GET MediaManager object.
      *
-     * @return WeixinMediaManager
+     * @return MediaManager
      */
-    public function getWeixinMediaManager()
+    public function getMediaManager()
     {
-    	return $this->weixinMediaManager;
+    	return $this->mediaManager;
     }
 
-    protected $weixinPayManager;
+    protected $payManager;
     /**
-     * GET WeixinPayManager object.
+     * GET PayManager object.
      *
-     * @return WeixinPayManager
+     * @return PayManager
      */
-    public function getWeixinPayManager()
+    public function getPayManager()
     {
-    	return $this->weixinPayManager;
+    	return $this->payManager;
     }
     
     public function __construct($appid,$secret,$access_token = NULL,$refresh_token = NULL,$options=array()) {
@@ -110,19 +110,19 @@ class Client
         //获取oAuthRequest对象
         $this->weixinOAuthRequest = new WeixinOAuthRequest();
         //发送消息管理
-        $this->weixinMsgManager = new WeixinMsgManager($this,$options);
+        $this->msgManager = new MsgManager($this,$options);
         //用户管理
-        $this->weixinUserManager = new WeixinUserManager($this,$options);
+        $this->userManager = new UserManager($this,$options);
         //推广支持
-        $this->weixinQrcodeManager = new WeixinQrcodeManager($this,$options);
+        $this->qrcodeManager = new QrcodeManager($this,$options);
         //自定义菜单
-        $this->weixinMenuManager = new WeixinMenuManager($this,$options);
+        $this->menuManager = new MenuManager($this,$options);
         //分组管理
-        $this->weixinGroupsManager = new WeixinGroupsManager($this,$options);
+        $this->groupsManager = new GroupsManager($this,$options);
         //上传下载多媒体文件管理
-        $this->weixinMediaManager = new WeixinMediaManager($this,$options);
+        $this->mediaManager = new MediaManager($this,$options);
         //微信支付管理
-        $this->weixinPayManager = new WeixinPayManager($this,$options);
+        $this->payManager = new PayManager($this,$options);
     }
 	
     /**

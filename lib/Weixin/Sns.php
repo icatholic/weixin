@@ -4,7 +4,7 @@ use Weixin\Helpers;
 use Weixin\WeixinOAuthRequest;
 use Weixin\WeixinException;
 use Weixin\SnsUserManager\WeixinSnsUserManager;
-use Weixin\PayManager\WeixinPayManager;
+use Weixin\PayManager\PayManager;
 
 /**
  * 微信公众平台的网页授权调用接口类.
@@ -28,26 +28,26 @@ class WeixinSnsClient
 	private $_access_token = null;
 	private $_refresh_token = null;
 	
-    protected $weixinUserManager;
+    protected $userManager;
     /**
      * GET WeixinSnsUserManager object.
      *
      * @return WeixinSnsUserManager
      */
-    public function getWeixinUserManager()
+    public function getUserManager()
     {
-    	return $this->weixinUserManager;
+    	return $this->userManager;
     }
     
-    protected $weixinPayManager;
+    protected $payManager;
     /**
-     * GET WeixinPayManager object.
+     * GET PayManager object.
      *
-     * @return WeixinPayManager
+     * @return PayManager
      */
-    public function getWeixinPayManager()
+    public function getPayManager()
     {
-    	return $this->weixinPayManager;
+    	return $this->payManager;
     }
     
     public function __construct($appid,$secret,$access_token = NULL,$refresh_token = NULL,$options=array()) {
@@ -58,9 +58,9 @@ class WeixinSnsClient
         //获取oAuthRequest对象
         $this->weixinOAuthRequest = new WeixinOAuthRequest();
         //用户管理
-        $this->weixinUserManager = new WeixinSnsUserManager($this,$options);
+        $this->userManager = new WeixinSnsUserManager($this,$options);
         //微信支付管理
-        $this->weixinPayManager = new WeixinPayManager($this,$options);
+        $this->payManager = new PayManager($this,$options);
     }
     
     /**
