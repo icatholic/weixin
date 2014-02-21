@@ -1,7 +1,7 @@
-΢�Ź���ƽ̨����ģʽͨ�ýӿ�API(Weixin)
+微信公众平台开发模式通用接口API(Weixin)
 ======
 
-is a PHP (>= 5.2.11) client library for the ΢�Ź���ƽ̨����ģʽͨ�ýӿ�API(Weixin)
+is a PHP (>= 5.3) client library for the 微信公众平台开发模式通用接口API(Weixin)
 
 ### Loading the library ###
 
@@ -25,7 +25,7 @@ Alternatively, it is also possible to generate one single PHP file that holds ev
 versions of Weixin by launching `bin/create-single-file`, but this practice __is not__ encouraged.
 
 
-### �������� ###
+### 调用事例 ###
 
 ```php
 try {
@@ -33,43 +33,39 @@ try {
 	$appid="xxxxxxxxxxxx";//appID
 	$secret="xxxxxxxxxxxx";//appsecret
 	
-	//���֮ǰ���access_token����ô�����Client�����ʱ��ֱ��ָ��
-	//$access_token = "RWRVPpT1O9SEyN615puzCOQ9uQfgQK0SA63gWUxNo2ABjgHFdnCL82BnFB_wQGeZH4prBLfn17Qz0WSwcwdLW6A2YvX1yN46dDB2-BggdXkqpM0AZXO4lfZ0LSC_5ABj8NxKLxJkqv565EBja32Gpw";
-	//$client = new Weixin\Client($appid,$secret,$access_token);
-	
-	//���֮ǰû�л�ù�access_token����ôͨ��getAccessToken���� ��ȡaccess_token
-	$client = new Weixin\Client($appid,$secret);
-	$rst = $client->getAccessToken();
-	$access_token = $rst['access_token'];
-	 
+	//获得access_token
+	$objAccessToken = new Weixin\AccessToken($appid,$secret);
+	$accessTokenInfo = $objAccessToken->getAccessToken();
+	$access_token =$accessTokenInfo['access_token'];	
 	echo $access_token;
 	echo "<br/>";
 	
+	$client = new Weixin\Client($appid,$secret,$access_token);	
 	$openid="xxxxxxxxxxxxxxx";
 	
-	//���Ϳͷ��ı���Ϣ
-	$client->getMsgManager()->getCustom()->sendText($openid, "����");
+	//发送客服文本消息
+	$client->getMsgManager()->getCustom()->sendText($openid, "测试");
 	
-	//���ض�ý���ļ�
-	$mediaId= "xxxxxxxxxxxxxxx";
-	$ret= $client->getMediaManager()->get($mediaId);
-	$fileContent = base64_decode($ret['content']);
-	$tmpfname = sys_get_temp_dir().'/'.uniqid().'.jpg';
-	//�����ڱ���
-	file_put_contents($tmpfname, $fileContent);
+	////下载多媒体文件
+	//$mediaId= "xxxxxxxxxxxxxxx";
+	//$ret= $client->getMediaManager()->get($mediaId);
+	//$fileContent = base64_decode($ret['content']);
+	//$tmpfname = sys_get_temp_dir().'/'.uniqid().'.jpg';
+	////保存在本地
+	//file_put_contents($tmpfname, $fileContent);
 	
-	//��ȡ΢���û���Ϣ
+	//获取微信用户信息
 	$userinfo =$client->getUserManager()->getUserInfo($openid);
 	print_r($userinfo);
 	echo "<br/>";
 	
-	//���ticket
+	//生成ticket
 	$scene_id =1;
 	$ticketInfo = $client->getQrcodeManager()->create($scene_id,false);
 	print_r($ticketInfo);
 	echo "<br/>";
 
-	//��ȡticket
+	//获取ticket
 	$ticket = urlencode($ticketInfo['ticket']);
 	$url = $client->getQrcodeManager()->getQrcodeUrl($ticket);
 	echo $url;
