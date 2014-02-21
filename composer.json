@@ -10,6 +10,11 @@
             "name": "icatholic",
             "email": "handsomegyr@gmail.com",
             "homepage": "http://github.com/icatholic/"
+        },
+        {
+            "name": "icatholic",
+            "email": "youngyang@icatholic.net.cn",
+            "homepage": "http://github.com/icatholic/"
         }
     ],
     "require": {
