@@ -1,6 +1,13 @@
 <?php
 namespace Weixin;
-
+use Weixin\Helpers;
+use Weixin\WeixinException;
+use Weixin\Manager\Groups;
+use Weixin\Manager\Media;
+use Weixin\Manager\Menu;
+use Weixin\Manager\Msg;
+use Weixin\Manager\Qrcode;
+use Weixin\Manager\User;
 /**
  * 微信公众平台的调用接口类.
  *
@@ -110,19 +117,19 @@ class Client
         //获取oAuthRequest对象
         $this->weixinOAuthRequest = new WeixinOAuthRequest();
         //发送消息管理
-        $this->msgManager = new MsgManager($this,$options);
+        $this->msgManager = new Msg($this,$options);
         //用户管理
-        $this->userManager = new UserManager($this,$options);
+        $this->userManager = new User($this,$options);
         //推广支持
-        $this->qrcodeManager = new QrcodeManager($this,$options);
+        $this->qrcodeManager = new Qrcode($this,$options);
         //自定义菜单
-        $this->menuManager = new MenuManager($this,$options);
+        $this->menuManager = new Menu($this,$options);
         //分组管理
-        $this->groupsManager = new GroupsManager($this,$options);
+        $this->groupsManager = new Groups($this,$options);
         //上传下载多媒体文件管理
-        $this->mediaManager = new MediaManager($this,$options);
+        $this->mediaManager = new Media($this,$options);
         //微信支付管理
-        $this->payManager = new PayManager($this,$options);
+        $this->payManager = new Pay($this,$options);
     }
 	
     /**
