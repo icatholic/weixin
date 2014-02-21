@@ -1,8 +1,7 @@
 <?php
 
 namespace Weixin;
-use Weixin\WeixinOAuthRequest;
-
+include_once 'Zend/Http/Client.php';
 /**
  * Defines a few helper methods.
  *
@@ -55,74 +54,53 @@ class Helpers {
 		return $para;
 	}
 	
-// 	/**
-// 	 * POST 信息到指定的URL
-// 	 * 
-// 	 * @param string $url        	
-// 	 * @param string $json        	
-// 	 * @return array
-// 	 */
-// 	public static function post($url, $parameters = array(), $multi = false) {
-// 		$client = new \Zend_Http_Client ();
-// 		$client->setUri ( $url );
-// 		if ((is_array ( $parameters ) || is_object ( $parameters ))) {
-// 			$client->setParameterPost ( $parameters );
-// 		} else {
-// 			$client->setRawData ( $parameters );
-// 		}
-// 		$client->setEncType ( \Zend_Http_Client::ENC_URLENCODED );
-// 		$client->setConfig ( array (
-// 				'maxredirects' => 3 
-// 		) );
-// 		$response = $client->request ( 'POST' );
-// 		$message = $response->getBody ();
-// 		$message = preg_replace ( "/^\xEF\xBB\xBF/", '', $message );
-// 		$message = preg_replace ( "/[\n\t\s\r]+/", '', $message );
-// 		return json_decode ( $message, true );
-// 	}
-	
-// 	/**
-// 	 * 执行GET操作
-// 	 * 
-// 	 * @param string $url        	
-// 	 * @param array $params        	
-// 	 * @return string
-// 	 */
-// 	public static function get($url, $params = array()) {
-// 		$client = new \Zend_Http_Client ();
-// 		$client->setUri ( $url );
-// 		$client->setParameterGet ( $params );
-// 		$client->setEncType ( \Zend_Http_Client::ENC_URLENCODED );
-// 		$client->setConfig ( array (
-// 				'maxredirects' => 3 
-// 		) );
-// 		$response = $client->request ( 'GET' );
-// 		$message = $response->getBody ();
-// 		$message = preg_replace ( "/^\xEF\xBB\xBF/", '', $message );
-// 		$message = preg_replace ( "/[\n\t\s\r]+/", '', $message );
-// 		return $message;
-// 	}
-	
 	/**
-	 * GET wrappwer for oAuthRequest.
-	 *
-	 * @return mixed
+	 * POST 信息到指定的URL
+	 * 
+	 * @param string $url        	
+	 * @param string $json        	
+	 * @return array
 	 */
-	public static function get ($url, $parameters = array())
-	{
-		$request = new WeixinOAuthRequest();
-		return $request->get($url, $parameters);
+	public static function post($url, $parameters = array(), $multi = false) {
+		$client = new \Zend_Http_Client ();
+		$client->setUri ( $url );
+		if ((is_array ( $parameters ) || is_object ( $parameters ))) {
+			$client->setParameterPost ( $parameters );
+		} else {
+			$client->setRawData ( $parameters );
+		}
+		$client->setEncType ( \Zend_Http_Client::ENC_URLENCODED );
+		$client->setConfig ( array (
+				'maxredirects' => 3 
+		) );
+		$response = $client->request ( 'POST' );
+		$message = $response->getBody ();
+		$message = preg_replace ( "/^\xEF\xBB\xBF/", '', $message );
+		$message = preg_replace ( "/[\n\t\s\r]+/", '', $message );
+		return json_decode ( $message, true );
 	}
 	
 	/**
-	 * POST wreapper for oAuthRequest.
-	 *
-	 * @return mixed
+	 * 执行GET操作
+	 * 
+	 * @param string $url        	
+	 * @param array $params        	
+	 * @return string
 	 */
-	public static function post ($url, $parameters = array(), $multi = false)
-	{
-		$request = new WeixinOAuthRequest();
-		return $request->post($url, $parameters, $multi);
+	public static function get($url, $params = array()) {
+		$client = new \Zend_Http_Client ();
+		$client->setUri ( $url );
+		$client->setParameterGet ( $params );
+		$client->setEncType ( \Zend_Http_Client::ENC_URLENCODED );
+		$client->setConfig ( array (
+				'maxredirects' => 3 
+		) );
+		$response = $client->request ( 'GET' );
+		$message = $response->getBody ();
+		$message = preg_replace ( "/^\xEF\xBB\xBF/", '', $message );
+		$message = preg_replace ( "/[\n\t\s\r]+/", '', $message );
+		return json_decode ( $message, true );
 	}
+
 }
 
