@@ -1,8 +1,8 @@
 <?php
-namespace Weixin\MenuManager;
+namespace Weixin\Manager;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
+use Weixin\Exception;
+use Weixin\Client;
 
 /**
  * 自定义菜单接口

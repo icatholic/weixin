@@ -1,8 +1,8 @@
 <?php
-namespace Weixin\MsgManager\CustomMsg;
+namespace Weixin\Manager\Msg;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\MsgManager\WeixinMsgManager;
+use Weixin\Exception;
+use Weixin\Manager\Msg;
 
 /**
  * 发送消息-----发送客服消息接口

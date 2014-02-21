@@ -1,8 +1,8 @@
 <?php
-namespace Weixin\QrcodeManager;
+namespace Weixin\Manager;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
+use Weixin\Exception;
+use Weixin\Client;
 
 /**
  * 推广支持接口

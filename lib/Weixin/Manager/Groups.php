@@ -1,8 +1,8 @@
 <?php
-namespace Weixin\GroupsManager;
+namespace Weixin\Manager;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
+use Weixin\Exception;
+use Weixin\Client;
 
 /**
  * 分组管理接口

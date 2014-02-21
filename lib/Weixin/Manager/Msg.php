@@ -1,10 +1,10 @@
 <?php
-namespace Weixin\MsgManager;
+namespace Weixin\Manager;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
-use Weixin\MsgManager\ReplyMsg\WeixinReplyMsgSender;
-use Weixin\MsgManager\CustomMsg\WeixinCustomMsgSender;
+use Weixin\Exception;
+use Weixin\Client;
+use Weixin\Manager\Msg\Custom;
+use Weixin\Manager\Msg\Reply;
 
 /**
  * 发送消息接口

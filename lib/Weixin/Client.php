@@ -1,15 +1,5 @@
 <?php
 namespace Weixin;
-use Weixin\Helpers;
-use Weixin\WeixinOAuthRequest;
-use Weixin\WeixinException;
-use Weixin\MsgManager\WeixinMsgManager;
-use Weixin\GroupsManager\WeixinGroupsManager;
-use Weixin\MediaManager\WeixinMediaManager;
-use Weixin\MenuManager\WeixinMenuManager;
-use Weixin\QrcodeManager\WeixinQrcodeManager;
-use Weixin\UserManager\WeixinUserManager;
-use Weixin\PayManager\WeixinPayManager;
 
 /**
  * 微信公众平台的调用接口类.

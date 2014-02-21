@@ -1,8 +1,8 @@
 <?php
-namespace Weixin\SnsUserManager;
+namespace Weixin\Manager\Sns;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
+use Weixin\Exception;
+use Weixin\Client;
 
 /**
  * 用户管理----网页授权获取用户基本信息接口

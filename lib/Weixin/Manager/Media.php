@@ -1,9 +1,8 @@
 <?php
-namespace Weixin\MediaManager;
+namespace Weixin\Manager;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
-use Weixin\WeixinOAuthRequest;
+use Weixin\Exception;
+use Weixin\Client;
 
 /**
  * 上传下载多媒体文件接口
