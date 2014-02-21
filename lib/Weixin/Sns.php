@@ -28,9 +28,9 @@ class SnsClient {
 	private $_refresh_token = null;
 	protected $userManager;
 	/**
-	 * GET SnsUserManager object.
+	 * GET UserManager object.
 	 *
-	 * @return SnsUserManager
+	 * @return User
 	 */
 	public function getUserManager() {
 		return $this->userManager;
@@ -42,7 +42,7 @@ class SnsClient {
 		$this->_access_token = $access_token;
 		$this->_refresh_token = $refresh_token;
 		// 用户管理
-		$this->userManager = new SnsUserManager ( $this, $options );
+		$this->userManager = new User ( $this, $options );
 	}
 	
 	/**

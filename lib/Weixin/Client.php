@@ -35,7 +35,7 @@ class Client {
 	/**
 	 * GET MsgManager object.
 	 *
-	 * @return MsgManager
+	 * @return Msg
 	 */
 	public function getMsgManager() {
 		return $this->msgManager;
@@ -44,7 +44,7 @@ class Client {
 	/**
 	 * GET UserManager object.
 	 *
-	 * @return UserManager
+	 * @return User
 	 */
 	public function getUserManager() {
 		return $this->userManager;
@@ -53,7 +53,7 @@ class Client {
 	/**
 	 * GET QrcodeManager object.
 	 *
-	 * @return QrcodeManager
+	 * @return Qrcode
 	 */
 	public function getQrcodeManager() {
 		return $this->qrcodeManager;
@@ -62,7 +62,7 @@ class Client {
 	/**
 	 * GET MenuManager object.
 	 *
-	 * @return MenuManager
+	 * @return Menu
 	 */
 	public function getMenuManager() {
 		return $this->menuManager;
