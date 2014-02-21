@@ -1,7 +1,7 @@
 <?php
 namespace Weixin\Manager;
 use Weixin\Helpers;
-use Weixin\Exception;
+use Weixin\WeixinException;
 use Weixin\Client;
 
 /**
