@@ -1,7 +1,7 @@
 微信公众平台开发模式通用接口API(Weixin)
 ======
 
-is a PHP (>= 5.3) client library for the 微信公众平台开发模式通用接口API(Weixin)
+is a PHP (>= 5.2.11) client library for the 微信公众平台开发模式通用接口API(Weixin)
 
 ### Loading the library ###
 
