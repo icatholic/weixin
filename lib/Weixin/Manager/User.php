@@ -1,5 +1,7 @@
 <?php
+
 namespace Weixin\Manager;
+
 use Weixin\Helpers;
 use Weixin\WeixinException;
 use Weixin\Client;
@@ -12,52 +14,40 @@ use Weixin\Client;
  * 对于不同公众号，同一用户的openid不同）。
  * 公众号可通过本接口来根据OpenID获取用户基本信息，
  * 包括昵称、头像、性别、所在城市、语言和关注时间。
+ * 
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class User
-{
+class User {
 	protected $weixin;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/user/';
-
-	public function __construct(Client $weixin,$options=array()) {
-		$this->weixin  = $weixin;
+	public function __construct(Client $weixin, $options = array()) {
+		$this->weixin = $weixin;
 	}
-
+	
 	/**
 	 * 获取用户基本信息
 	 * 开发者可通过OpenID来获取用户基本信息。请使用https协议。
-	 *
 	 */
-	public function getUserInfo($openid)
-	{
-		//http请求方式: GET
-		//https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID
-		//access_token	 是	 调用接口凭证
-		//openid	 是	 普通用户的标识，对当前公众号唯一
-		$access_token = $this->weixin->getToken();
-		$params = array();
-		$params['access_token'] = $access_token;
-		$params['openid']      = $openid;
-		$rst = $this->weixin->get($this->_url.'info',$params);
-		if(!empty($rst['errcode']))
-		{
-			throw new WeixinException($rst['errmsg'],$rst['errcode']);
-		}
-		else
-		{
+	public function getUserInfo($openid) {
+		// http请求方式: GET
+		// https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID
+		// access_token 是 调用接口凭证
+		// openid 是 普通用户的标识，对当前公众号唯一
+		$access_token = $this->weixin->getToken ();
+		$params = array ();
+		$params ['access_token'] = $access_token;
+		$params ['openid'] = $openid;
+		$rst = $this->weixin->get ( $this->_url . 'info', $params );
+		if (! empty ( $rst ['errcode'] )) {
+			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+		} else {
 			/*
-			 {
-			"subscribe": 1,
-			"openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
-			"nickname": "Band",
-			"sex": 1,
-			"language": "zh_CN",
-			"city": "广州",
-			"province": "广东",
-			"country": "中国",
-			"headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
-			"subscribe_time": 1382694957
-			}*/
+			 * { "subscribe": 1, "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
+			 * "nickname": "Band", "sex": 1, "language": "zh_CN", "city": "广州",
+			 * "province": "广东", "country": "中国", "headimgurl":
+			 * "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
+			 * "subscribe_time": 1382694957 }
+			 */
 			return $rst;
 		}
 	}
@@ -68,35 +58,33 @@ class User
 	 * 一次拉取调用最多拉取10000个关注者的OpenID，
 	 * 可以通过多次拉取的方式来满足需求。
 	 */
-	public function getUser($next_openid="")
-	{
-		//http请求方式: GET（请使用https协议）
-		//https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
-		//access_token	 是	 调用接口凭证
-		//next_openid	 是	 第一个拉取的OPENID，不填默认从头开始拉取
-		$access_token = $this->weixin->getToken();
-		$params = array();
-		$params['access_token'] = $access_token;
-		$params['next_openid'] = $next_openid;
-		$rst = $this->weixin->get($this->_url.'get',$params);
-		//返回说明
-		if(!empty($rst['errcode']))
-		{
-			//错误时返回JSON数据包（示例为无效AppID错误）：
-			//{"errcode":40013,"errmsg":"invalid appid"}
-			throw new WeixinException($rst['errmsg'],$rst['errcode']);
-		}
-		else
-		{
-			//正确时返回JSON数据包：
-			/*{"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}*/
-			//参数	说明
-			//total	 关注该公众账号的总用户数
-			//count	 拉取的OPENID个数，最大值为10000
-			//data	 列表数据，OPENID的列表
-			//next_openid	 拉取列表的后一个用户的OPENID
+	public function getUser($next_openid = "") {
+		// http请求方式: GET（请使用https协议）
+		// https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
+		// access_token 是 调用接口凭证
+		// next_openid 是 第一个拉取的OPENID，不填默认从头开始拉取
+		$access_token = $this->weixin->getToken ();
+		$params = array ();
+		$params ['access_token'] = $access_token;
+		$params ['next_openid'] = $next_openid;
+		$rst = $this->weixin->get ( $this->_url . 'get', $params );
+		// 返回说明
+		if (! empty ( $rst ['errcode'] )) {
+			// 错误时返回JSON数据包（示例为无效AppID错误）：
+			// {"errcode":40013,"errmsg":"invalid appid"}
+			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
+		} else {
+			// 正确时返回JSON数据包：
+			/*
+			 *
+			 * {"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
+			 */
+			// 参数 说明
+			// total 关注该公众账号的总用户数
+			// count 拉取的OPENID个数，最大值为10000
+			// data 列表数据，OPENID的列表
+			// next_openid 拉取列表的后一个用户的OPENID
 			return $rst;
 		}
 	}
-
 }
