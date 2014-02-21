@@ -3,17 +3,18 @@
     "type": "library",
     "description": "A simple PHP client library for weixin",
     "keywords": ["weixin"],
-    "homepage": "http://github.com/handsomegyr/weixin",
+    "homepage": "http://github.com/icatholic/weixin",
     "license": "MIT",
     "authors": [
         {
-            "name": "guoyongrong",
+            "name": "icatholic",
             "email": "handsomegyr@gmail.com",
-            "homepage": "http://www.cnblogs.com/guoyongrong/"
+            "homepage": "http://github.com/icatholic/"
         }
     ],
     "require": {
-        "php": ">=5.3.2"
+        "php": ">=5.3.2",
+	"zf1/zend-http": "dev-master"
     },
     "autoload": {
         "psr-0": {"Weixin": "lib/"}
