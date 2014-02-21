@@ -1,5 +1,5 @@
 {
-    "name": "weixin/weixin",
+    "name": "icatholic/weixin",
     "type": "library",
     "description": "A simple PHP client library for weixin",
     "keywords": ["weixin"],
