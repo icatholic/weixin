@@ -11,7 +11,7 @@ use Weixin\PayManager\PayManager;
  *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinSnsClient
+class SnsClient
 {
 	private $_appid = null;
 	public function getAppid()

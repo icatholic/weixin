@@ -14,7 +14,7 @@ use Weixin\Client;
  * 用户发送到微信服务器3天后自动删除，以节省服务器资源。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class Mediaphp
+class Media
 {
 	protected $weixin;
 	private $_url = 'http://file.api.weixin.qq.com/cgi-bin/media/';

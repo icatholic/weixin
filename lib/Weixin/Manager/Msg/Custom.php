@@ -20,7 +20,7 @@ class Custom
 	protected $msgManager;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send';
 	
-	public function __construct(MsgManager $msgManager,$options=array()) {
+	public function __construct(Msg $msgManager,$options=array()) {
 		$this->msgManager = $msgManager;
 	}
 

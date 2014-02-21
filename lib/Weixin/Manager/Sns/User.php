@@ -2,7 +2,7 @@
 namespace Weixin\Manager\Sns;
 use Weixin\Helpers;
 use Weixin\WeixinException;
-use Weixin\Client;
+use Weixin\SnsClient;
 
 /**
  * 用户管理----网页授权获取用户基本信息接口
@@ -39,7 +39,7 @@ class User
 {
 	protected $weixin;
 
-	public function __construct(WeixinSnsClient $weixin,$options=array()) {
+	public function __construct(SnsClient $weixin,$options=array()) {
 		$this->weixin  = $weixin;
 	}
 

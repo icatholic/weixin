@@ -29,7 +29,7 @@ class Reply
 	/**
 	 * @param MsgManager $msgManager Connection factory object.
 	 */
-	public function __construct(MsgManager $msgManager,$options=array()) {
+	public function __construct(Msg $msgManager,$options=array()) {
 		$this->msgManager = $msgManager;
 	}
 	

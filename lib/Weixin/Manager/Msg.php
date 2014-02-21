@@ -30,34 +30,34 @@ class Msg
 		return $this->weixin;
 	}
 
-	protected $weixinReplyMsgSender;
+	protected $reply;
 	/**
-	 * GET WeixinReplyMsgSender object.
+	 * GET Reply object.
 	 *
-	 * @return WeixinReplyMsgSender
+	 * @return Reply
 	 */
-	public function getWeixinReplyMsgSender()
+	public function getReply()
 	{
-		return $this->weixinReplyMsgSender;
+		return $this->reply;
 	}
 
-	protected $weixinCustomMsgSender;
+	protected $custom;
 	/**
-	 * GET WeixinCustomMsgSender object.
+	 * GET Custom object.
 	 *
-	 * @return WeixinCustomMsgSender
+	 * @return Custom
 	 */
-	public function getWeixinCustomMsgSender()
+	public function getCustom()
 	{
-		return $this->weixinCustomMsgSender;
+		return $this->custom;
 	}
 
 	public function __construct(Client $weixin,$options=array()) {
 		$this->weixin = $weixin;
 		//发送被动响应消息发射器
-		$this->weixinReplyMsgSender = new WeixinReplyMsgSender($this,$options);
+		$this->reply = new Reply($this,$options);
 		//发送客服消息发射器
-		$this->weixinCustomMsgSender = new WeixinCustomMsgSender($this,$options);
+		$this->custom = new Custom($this,$options);
 	}
 
 }

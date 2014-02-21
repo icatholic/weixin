@@ -48,7 +48,7 @@ try {
 	$openid="xxxxxxxxxxxxxxx";
 	
 	//���Ϳͷ��ı���Ϣ
-	$client->getMsgManager()->getWeixinCustomMsgSender()->sendText($openid, "����");
+	$client->getMsgManager()->getCustom()->sendText($openid, "����");
 	
 	//���ض�ý���ļ�
 	$mediaId= "xxxxxxxxxxxxxxx";
