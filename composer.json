@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.2.11",
-	"zf1/zend-http": "dev-master"
+	"zf1/zend-http": "~1.12"
     },
     "autoload": {
         "psr-0": {"Weixin": "lib/"}
