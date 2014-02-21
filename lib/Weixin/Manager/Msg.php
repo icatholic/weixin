@@ -11,7 +11,7 @@ use Weixin\MsgManager\CustomMsg\WeixinCustomMsgSender;
  *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinMsgManager
+class Msg
 {
 	private $_length = 140;
 	public function getLength()

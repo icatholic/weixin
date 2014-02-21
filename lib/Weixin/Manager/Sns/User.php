@@ -35,7 +35,7 @@ use Weixin\WeixinClient;
  * 
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinSnsUserManager
+class User
 {
 	protected $weixin;
 

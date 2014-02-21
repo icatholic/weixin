@@ -10,7 +10,7 @@ use Weixin\WeixinClient;
  * 让用户更好更快地理解公众号的功能。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinMenuManager
+class Menu
 {
 	protected $weixin;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/menu/';

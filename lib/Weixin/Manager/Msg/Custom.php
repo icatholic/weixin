@@ -15,7 +15,7 @@ use Weixin\MsgManager\WeixinMsgManager;
  * 方便开发者为用户提供更加优质的服务。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinCustomMsgSender
+class Custom
 {
 	protected $weixinMsgManager;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send';

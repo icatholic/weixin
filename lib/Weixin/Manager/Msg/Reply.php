@@ -23,7 +23,7 @@ use Weixin\MsgManager\WeixinMsgManager;
  * 这种情况下，可以使用客服消息接口进行异步回复。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinReplyMsgSender
+class Reply
 {
 	protected $weixinMsgManager;
 	/**

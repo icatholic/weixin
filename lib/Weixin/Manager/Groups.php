@@ -11,7 +11,7 @@ use Weixin\WeixinClient;
  * 也可以使用接口在需要时移动用户到某个分组。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinGroupsManager
+class Groups
 {
 	protected  $weixin;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/groups/';

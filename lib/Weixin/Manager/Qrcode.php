@@ -19,7 +19,7 @@ use Weixin\WeixinClient;
  *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinQrcodeManager
+class Qrcode
 {
 	protected $weixin;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/qrcode/';
