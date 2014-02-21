@@ -26,6 +26,9 @@ class Client {
 		return $this->_secret;
 	}
 	private $_access_token = null;
+	public function setAccessToken($accessToken) {
+		$this->_access_token = $accessToken;
+	}
 	private $_refresh_token = null;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/';
 	protected $msgManager;
@@ -88,8 +91,6 @@ class Client {
 		$this->_access_token = $access_token;
 		$this->_refresh_token = $refresh_token;
 		
-		// 获取oAuthRequest对象
-		$this->weixinOAuthRequest = new WeixinOAuthRequest ();
 		// 发送消息管理
 		$this->msgManager = new Msg ( $this, $options );
 		// 用户管理

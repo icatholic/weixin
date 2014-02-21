@@ -3,16 +3,14 @@
 namespace Weixin;
 
 use Weixin\Helpers;
-use Weixin\WeixinOAuthRequest;
 use Weixin\WeixinException;
-use Weixin\Manager\Sns\User;
 
 /**
  * 微信公众平台的网页授权调用接口类.
  *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class SnsClient {
+class SnsAccessToken {
 	private $_appid = null;
 	public function getAppid() {
 		return $this->_appid;
@@ -22,75 +20,11 @@ class SnsClient {
 		return $this->_secret;
 	}
 	private $_access_token = null;
-	public function setAccessToken($accessToken) {
-		$this->_access_token = $accessToken;
-	}
 	private $_refresh_token = null;
-	protected $userManager;
-	/**
-	 * GET SnsUserManager object.
-	 *
-	 * @return SnsUserManager
-	 */
-	public function getUserManager() {
-		return $this->userManager;
-	}
-	
-	public function __construct($appid, $secret, $access_token = NULL, $refresh_token = NULL, $options = array()) {
+		
+	public function __construct($appid, $secret, $options = array()) {
 		$this->_appid = $appid;
 		$this->_secret = $secret;
-		$this->_access_token = $access_token;
-		$this->_refresh_token = $refresh_token;
-		// 用户管理
-		$this->userManager = new SnsUserManager ( $this, $options );
-	}
-	
-	/**
-	 *
-	 * @ignore
-	 *
-	 *
-	 */
-	private function authorizeURL() {
-		return 'https://open.weixin.qq.com/connect/oauth2/authorize';
-	}
-	
-	/**
-	 * authorize接口,用户同意授权，获取code
-	 *
-	 * 对应API：{@link
-	 * http://mp.weixin.qq.com/wiki/index.php?title=%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF}
-	 *
-	 * @param string $url
-	 *        	授权后的回调地址
-	 * @param string $scope
-	 *        	应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），
-	 *        	snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，
-	 *        	即使在未关注的情况下，只要用户授权，也能获取其信息）
-	 * @param string $response_type
-	 *        	默认值为code
-	 * @param string $state
-	 *        	重定向后会带上state参数，开发者可以填写任意参数值
-	 * @param string $wechat_redirect
-	 *        	直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
-	 * @return string
-	 */
-	public function getAuthorizeURL($url, $scope = "snsapi_userinfo", $response_type = 'code', $state = "") {
-		// appid 是 公众号的唯一标识
-		// redirect_uri 是 授权后重定向的回调链接地址
-		// response_type 是 返回类型，请填写code
-		// scope 是 应用授权作用域，snsapi_base
-		// （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo
-		// （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
-		// state 否 重定向后会带上state参数，开发者可以填写任意参数值
-		// #wechat_redirect 否 直接在微信打开链接，可以不填此参数。做页面302重定向时候，必须带此参数
-		$params = array ();
-		$params ['appid'] = $this->_appid;
-		$params ['redirect_uri'] = $url;
-		$params ['response_type'] = $response_type;
-		$params ['scope'] = $scope;
-		$params ['state'] = $state;
-		return $this->authorizeURL () . "?" . http_build_query ( $params ) . "#wechat_redirect";
 	}
 	
 	/**
@@ -135,7 +69,7 @@ class SnsClient {
 		$params ['secret'] = $this->_secret;
 		$params ['code'] = $code;
 		$params ['grant_type'] = 'authorization_code';
-		$rst = $this->get ( $this->accessTokenURL (), $params );
+		$rst = Helpers::get ( $this->accessTokenURL (), $params );
 		// 返回说明
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时微信会返回JSON数据包如下（示例为Code无效错误）:
@@ -183,7 +117,7 @@ class SnsClient {
 		$params ['appid'] = $this->_appid;
 		$params ['grant_type'] = 'refresh_token';
 		$params ['refresh_token'] = $refresh_token;
-		$rst = $this->get ( $this->refreshTokenURL (), $params );
+		$rst = Helpers::get ( $this->refreshTokenURL (), $params );
 		// 返回说明
 		if (! empty ( $rst ['errcode'] )) {
 			// 错误时微信会返回JSON数据包如下（示例为Code无效错误）:
@@ -211,6 +145,12 @@ class SnsClient {
 		}
 		return $rst;
 	}
+	
+	/**
+	 * 获取Token
+	 * @param unknown_type $key
+	 * @return Ambigous <NULL>
+	 */
 	public function getToken($key = "access_token") {
 		$token = array (
 				'access_token' => $this->_access_token,
@@ -219,26 +159,6 @@ class SnsClient {
 		return $token [$key];
 	}
 	
-	/**
-	 * GET wrappwer for oAuthRequest.
-	 *
-	 * @return mixed
-	 */
-	public function get($url, $parameters = array()) {
-		$response = Helpers::get ( $url, $parameters );
-		return $response;
-	}
-	
-	/**
-	 * POST wreapper for oAuthRequest.
-	 *
-	 * @return mixed
-	 */
-	public function post($url, $parameters = array(), $multi = false) {
-		$response = Helpers::post ( $url, $parameters, $multi );
-		return $response;
-	}
-
 	public function __destruct() {
 	}
 }

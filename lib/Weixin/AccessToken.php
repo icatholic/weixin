@@ -61,6 +61,11 @@ class AccessToken {
 		}
 		return $rst;
 	}
+	/**
+	 * 获取token
+	 * @param unknown_type $key
+	 * @return Ambigous <NULL>
+	 */
 	public function getToken($key = "access_token") {
 		$token = array (
 				'access_token' => $this->_access_token,

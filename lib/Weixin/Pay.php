@@ -4,7 +4,6 @@ namespace Weixin\PayManager;
 
 use Weixin\Helpers;
 use Weixin\WeixinException;
-use Weixin\Client;
 
 /**
  * 微信支付接口
@@ -15,11 +14,25 @@ use Weixin\Client;
  * 对于appSecret 和paySignKey 的区别，可以这样认为：appSecret 是API 使用时的登录密码，会在网络中传播的；
  * 而paySignKey 是在所有支付相关数据传输时用于加密并进行身份校验的密钥，
  * 仅保留在第三方后台和微信后台，不会在网络中传播。
- * 
+ *
  * @author guoyongrong <handsomegyr@gmail.com>
  */
 class PayManager {
-	protected $weixin;
+	private $_appid = null;
+	public function getAppid() {
+		return $this->_appid;
+	}
+	private $_secret = null;
+	public function getAppSecret() {
+		return $this->_secret;
+	}
+	private $_accessToken = null;
+	public function getAccessToken() {
+		return $this->_accessToken;
+	}
+	public function setAccessToken($accessToken) {
+		$this->_accessToken = $accessToken;
+	}
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/pay/';
 	
 	// paySignKey 公众号支付请求中用于加密的密钥Key，可验证商户唯一身份，PaySignKey对应于支付场景中的appKey 值。
@@ -38,8 +51,9 @@ class PayManager {
 	public function setPartnerKey($partnerKey) {
 		$this->partnerKey = $partnerKey;
 	}
-	public function __construct(Client $weixin, $options = array()) {
-		$this->weixin = $weixin;
+	public function __construct($appid, $secret, $options = array()) {
+		$this->_appid = $appid;
+		$this->_secret = $secret;
 		// 支付相关的Options
 		if (empty ( $options ['pay'] )) {
 			$this->paySignKey = empty ( $options ['pay'] ['paySignKey'] ) ? "" : $options ['pay'] ['paySignKey'];
@@ -53,7 +67,7 @@ class PayManager {
 	 * 为了更好地跟踪订单的情况，需要第三方在收到最终支付通知之后，调用发货通知API
 	 * 告知微信后台该订单的发货状态。
 	 * 请在收到支付通知发货后，一定调用发货通知接口，否则可能影响商户信誉和资金结算。
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function delivernotify($openid, $transid, $out_trade_no, $deliver_timestamp, $deliver_status, $deliver_msg) {
@@ -87,9 +101,9 @@ class PayManager {
 		
 		// 参数 说明
 		// access_token 调用接口凭证
-		$access_token = $this->weixin->getToken ( 'access_token' );
+		$access_token = $this->getAccessToken ();
 		$postData = array ();
-		$postData ["appid"] = $this->weixin->getAppid ();
+		$postData ["appid"] = $this->getAppid ();
 		$postData ["openid"] = $openid;
 		$postData ["transid"] = $transid;
 		$postData ["out_trade_no"] = $out_trade_no;
@@ -112,7 +126,7 @@ class PayManager {
 		$postData ["sign_method"] = "sha1";
 		
 		$json = json_encode ( $postData, JSON_UNESCAPED_UNICODE );
-		$rst = $this->weixin->post ( $this->_url . 'delivernotify?access_token=' . $access_token, $json );
+		$rst = Helpers::post ( $this->_url . 'delivernotify?access_token=' . $access_token, $json );
 		if (! empty ( $rst ['errcode'] )) {
 			// 如果有异常，会在errcode 和errmsg 描述出来。
 			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
@@ -128,7 +142,7 @@ class PayManager {
 	 * 订单查询 orderquery
 	 * 因为某一方技术的原因，可能导致商家在预期时间内都收不到最终支付通知，
 	 * 此时商家可以通过该API 来查询订单的详细支付状态。
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function orderquery($out_trade_no) {
@@ -158,9 +172,9 @@ class PayManager {
 		
 		// 参数 说明
 		// access_token 调用接口凭证
-		$access_token = $this->weixin->getToken ( 'access_token' );
+		$access_token = $this->getAccessToken ();
 		$postData = array ();
-		$postData ["appid"] = $this->weixin->getAppid ();
+		$postData ["appid"] = $this->getAppid ();
 		
 		// 获取package
 		$para = array (
@@ -182,7 +196,7 @@ class PayManager {
 		$postData ["sign_method"] = "sha1";
 		
 		$json = json_encode ( $postData, JSON_UNESCAPED_UNICODE );
-		$rst = $this->weixin->post ( $this->_url . 'delivernotify?access_token=' . $access_token, $json );
+		$rst = Helpers::post ( $this->_url . 'delivernotify?access_token=' . $access_token, $json );
 		if (! empty ( $rst ['errcode'] )) {
 			// 如果有异常，会在errcode 和errmsg 描述出来。
 			throw new WeixinException ( $rst ['errmsg'], $rst ['errcode'] );
@@ -267,7 +281,7 @@ class PayManager {
 		// sign 是 字段名称：签名；
 		// 字段来源：对前面的其他字段与appKey 按照字典序排序后，使用SHA1 算法得到的结果。由商户生成后传入。
 		// 参与sign 签名的字段包括：appid、timestamp、noncestr、productid 以及appkey
-		$appid = $this->weixin->getAppid ();
+		$appid = $this->getAppid ();
 		$para = array (
 				"appid" => $appid,
 				"appkey" => $this->paySignKey,
@@ -303,7 +317,7 @@ class PayManager {
 		// 其中，对于一些第三方觉得商品已经过期或者其他错误的情况，可以在RetCode 和
 		// RetErrMsg 中体现出来，RetCode 为0 表明正确，可以定义其他错误；当定义其他错误时，
 		// 可以在RetErrMsg 中填上UTF8 编码的错误提示信息，比如“该商品已经下架”，客户端会直接提示出来。
-		$appid = $this->weixin->getAppid ();
+		$appid = $this->getAppid ();
 		$timestamp = time ();
 		// 获取package
 		$package = $this->getPackage4JsPay ( $body, $attach, $out_trade_no, $total_fee, $notify_url, $spbill_create_ip, $time_start, $time_expire, $transport_fee, $product_fee, $goods_tag, $bank_type, $fee_type, $input_charset );
