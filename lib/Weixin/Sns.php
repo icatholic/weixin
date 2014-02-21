@@ -3,7 +3,7 @@ namespace Weixin;
 use Weixin\Helpers;
 use Weixin\WeixinOAuthRequest;
 use Weixin\WeixinException;
-use Weixin\SnsUserManager\WeixinSnsUserManager;
+use Weixin\Manager\Sns\User;
 use Weixin\PayManager\PayManager;
 
 /**
