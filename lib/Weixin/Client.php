@@ -14,6 +14,7 @@ use Weixin\Manager\Qrcode;
 use Weixin\Manager\Menu;
 use Weixin\Manager\User;
 use Weixin\Manager\Sns\User as SnsUser;
+use Weixin\Manager\Media;
 
 class Client
 {
