@@ -1,6 +1,7 @@
 <?php
 /**
  * 微信客户端总调度器
+ * 
  * @author young <youngyang@icatholic.net.cn>
  *
  */
@@ -200,7 +201,7 @@ class Client
 
     /**
      * 签名校验
-     * 
+     *
      * @param string $verifyCode            
      * @return boolean
      */
