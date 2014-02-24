@@ -166,7 +166,7 @@ class Custom
         $ret = array();
         $ret['touser'] = $toUser;
         $ret['msgtype'] = 'news';
-        $ret['news']['articles''] = $items;
+        $ret['news']['articles"] = $items;
         return $this->send($ret);
     }
 }
