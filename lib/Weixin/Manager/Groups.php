@@ -38,49 +38,7 @@ class Groups
     public function get ()
     {
         $rst = $this->_request->get('groups/get');
-        if (! empty($rst['errcode'])) {
-            // 错误时的JSON数据包示例（该示例为AppID无效错误）：
-            
-            // {"errcode":40013,"errmsg":"invalid appid"}
-            throw new Exception($rst['errmsg'], $rst['errcode']);
-        } else {
-            // 返回说明 正常时的返回JSON数据包示例：
-            // {
-            // "groups": [
-            // {
-            // "id": 0,
-            // "name": "未分组",
-            // "count": 72596
-            // },
-            // {
-            // "id": 1,
-            // "name": "黑名单",
-            // "count": 36
-            // },
-            // {
-            // "id": 2,
-            // "name": "星标组",
-            // "count": 8
-            // },
-            // {
-            // "id": 104,
-            // "name": "华东媒",
-            // "count": 4
-            // },
-            // {
-            // "id": 106,
-            // "name": "★不测试组★",
-            // "count": 1
-            // }
-            // ]
-            // }
-            // 参数 说明
-            // groups 公众平台分组信息列表
-            // id 分组id，由微信分配
-            // name 分组名字，UTF8编码
-            // count 分组内用户数量
-            return $rst;
-        }
+        return $this->_client->rst($rst);
     }
 
     /**
@@ -103,23 +61,7 @@ class Groups
     public function create ($name)
     {
         $rst = $this->_request->post('groups/create', $params);
-        if (! empty($rst['errcode'])) {
-            // 错误时的JSON数据包示例（该示例为AppID无效错误）：
-            // {"errcode":40013,"errmsg":"invalid appid"}
-            throw new WeixinException($rst['errmsg'], $rst['errcode']);
-        } else {
-            // 返回说明 正常时的返回JSON数据包示例：
-            // {
-            // "group": {
-            // "id": 107,
-            // "name": "test"
-            // }
-            // }
-            // 参数 说明
-            // id 分组id，由微信分配
-            // name 分组名字，UTF8编码
-            return $rst;
-        }
+        return $this->_client->rst($rst);
     }
 
     /**
@@ -149,15 +91,7 @@ class Groups
         $params['group']['name'] = $name;
         
         $rst = $this->_request->post('groups/update', $params);
-        if (! empty($rst['errcode'])) {
-            // 错误时的JSON数据包示例（该示例为AppID无效错误）：
-            // {"errcode":40013,"errmsg":"invalid appid"}
-            throw new WeixinException($rst['errmsg'], $rst['errcode']);
-        } else {
-            // 返回说明 正常时的返回JSON数据包示例：
-            // {"errcode": 0, "errmsg": "ok"}
-            return $rst;
-        }
+        return $this->_client->rst($rst);
     }
 
     /**
@@ -185,14 +119,6 @@ class Groups
         $params['openid'] = $openid;
         $params['to_groupid'] = $to_groupid;
         $rst = $this->_request->post('groups/members', $params);
-        if (! empty($rst['errcode'])) {
-            // 错误时的JSON数据包示例（该示例为AppID无效错误）：
-            // {"errcode":40013,"errmsg":"invalid appid"}
-            throw new WeixinException($rst['errmsg'], $rst['errcode']);
-        } else {
-            // 返回说明 正常时的返回JSON数据包示例：
-            // {"errcode": 0, "errmsg": "ok"}
-            return $rst;
-        }
+        return $this->_client->rst($rst);
     }
 }
