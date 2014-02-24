@@ -75,7 +75,7 @@ class Client
     {
         if (empty($this->_to))
             throw new Exception('请设定ToUserName');
-        return $this->to;
+        return $this->_to;
     }
 
     /**
