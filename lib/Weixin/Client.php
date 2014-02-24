@@ -12,11 +12,14 @@ use Weixin\Manager\Groups;
 use Weixin\Manager\Qrcode;
 use Weixin\Manager\Menu;
 use Weixin\Manager\User;
+use Weixin\Manager\Sns\User as SnsUser;
 
 class Client
 {
 
     private $_accessToken = null;
+
+    private $_snsAccessToken = null;
 
     private $_from = null;
 
@@ -29,7 +32,7 @@ class Client
 
     /**
      * 获取服务端的accessToken
-     * 
+     *
      * @throws Exception
      */
     public function getAccessToken ()
@@ -42,7 +45,7 @@ class Client
 
     /**
      * 设定服务端的access token
-     * 
+     *
      * @param string $accessToken            
      */
     public function setAccessToken ($accessToken)
@@ -53,7 +56,7 @@ class Client
 
     /**
      * 获取来源用户
-     * 
+     *
      * @throws Exception
      */
     public function getFromUserName ()
@@ -65,7 +68,7 @@ class Client
 
     /**
      * 获取目标用户
-     * 
+     *
      * @throws Exception
      */
     public function getToUserName ()
@@ -77,7 +80,7 @@ class Client
 
     /**
      * 设定来源和目标用户
-     * 
+     *
      * @param string $fromUserName            
      * @param string $toUserName            
      */
@@ -108,7 +111,7 @@ class Client
 
     /**
      * 获取消息管理器
-     * 
+     *
      * @return \Weixin\Manager\Msg
      */
     public function getMsgManager ()
@@ -118,7 +121,7 @@ class Client
 
     /**
      * 获取多媒体管理器
-     * 
+     *
      * @return \Weixin\Media
      */
     public function getMediaManager ()
@@ -128,7 +131,7 @@ class Client
 
     /**
      * 获取菜单管理器
-     * 
+     *
      * @return \Weixin\Manager\Menu
      */
     public function getMenuManager ()
@@ -138,7 +141,7 @@ class Client
 
     /**
      * 获取分组管理器
-     * 
+     *
      * @return \Weixin\Manager\Groups
      */
     public function getGroupManager ()
@@ -148,7 +151,7 @@ class Client
 
     /**
      * 获取用户信息管理器
-     * 
+     *
      * @return \Weixin\Manager\User
      */
     public function getUserManager ()
@@ -158,12 +161,41 @@ class Client
 
     /**
      * 获取二维码管理器
-     * 
+     *
      * @return \Weixin\Manager\Qrcode
      */
     public function getQrcodeManager ()
     {
         return new Qrcode($this);
+    }
+
+    public function setSnsAccessToken ($accessToken)
+    {
+        $this->_snsAccessToken = $accessToken;
+    }
+
+    /**
+     * 获取用户授权的token信息
+     * 
+     * @throws Exception
+     */
+    public function getSnsAccessToken ()
+    {
+        if (empty($this->_snsAccessToken))
+            throw new Exception('尚未设定用户的授权access token');
+        return $this->_snsAccessToken;
+    }
+
+    /**
+     * 获取SNS用户管理器
+     * 
+     * @return \Weixin\Manager\Sns\User
+     */
+    public function getSnsManager ()
+    {
+        $client = clone $this;
+        $this->setAccessToken($this->getSnsAccessToken());
+        return new SnsUser($client);
     }
 
     /**
