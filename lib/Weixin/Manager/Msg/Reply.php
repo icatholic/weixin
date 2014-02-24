@@ -3,6 +3,7 @@ namespace Weixin\Manager\Msg;
 use Weixin\Helpers;
 use Weixin\Exception;
 use Weixin\Manager\Msg;
+use Weixin\Client;
 
 /**
  * 发送消息-----发送被动响应消息接口
@@ -22,30 +23,35 @@ use Weixin\Manager\Msg;
  * 微信服务器不会对此作任何处理，并且不会发起重试。 
  * 这种情况下，可以使用客服消息接口进行异步回复。
  * @author guoyongrong <handsomegyr@gmail.com>
+ * @author young <youngyang@icatholic.net.cn>
  */
 class Reply
 {
-	protected $weixinMsgManager;
-	/**
-	 * @param WeixinMsgManager $weixinMsgManager Connection factory object.
-	 */
-	public function __construct(WeixinMsgManager $weixinMsgManager,$options=array()) {
-		$this->weixinMsgManager = $weixinMsgManager;
+	private $_client;
+	
+	private $_to;
+	
+	private $_from;
+	
+	public function __construct(Client $client) {
+		$this->_client = $client;
+		$this->_from = $this->_client->getFromUserName();
+		$this->_to = $this->_client->getToUserName();
 	}
 	
 	/**
 	 * 回复文本
 	 * @param string $toUser
-	 * @param string $fromUser
+	 * @param string $this->_from
 	 * @param string $content
 	 * @return string
 	 */
-	public function replyText($toUser,$fromUser,$content) {
+	public function replyText($content) {
 		$time = time();
 		return "
 		<xml>
-		<ToUserName><![CDATA[{$toUser}]]></ToUserName>
-		<FromUserName><![CDATA[{$fromUser}]]></FromUserName>
+		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
 		<CreateTime>{$time}</CreateTime>
 		<MsgType><![CDATA[text]]></MsgType>
 		<Content><![CDATA[{$content}]]></Content>
@@ -55,16 +61,16 @@ class Reply
 	/**
 	* 回复图片消息
 	* @param string $toUser
-	* @param string $fromUser
+	* @param string $this->_from
 	* @param string $media_id
 	* @return string
 	*/
-	public function replyImage($toUser,$fromUser,$media_id) {
+	public function replyImage($media_id) {
 		$time = time();
 		return "
 		<xml>
-		<ToUserName><![CDATA[{$toUser}]]></ToUserName>
-		<FromUserName><![CDATA[{$fromUser}]]></FromUserName>
+		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
 		<CreateTime>{$time}</CreateTime>
 		<MsgType><![CDATA[image]]></MsgType>
 		<Image>
@@ -76,16 +82,16 @@ class Reply
 	/**
 	* 回复语音消息
 	* @param string $toUser
-	* @param string $fromUser
+	* @param string $this->_from
 	* @param string $media_id
 	* @return string
 	*/
-	public function replyVoice($toUser,$fromUser,$media_id) {
+	public function replyVoice($media_id) {
 		$time = time();
 		return "
 		<xml>
-		<ToUserName><![CDATA[{$toUser}]]></ToUserName>
-		<FromUserName><![CDATA[{$fromUser}]]></FromUserName>
+		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
 		<CreateTime>{$time}</CreateTime>
 		<MsgType><![CDATA[voice]]></MsgType>
 		<Voice>
@@ -97,17 +103,17 @@ class Reply
 	/**
 	* 回复视频消息
 	* @param string $toUser
-	* @param string $fromUser
+	* @param string $this->_from
 	* @param string $media_id
 	* @param string $thumb_media_id
 	 * @return string
 	 */
-	 public function replyVideo($toUser,$fromUser,$media_id,$thumb_media_id) {
+	 public function replyVideo($media_id,$thumb_media_id) {
 	 	$time = time();
 		 return "
 		 <xml>
-		 <ToUserName><![CDATA[{$toUser}]]></ToUserName>
-		 <FromUserName><![CDATA[{$fromUser}]]></FromUserName>
+		 <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+		 <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
 		 <CreateTime>{$time}</CreateTime>
 		 <MsgType><![CDATA[video]]></MsgType>
 		 <Video>
@@ -120,7 +126,7 @@ class Reply
 	 /**
 	 * 回复音乐
 	 * @param string $toUser
-	 * @param string $fromUser
+	 * @param string $this->_from
 	 * @param string $title
 	 * @param string $description
 	 * @param string $musicUrl
@@ -128,14 +134,14 @@ class Reply
 	 * @param string $media_id
 	 * @return string
 	 */
-	 public function replyMusic($toUser,$fromUser,$title,$description,$musicUrl,$hqMusicUrl='',$thumbMediaId=0) {
+	 public function replyMusic($title,$description,$musicUrl,$hqMusicUrl='',$thumbMediaId=0) {
 	 	$time = time();
 	 	$hqMusicUrl = $hqMusicUrl=='' ? $musicUrl : $hqMusicUrl;
 	
 	 	return "
 	 	<xml>
-		<ToUserName><![CDATA[{$toUser}]]></ToUserName>
-		<FromUserName><![CDATA[{$fromUser}]]></FromUserName>
+		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
 		<CreateTime>{$time}</CreateTime>
 		<MsgType><![CDATA[music]]></MsgType>
 		<Music>
@@ -151,7 +157,7 @@ class Reply
 	 /**
 	 * 回复图文信息
 	 * @param string $toUser
-	 * @param string $fromUser
+	 * @param string $this->_from
 	 * @param array $articles
 	 *
 	 * 子元素
@@ -164,7 +170,7 @@ class Reply
 	 *
 	 * @return string
 	 */
-	 public function replyGraphText($toUser,$fromUser,Array $articles) {
+	 public function replyGraphText(Array $articles) {
 	 	$time = time();
 	 	if(!is_array($articles) || count($articles)==0)return '';
 	 	$items = '';
@@ -184,8 +190,8 @@ class Reply
 		 }
 		return "
 		<xml>
- 		<ToUserName><![CDATA[{$toUser}]]></ToUserName>
- 		<FromUserName><![CDATA[{$fromUser}]]></FromUserName>
+ 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+ 		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
  		<CreateTime>{$time}</CreateTime>
  		<MsgType><![CDATA[news]]></MsgType>
  		<ArticleCount>{$articleCount}</ArticleCount>

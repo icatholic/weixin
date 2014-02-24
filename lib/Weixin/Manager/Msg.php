@@ -1,63 +1,42 @@
 <?php
+/**
+ * 消息控制器
+ * @author young
+ *
+ */
 namespace Weixin\Manager;
-use Weixin\Helpers;
-use Weixin\Exception;
 use Weixin\Client;
 use Weixin\Manager\Msg\Custom;
 use Weixin\Manager\Msg\Reply;
 
-/**
- * 发送消息接口
- *
- * @author guoyongrong <handsomegyr@gmail.com>
- */
 class Msg
 {
-	private $_length = 140;
-	public function getLength()
-	{
-		return $this->_length;
-	}
 
-	protected  $weixin;
-	/**
-	 * GET WeixinClient object.
-	 *
-	 * @return WeixinClient
-	 */
-	public function getWeixin()
-	{
-		return $this->weixin;
-	}
+    private $_client;
 
-	protected $weixinReplyMsgSender;
-	/**
-	 * GET WeixinReplyMsgSender object.
-	 *
-	 * @return WeixinReplyMsgSender
-	 */
-	public function getWeixinReplyMsgSender()
-	{
-		return $this->weixinReplyMsgSender;
-	}
+    public function __construct (Client $client)
+    {
+        $this->_client = $client;
+    }
 
-	protected $weixinCustomMsgSender;
-	/**
-	 * GET WeixinCustomMsgSender object.
-	 *
-	 * @return WeixinCustomMsgSender
-	 */
-	public function getWeixinCustomMsgSender()
-	{
-		return $this->weixinCustomMsgSender;
-	}
+    /**
+     * 获取被动回复发送器
+     * @return \Weixin\Manager\Msg\Reply
+     */
+    public function getReplySender ()
+    {
+        return new Reply($this->_client);
+    }
 
-	public function __construct(WeixinClient $weixin,$options=array()) {
-		$this->weixin = $weixin;
-		//发送被动响应消息发射器
-		$this->weixinReplyMsgSender = new WeixinReplyMsgSender($this,$options);
-		//发送客服消息发射器
-		$this->weixinCustomMsgSender = new WeixinCustomMsgSender($this,$options);
-	}
+    /**
+     * 获取主动客户回复发送器
+     * @return \Weixin\Manager\Msg\Custom
+     */
+    public function getCustomSender ()
+    {
+        return new Custom($this->_client);
+    }
 
+    public function __destruct ()
+    {}
 }
