@@ -125,7 +125,11 @@ class Client
      * 标准化处理微信的返回结果
      */
     public function rst($rst) {
-        
+        if (! empty ( $rst ['errcode'] )) {
+            throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
+        } else {
+            return $rst;
+        } 
     }
 
     public function __destruct ()

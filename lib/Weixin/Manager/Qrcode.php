@@ -18,16 +18,19 @@ use Weixin\Client;
  * 	如果用户已经关注公众号，在用户扫描后会自动进入会话，微信也会将带场景值扫描事件推送给开发者。
  *
  * @author guoyongrong <handsomegyr@gmail.com>
+ * @author young <youngyang@icatholic.net.cn>
  */
 class Qrcode
 {
-	protected $weixin;
-	private $_url = 'https://api.weixin.qq.com/cgi-bin/qrcode/';
+    private $_client;
 
-	public function __construct(WeixinClient $weixin,$options=array()) {
-		$this->weixin  = $weixin;
-	}
+    private $_request;
 
+    public function __construct (Client $client)
+    {
+        $this->_client = $client;
+        $this->_request = $client->getRequest();
+    }
 	/**
 	 * 创建二维码ticket
 	 * 每次创建二维码ticket需要提供一个开发者自行设定的参数（scene_id），
@@ -47,7 +50,6 @@ class Qrcode
 		//URL: https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN
 		//POST数据格式：json
 		//POST数据例子：{"action_name": "QR_LIMIT_SCENE", "action_info": {"scene": {"scene_id": 123}}}
-		$access_token = $this->weixin->getToken();
 		//参数	说明
 		//expire_seconds	 该二维码有效时间，以秒为单位。 最大不超过1800。
 		//action_name	 二维码类型，QR_SCENE为临时,QR_LIMIT_SCENE为永久
@@ -62,20 +64,8 @@ class Qrcode
 			$params['action_name'] = "QR_LIMIT_SCENE";
 			$params['action_info']['scene']['scene_id'] = min($scene_id,100000);
 		}
-		$json = json_encode($params,JSON_UNESCAPED_UNICODE);
-		$rst = $this->weixin->post($this->_url.'create?access_token='.$access_token, $json);
-
-		if(!empty($rst['errcode']))
-		{
-			throw new WeixinException($rst['errmsg'],$rst['errcode']);
-		}
-		else
-		{
-			//返回说明
-			//正确的Json返回结果:
-			//{"ticket":"gQG28DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL0FuWC1DNmZuVEhvMVp4NDNMRnNRAAIEesLvUQMECAcAAA==","expire_seconds":1800}
-			return $rst;
-		}
+		$this->_request->post('qrcode/create',$params);
+		return $this->_client->rst($rst);
 	}
 	/**
 	 * 通过ticket换取二维码
