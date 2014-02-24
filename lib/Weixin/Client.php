@@ -122,7 +122,7 @@ class Client
     /**
      * 获取多媒体管理器
      *
-     * @return \Weixin\Media
+     * @return \Weixin\Manager\Media
      */
     public function getMediaManager ()
     {

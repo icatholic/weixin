@@ -10,44 +10,47 @@ use Weixin\Client;
  * 对该消息进行响应（现支持回复文本、图片、图文、语音、视频、音乐）。
  * 请注意，回复图片等多媒体消息时需要预先上传多媒体文件到微信服务器，
  * 只支持认证服务号。
-
+ *
  * 微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，
  * 总共重试三次，如果在调试中，发现用户无法收到响应的消息，
  * 可以检查是否消息处理超时。
-
+ *
  * 关于重试的消息排重，有msgid的消息推荐使用msgid排重。
  * 事件类型消息推荐使用FromUserName + CreateTime 排重。
-
+ *
  * 假如服务器无法保证在五秒内处理并回复，可以直接回复空串，
- * 微信服务器不会对此作任何处理，并且不会发起重试。 
+ * 微信服务器不会对此作任何处理，并且不会发起重试。
  * 这种情况下，可以使用客服消息接口进行异步回复。
+ * 
  * @author guoyongrong <handsomegyr@gmail.com>
  * @author young <youngyang@icatholic.net.cn>
  */
 class Reply
 {
-	private $_client;
-	
-	private $_to;
-	
-	private $_from;
-	
-	public function __construct(Client $client) {
-		$this->_client = $client;
-		$this->_from = $this->_client->getFromUserName();
-		$this->_to = $this->_client->getToUserName();
-	}
-	
-	/**
-	 * 回复文本
-	 * @param string $toUser
-	 * @param string $this->_from
-	 * @param string $content
-	 * @return string
-	 */
-	public function replyText($content) {
-		$time = time();
-		return "
+
+    private $_client;
+
+    private $_to;
+
+    private $_from;
+
+    public function __construct (Client $client)
+    {
+        $this->_client = $client;
+        $this->_from = $this->_client->getFromUserName();
+        $this->_to = $this->_client->getToUserName();
+    }
+
+
+    /**
+     * 回复文本消息
+     * @param string $content
+     * @return string
+     */
+    public function replyText ($content)
+    {
+        $time = time();
+        return "
 		<xml>
 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
 		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
@@ -55,18 +58,17 @@ class Reply
 		<MsgType><![CDATA[text]]></MsgType>
 		<Content><![CDATA[{$content}]]></Content>
 		</xml>";
-	}
-	
-	/**
-	* 回复图片消息
-	* @param string $toUser
-	* @param string $this->_from
-	* @param string $media_id
-	* @return string
-	*/
-	public function replyImage($media_id) {
-		$time = time();
-		return "
+    }
+
+    /**
+     * 回复图片消息
+     * @param string $media_id
+     * @return string
+     */
+    public function replyImage ($media_id)
+    {
+        $time = time();
+        return "
 		<xml>
 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
 		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
@@ -76,18 +78,17 @@ class Reply
 		<MediaId><![CDATA[{$media_id}]]></MediaId>
 		</Image>
 		</xml>";
-	}
-	
-	/**
-	* 回复语音消息
-	* @param string $toUser
-	* @param string $this->_from
-	* @param string $media_id
-	* @return string
-	*/
-	public function replyVoice($media_id) {
-		$time = time();
-		return "
+    }
+
+    /**
+     * 回复音频消息
+     * @param string $media_id
+     * @return string
+     */
+    public function replyVoice ($media_id)
+    {
+        $time = time();
+        return "
 		<xml>
 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
 		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
@@ -97,19 +98,19 @@ class Reply
 		<MediaId><![CDATA[{$media_id}]]></MediaId>
 		</Voice>
 		</xml>";
-	}
-	
-	/**
-	* 回复视频消息
-	* @param string $toUser
-	* @param string $this->_from
-	* @param string $media_id
-	* @param string $thumb_media_id
-	 * @return string
-	 */
-	 public function replyVideo($media_id,$thumb_media_id) {
-	 	$time = time();
-		 return "
+    }
+
+    /**
+     * 回复视频消息
+     * @param string $title
+     * @param string $description
+     * @param string $media_id
+     * @return string
+     */
+    public function replyVideo ($title, $description, $media_id)
+    {
+        $time = time();
+        return "
 		 <xml>
 		 <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
 		 <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
@@ -117,27 +118,28 @@ class Reply
 		 <MsgType><![CDATA[video]]></MsgType>
 		 <Video>
 		 <MediaId><![CDATA[{$media_id}]]></MediaId>
-		 <ThumbMediaId><![CDATA[{$thumb_media_id}]]></ThumbMediaId>
+		 <Title><![CDATA[{$title}]]></Title>
+        <Description><![CDATA[{$description}]]></Description>
 		 </Video>
 		 </xml>";
-	 }
-	
-	 /**
-	 * 回复音乐
-	 * @param string $toUser
-	 * @param string $this->_from
-	 * @param string $title
-	 * @param string $description
-	 * @param string $musicUrl
-	 * @param string $hqMusicUrl
-	 * @param string $media_id
-	 * @return string
-	 */
-	 public function replyMusic($title,$description,$musicUrl,$hqMusicUrl='',$thumbMediaId=0) {
-	 	$time = time();
-	 	$hqMusicUrl = $hqMusicUrl=='' ? $musicUrl : $hqMusicUrl;
-	
-	 	return "
+    }
+
+    /**
+     * 回复音乐
+     * @param string $title
+     * @param string $description
+     * @param string $musicUrl
+     * @param string $hqMusicUrl
+     * @param string $thumbMediaId
+     * @return string
+     */
+    public function replyMusic ($title, $description, $musicUrl, $hqMusicUrl = '', 
+            $thumbMediaId = 0)
+    {
+        $time = time();
+        $hqMusicUrl = $hqMusicUrl == '' ? $musicUrl : $hqMusicUrl;
+        
+        return "
 	 	<xml>
 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
 		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
@@ -151,43 +153,44 @@ class Reply
 		<ThumbMediaId><![CDATA[{$thumbMediaId}]]></ThumbMediaId>
 		</Music>
 		</xml>";
-	}
-	
-	 /**
-	 * 回复图文信息
-	 * @param string $toUser
-	 * @param string $this->_from
-	 * @param array $articles
-	 *
-	 * 子元素
-	 * $articles[] = $article
-	 * 子元素结构
-	 * $article['title']
-	 * $article['description']
-	 * $article['picurl'] 图片链接，支持JPG、PNG格式，较好的效果为大图640*320，小图80*80
-	 * $article['url']
-	 *
-	 * @return string
-	 */
-	 public function replyGraphText(Array $articles) {
-	 	$time = time();
-	 	if(!is_array($articles) || count($articles)==0)return '';
-	 	$items = '';
-	 	$articles = array_slice($articles, 0,10);
-	 	$articleCount = count($articles);
-		foreach($articles as $article) {
-		 	if(mb_strlen($article['description'],'utf-8') > $this->_length) {
-		 		$article['description'] = mb_substr($article['description'], 0, $this->WeixinMsgManager->getLength(), 'utf-8').'……';
-		 	}
-		 	$items .= "
+    }
+
+    /**
+     * 回复图文信息
+     *    
+     * @param array $articles
+     *            子元素
+     *            $articles[] = $article
+     *            子元素结构
+     *            $article['title']
+     *            $article['description']
+     *            $article['picurl'] 图片链接，支持JPG、PNG格式，较好的效果为大图640*320，小图80*80
+     *            $article['url']
+     *            
+     * @return string
+     */
+    public function replyGraphText (Array $articles)
+    {
+        $time = time();
+        if (! is_array($articles) || count($articles) == 0)
+            return '';
+        $items = '';
+        $articles = array_slice($articles, 0, 10);
+        $articleCount = count($articles);
+        foreach ($articles as $article) {
+            if (mb_strlen($article['description'], 'utf-8') > $this->_length) {
+                $article['description'] = mb_substr($article['description'], 0, 
+                        $this->WeixinMsgManager->getLength(), 'utf-8') . '……';
+            }
+            $items .= "
 		 	<item>
 		 	<Title><![CDATA[{$article['title']}]]></Title>
 		 	<Description><![CDATA[{$article['description']}]]></Description>
 		 	<PicUrl><![CDATA[{$article['picurl']}]]></PicUrl>
 		 	<Url><![CDATA[{$article['url']}]]></Url>
 		 	</item>";
-		 }
-		return "
+        }
+        return "
 		<xml>
  		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
  		<FromUserName><![CDATA[{$this->_from}]]></FromUserName>
@@ -196,5 +199,5 @@ class Reply
  		<ArticleCount>{$articleCount}</ArticleCount>
  		<Articles>{$items}</Articles>
  		</xml>";
-	}
+    }
 }
