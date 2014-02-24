@@ -21,6 +21,7 @@ class Msg
 
     /**
      * 获取被动回复发送器
+     * 
      * @return \Weixin\Manager\Msg\Reply
      */
     public function getReplySender ()
@@ -30,6 +31,7 @@ class Msg
 
     /**
      * 获取主动客户回复发送器
+     * 
      * @return \Weixin\Manager\Msg\Custom
      */
     public function getCustomSender ()

@@ -40,7 +40,7 @@ class Request
                                  http_build_query($params)), true);
         
         $url = $this->_serviceBaseUrl . $url . '?access_token=' .
-                $this->_accessToken;
+                 $this->_accessToken;
         $client = new Zend_Http_Client($url);
         $response = $client->request('POST');
         return json_decode($response->getBody(), true);
@@ -99,7 +99,8 @@ class Request
 
     /**
      * 下载指定路径的文件资源
-     * @param string $mediaId
+     * 
+     * @param string $mediaId            
      * @return array
      */
     public function download ($mediaId)
@@ -118,7 +119,7 @@ class Request
      */
     private function getFileByUrl ($url = '')
     {
-        if(filter_var($media, FILTER_VALIDATE_URL) === false) {
+        if (filter_var($media, FILTER_VALIDATE_URL) === false) {
             throw new Exception('无效的URL');
         }
         $client = new Zend_Http_Client();

@@ -42,8 +42,8 @@ class User
         $params = array();
         $params['access_token'] = $access_token;
         $params['openid'] = $openid;
-		$this->_request->get('user/info',$params);
-		return $this->_client->rst($rst);
+        $this->_request->get('user/info', $params);
+        return $this->_client->rst($rst);
     }
 
     /**
@@ -62,7 +62,7 @@ class User
         $params = array();
         $params['access_token'] = $access_token;
         $params['next_openid'] = $next_openid;
-        $this->_request->get('user/get',$params);
+        $this->_request->get('user/get', $params);
         return $this->_client->rst($rst);
     }
 }
