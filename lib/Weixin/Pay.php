@@ -1,8 +1,8 @@
 <?php
-namespace Weixin\PayManager;
+namespace Weixin;
 use Weixin\Helpers;
-use Weixin\WeixinException;
-use Weixin\WeixinClient;
+use Weixin\Exception;
+use Weixin\Client;
 
 /**
  * 微信支付接口
@@ -15,7 +15,7 @@ use Weixin\WeixinClient;
 	仅保留在第三方后台和微信后台，不会在网络中传播。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class WeixinPayManager
+class Pay
 {
 	protected  $weixin;
 	private $_url = 'https://api.weixin.qq.com/cgi-bin/pay/';
