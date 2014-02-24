@@ -9,6 +9,7 @@ use Weixin\Http\Request;
 use Weixin\Exception;
 use Weixin\Manager\Msg;
 use Weixin\Manager\Groups;
+use Weixin\Manager\Qrcode;
 
 class Client
 {
@@ -119,6 +120,14 @@ class Client
      */
     public function getGroupManager() {
         return new Groups($this);
+    }
+    
+    /**
+     * 获取二维码管理器
+     * @return \Weixin\Manager\Qrcode
+     */
+    public function getQrcodeManager() {
+        return new Qrcode($this);
     }
     
     /**
