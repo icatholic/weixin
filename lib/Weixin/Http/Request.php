@@ -114,7 +114,7 @@ class Request
      */
     private function getFileByUrl ($url = '')
     {
-        if (filter_var($media, FILTER_VALIDATE_URL) === false) {
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
             throw new Exception('无效的URL');
         }
         $client = new \Zend_Http_Client();
