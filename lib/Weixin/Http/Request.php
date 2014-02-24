@@ -38,12 +38,6 @@ class Request
                         $this->_serviceBaseUrl . $url . '?access_token=' .
                                  $this->_accessToken . '&' .
                                  http_build_query($params)), true);
-        
-        $url = $this->_serviceBaseUrl . $url . '?access_token=' .
-                 $this->_accessToken;
-        $client = new Zend_Http_Client($url);
-        $response = $client->request('POST');
-        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -57,7 +51,7 @@ class Request
     {
         $url = $this->_serviceBaseUrl . $url . '?access_token=' .
                  $this->_accessToken;
-        $client = new Zend_Http_Client($url);
+        $client = new \Zend_Http_Client($url);
         $rawData = json_encode($params, JSON_UNESCAPED_UNICODE);
         $client->setRawData($rawData, 'application/json');
         $response = $client->request('POST');
@@ -77,7 +71,7 @@ class Request
     {
         $url = 'http://file.api.weixin.qq.com/cgi-bin/media/upload' .
                  '?access_token=' . $this->_accessToken . '&type=' . $type;
-        $client = new Zend_Http_Client($url);
+        $client = new \Zend_Http_Client($url);
         $client->setEncType(Zend_Http_Client::ENC_FORMDATA);
         if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
             $fileInfo = $this->getFileByUrl($media);
@@ -122,7 +116,7 @@ class Request
         if (filter_var($media, FILTER_VALIDATE_URL) === false) {
             throw new Exception('无效的URL');
         }
-        $client = new Zend_Http_Client();
+        $client = new \Zend_Http_Client();
         $client->setUri($url);
         $response = $client->request('GET');
         if ($response->isSuccessful()) {
