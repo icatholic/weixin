@@ -38,6 +38,12 @@ class Request
                         $this->_serviceBaseUrl . $url . '?access_token=' .
                                  $this->_accessToken . '&' .
                                  http_build_query($params)), true);
+        
+        $url = $this->_serviceBaseUrl . $url . '?access_token=' .
+                $this->_accessToken;
+        $client = new Zend_Http_Client($url);
+        $response = $client->request('POST');
+        return json_decode($response->getBody(), true);
     }
 
     /**
