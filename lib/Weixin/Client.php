@@ -86,8 +86,8 @@ class Client
      */
     public function setFromAndTo ($fromUserName, $toUserName)
     {
-        $this->_from = $fromUserName;
-        $this->_to = $toUserName;
+        $this->_from = $toUserName;
+        $this->_to = $fromUserName;
     }
 
     /**
