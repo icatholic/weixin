@@ -31,7 +31,7 @@ class Request
      * @param array $params            
      * @return mixed
      */
-    public function get ($url, $params)
+    public function get ($url, $params = array())
     {
         return json_decode(
                 file_get_contents(
@@ -47,7 +47,7 @@ class Request
      * @param array $params            
      * @return mixed
      */
-    public function post ($url, $params)
+    public function post ($url, $params = array())
     {
         $url = $this->_serviceBaseUrl . $url . '?access_token=' .
                  $this->_accessToken;
@@ -110,7 +110,7 @@ class Request
      * @throws Exception
      * @return array
      */
-    private function getFileByUrl ($url)
+    private function getFileByUrl ($url = '')
     {
         if(filter_var($media, FILTER_VALIDATE_URL) === false) {
             throw new Exception('无效的URL');
