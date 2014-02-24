@@ -73,7 +73,7 @@ class Request
         $url = 'http://file.api.weixin.qq.com/cgi-bin/media/upload' .
                  '?access_token=' . $this->_accessToken . '&type=' . $type;
         $client = new \Zend_Http_Client($url);
-        $client->setEncType(Zend_Http_Client::ENC_FORMDATA);
+        $client->setEncType(\Zend_Http_Client::ENC_FORMDATA);
         if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
             $fileInfo = $this->getFileByUrl($media);
             $fileName = $fileInfo['name'];
