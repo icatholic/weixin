@@ -27,14 +27,15 @@ class Sns
         if (filter_var($redirect_uri, FILTER_VALIDATE_URL) === false) {
             throw new Exception('$redirect_uri无效');
         }
-        if (!in_array($scope, array(
-                'snsapi_userinfo',
-                'snsapi_base'
-        ), true)) {
+        if (! in_array($scope, 
+                array(
+                        'snsapi_userinfo',
+                        'snsapi_base'
+                ), true)) {
             throw new Exception('$scope无效');
         }
-            
-            $this->_appid = $appid;
+        
+        $this->_appid = $appid;
         $this->_secret = $secret;
         $this->_redirect_uri = $redirect_uri;
         $this->_scope = $scope;
@@ -46,8 +47,8 @@ class Sns
      */
     public function getAuthorizeUrl ()
     {
-        header(
-                "location:https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect");
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
+        header("location:{$url}");
         exit();
     }
 
