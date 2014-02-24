@@ -120,6 +120,13 @@ class Client
     public function getGroupManager() {
         return new Groups($this);
     }
+    
+    /**
+     * 标准化处理微信的返回结果
+     */
+    public function rst($rst) {
+        
+    }
 
     public function __destruct ()
     {}
