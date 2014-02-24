@@ -6,12 +6,23 @@
  */
 namespace Weixin\Manager;
 use Weixin\Client;
+use Weixin;
 
 class Media
 {
 
+    /**
+     * 微信客户端
+     * 
+     * @var Weixin\Client
+     */
     private $_client;
 
+    /**
+     * 上传文件
+     * 
+     * @var Weixin\Http\Request
+     */
     private $_request;
 
     public function __construct (Client $client)
