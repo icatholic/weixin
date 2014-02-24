@@ -1,7 +1,8 @@
 <?php
 /**
  * 处理HTTP请求
- * @author Young
+ * 
+ * @author young <youngyang@icatholic.net.cn>
  *
  */
 namespace Weixin\Http;
@@ -93,7 +94,7 @@ class Request
 
     /**
      * 下载指定路径的文件资源
-     * 
+     *
      * @param string $mediaId            
      * @return array
      */
