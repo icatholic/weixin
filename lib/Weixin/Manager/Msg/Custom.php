@@ -36,13 +36,9 @@ class Custom
      */
     public function send ($params)
     {
-        return $this->_client->getRequest()->post('/message/custom/send', 
+        $rst = $this->_client->getRequest()->post('/message/custom/send', 
                 $params);
-        if (! empty($rst['errcode'])) {
-            throw new Exception($rst['errmsg'], $rst['errcode']);
-        } else {
-            return $rst;
-        }
+        return $this->_client->rst($rst);
     }
 
     /**
