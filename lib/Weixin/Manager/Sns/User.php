@@ -49,9 +49,12 @@ class User
         $this->_request = $client->getRequest();
     }
 
-    public function getSnsUserInfo ($menus)
+    public function getSnsUserInfo ($openid)
     {
-        $rst = $this->_request->post('sns/userinfo', $menus);
+        $params = array();
+        $params['openid'] = $openid;
+        $params['lang'] = 'zh_CN';
+        $rst = $this->_request->post('sns/userinfo', $params);
         return $this->_client->rst($rst);
     }
 }
