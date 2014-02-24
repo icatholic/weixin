@@ -1,8 +1,14 @@
 <?php
+/**
+ * 微信客户端总调度器
+ * @author young <youngyang@icatholic.net.cn>
+ *
+ */
 namespace Weixin;
 use Weixin\Http\Request;
 use Weixin\Exception;
 use Weixin\Manager\Msg;
+use Weixin\Manager\Groups;
 
 class Client
 {
@@ -67,7 +73,11 @@ class Client
     }
     
     public function getMediaManager() {
-        return new Media();
+        return new Media($this);
+    }
+    
+    public function getGroupManager() {
+        return new Groups($this);
     }
 
     public function __destruct ()
