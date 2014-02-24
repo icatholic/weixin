@@ -176,7 +176,7 @@ class Client
 
     /**
      * 获取用户授权的token信息
-     * 
+     *
      * @throws Exception
      */
     public function getSnsAccessToken ()
@@ -188,7 +188,7 @@ class Client
 
     /**
      * 获取SNS用户管理器
-     * 
+     *
      * @return \Weixin\Manager\Sns\User
      */
     public function getSnsManager ()
@@ -196,6 +196,39 @@ class Client
         $client = clone $this;
         $client->setAccessToken($client->getSnsAccessToken());
         return new SnsUser($client);
+    }
+
+    /**
+     * 签名校验
+     *
+     * @return boolean
+     */
+    public function checkSignature ()
+    {
+        $signature = isset($_GET['signature']) ? $_GET['signature'] : '';
+        $timestamp = isset($_GET['timestamp']) ? $_GET['timestamp'] : '';
+        $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
+        $tmpArr = array(
+                $this->_token['verify_token'],
+                $timestamp,
+                $nonce
+        );
+        sort($tmpArr);
+        $tmpStr = sha1(implode($tmpArr));
+        return $tmpStr === $signature ? true : false;
+    }
+
+    /**
+     * 有效性校验
+     */
+    public function verify ()
+    {
+        $echoStr = isset($_GET["echostr"]) ? trim($_GET["echostr"]) : '';
+        if (! empty($echoStr)) {
+            if ($this->checkSignature()) {
+                exit($echoStr);
+            }
+        }
     }
 
     /**
