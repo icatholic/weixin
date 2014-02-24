@@ -10,6 +10,8 @@ use Weixin\Exception;
 use Weixin\Manager\Msg;
 use Weixin\Manager\Groups;
 use Weixin\Manager\Qrcode;
+use Weixin\Manager\Menu;
+use Weixin\Manager\User;
 
 class Client
 {
@@ -115,11 +117,27 @@ class Client
     }
     
     /**
+     * 获取菜单管理器
+     * @return \Weixin\Manager\Menu
+     */
+    public function getMenuManager() {
+        return new Menu($this);
+    }
+    
+    /**
      * 获取分组管理器
      * @return \Weixin\Manager\Groups
      */
     public function getGroupManager() {
         return new Groups($this);
+    }
+    
+    /**
+     * 获取用户信息管理器
+     * @return \Weixin\Manager\User
+     */
+    public function getUserManager() {
+        return new User($this);
     }
     
     /**
