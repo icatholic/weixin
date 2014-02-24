@@ -194,7 +194,7 @@ class Client
     public function getSnsManager ()
     {
         $client = clone $this;
-        $this->setAccessToken($this->getSnsAccessToken());
+        $client->setAccessToken($this->getSnsAccessToken());
         return new SnsUser($client);
     }
 
