@@ -200,16 +200,17 @@ class Client
 
     /**
      * 签名校验
-     *
+     * 
+     * @param string $verifyCode            
      * @return boolean
      */
-    public function checkSignature ()
+    public function checkSignature ($verifyCode)
     {
         $signature = isset($_GET['signature']) ? $_GET['signature'] : '';
         $timestamp = isset($_GET['timestamp']) ? $_GET['timestamp'] : '';
         $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
         $tmpArr = array(
-                $this->_token['verify_token'],
+                $verifyCode,
                 $timestamp,
                 $nonce
         );
@@ -221,11 +222,11 @@ class Client
     /**
      * 有效性校验
      */
-    public function verify ()
+    public function verify ($verifyCode)
     {
         $echoStr = isset($_GET["echostr"]) ? trim($_GET["echostr"]) : '';
         if (! empty($echoStr)) {
-            if ($this->checkSignature()) {
+            if ($this->checkSignature($verifyCode)) {
                 exit($echoStr);
             }
         }
