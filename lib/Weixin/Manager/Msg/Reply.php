@@ -41,6 +41,15 @@ class Reply
         $this->_to = $this->_client->getToUserName();
     }
 
+    /**
+     * 获取文字长度
+     *
+     * @return number
+     */
+    public function getLength ()
+    {
+    	return 140;
+    }
 
     /**
      * 回复文本消息
@@ -180,7 +189,7 @@ class Reply
         foreach ($articles as $article) {
             if (mb_strlen($article['description'], 'utf-8') > $this->_length) {
                 $article['description'] = mb_substr($article['description'], 0, 
-                        $this->WeixinMsgManager->getLength(), 'utf-8') . '……';
+                        $this->getLength(), 'utf-8') . '……';
             }
             $items .= "
 		 	<item>

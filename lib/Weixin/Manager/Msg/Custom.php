@@ -28,6 +28,16 @@ class Custom
     }
 
     /**
+     * 获取文字长度
+     *
+     * @return number
+     */
+    public function getLength ()
+    {
+    	return 140;
+    }
+    
+    /**
      *
      * @param array $params            
      * @throws Exception
@@ -149,7 +159,7 @@ class Custom
         foreach ($articles as $article) {
             if (mb_strlen($article['description'], 'utf-8') > $this->_length) {
                 $article['description'] = mb_substr($article['description'], 0, 
-                        $this->WeixinMsgManager->getLength(), 'utf-8') . '……';
+                        $this->getLength(), 'utf-8') . '……';
             }
             $items[] = array(
                     'title' => $article['title'],
@@ -161,7 +171,7 @@ class Custom
         $ret = array();
         $ret['touser'] = $toUser;
         $ret['msgtype'] = 'news';
-        $ret['news']['articles"] = $items;
+        $ret['news']['articles'] = $items;
         return $this->send($ret);
     }
 }
