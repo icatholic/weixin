@@ -8,7 +8,7 @@ namespace Weixin;
  */
 class Exception extends \Exception
 {
-	private $_error_info = array(
+	private $_errorInfo = array(
 		"-1"=> "系统繁忙",
 		"0"=> "请求成功",
 		"40001"=> "验证失败",
@@ -71,6 +71,6 @@ class Exception extends \Exception
 	);
 	
 	public function getErrorMsg($errcode){
-		return $this->_error_info[$errcode];
+		return $this->_errorInfo[$errcode];
 	}
 }
