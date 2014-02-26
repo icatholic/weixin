@@ -71,6 +71,10 @@ class Exception extends \Exception
 	);
 	
 	public function getErrorMsg($errcode){
-		return $this->_errorInfo[$errcode];
+		if(key_exists($errcode, $this->_errorInfo)){
+			return $this->_errorInfo[$errcode];
+		}else{
+			return "unknown error";
+		}
 	}
 }
