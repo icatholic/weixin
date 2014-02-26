@@ -33,6 +33,8 @@ class Reply
     private $_to;
 
     private $_from;
+    
+    private $_length = 140;
 
     public function __construct (Client $client)
     {
@@ -48,7 +50,17 @@ class Reply
      */
     public function getLength ()
     {
-    	return 140;
+        return $this->_length;
+    }
+
+    /**
+     * 设定图文消息的最大显示文字长度，超过省略
+     * 
+     * @return number
+     */
+    public function setLength ()
+    {
+        return $this->_length;
     }
 
     /**
