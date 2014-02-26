@@ -1,7 +1,10 @@
-Î¢ÐÅ¹«ÖÚÆ½Ì¨¿ª·¢Ä£Ê½Í¨ÓÃ½Ó¿ÚAPI(Weixin)
+å¾®ä¿¡å…¬ä¼—å¹³å°å¼€å‘æ¨¡å¼é€šç”¨æŽ¥å£API(Weixin)
 ======
 
-is a PHP (>= 5.2.11) client library for the Î¢ÐÅ¹«ÖÚÆ½Ì¨¿ª·¢Ä£Ê½Í¨ÓÃ½Ó¿ÚAPI(Weixin)
+is a PHP (>= 5.2.11) client library for the å¾®ä¿¡å…¬ä¼—å¹³å°å¼€å‘æ¨¡å¼é€šç”¨æŽ¥å£API(Weixin)
+
+æœ¬åº“åœ¨get post upload downloadæ–¹é¢ä¾èµ–äºŽzend framework1.12
+å¦‚æžœé¡¹ç›®éžzend framework1.12 è¯·åœ¨composerä¸­å¼•ç”¨ç›¸å…³çš„ä¾èµ–å…³ç³»
 
 ### Loading the library ###
 
@@ -25,7 +28,7 @@ Alternatively, it is also possible to generate one single PHP file that holds ev
 versions of Weixin by launching `bin/create-single-file`, but this practice __is not__ encouraged.
 
 
-### µ÷ÓÃÊÂÀý ###
+### è°ƒç”¨äº‹ä¾‹ ###
 
 ```php
 try {
@@ -33,45 +36,48 @@ try {
 	$appid="xxxxxxxxxxxx";//appID
 	$secret="xxxxxxxxxxxx";//appsecret
 	
-	//Èç¹ûÖ®Ç°»ñµÃaccess_token£¬ÄÇÃ´ÔÚÉú³ÉWeixinClient¶ÔÏóµÄÊ±ºò£¬Ö±½ÓÖ¸¶¨
+	//tokençš„èŽ·å–
+	$objToken = new \Weixin\Token\Server($appid,$secret);
+	$arrAccessToken = $objToken->getAccessToken();
+	$strAccessToken = $arrAccessToken['access_token'];
+	
+	
+	//å¦‚æžœä¹‹å‰èŽ·å¾—access_tokenï¼Œé‚£ä¹ˆåœ¨ç”ŸæˆWeixinClientå¯¹è±¡çš„æ—¶å€™ï¼Œç›´æŽ¥æŒ‡å®š
 	//$access_token = "RWRVPpT1O9SEyN615puzCOQ9uQfgQK0SA63gWUxNo2ABjgHFdnCL82BnFB_wQGeZH4prBLfn17Qz0WSwcwdLW6A2YvX1yN46dDB2-BggdXkqpM0AZXO4lfZ0LSC_5ABj8NxKLxJkqv565EBja32Gpw";
 	//$client = new Weixin\WeixinClient($appid,$secret,$access_token);
 	
-	//Èç¹ûÖ®Ç°Ã»ÓÐ»ñµÃ¹ýaccess_token£¬ÄÇÃ´Í¨¹ýgetAccessToken·½·¨ »ñÈ¡access_token
-	$client = new Weixin\WeixinClient($appid,$secret);
-	$rst = $client->getAccessToken();
-	$access_token = $rst['access_token'];
-	 
-	echo $access_token;
-	echo "<br/>";
+	//å¦‚æžœä¹‹å‰æ²¡æœ‰èŽ·å¾—è¿‡access_tokenï¼Œé‚£ä¹ˆé€šè¿‡getAccessTokenæ–¹æ³• èŽ·å–access_token
+	$client = new Weixin\Client();
+	$client->setAccessToken($strAccessToken);
+	//é€šè¿‡å¾®ä¿¡æŽ¨é€è¿‡æ¥çš„æ¶ˆæ¯ï¼ŒèŽ·å–ç›¸åº”çš„ä¸¤ä¸ªå‚æ•°
+    $client->setFromAndTo($formUserName,$toUserName);
 	
-	$openid="xxxxxxxxxxxxxxx";
+	//è¢«åŠ¨æ¶ˆæ¯
+	$client->getMsgManager()->getReplySender()->sendText("æµ‹è¯•");
 	
-	//·¢ËÍ¿Í·þÎÄ±¾ÏûÏ¢
-	$client->getWeixinMsgManager()->getWeixinCustomMsgSender()->sendText($openid, "²âÊÔ");
+	//ä¸»åŠ¨å®¢æœæ¶ˆæ¯
+	$client->getMsgManager()->getCustomSender()->sendText("æµ‹è¯•");
 	
-	//ÏÂÔØ¶àÃ½ÌåÎÄ¼þ
+	//ä¸‹è½½å¤šåª’ä½“æ–‡ä»¶
 	$mediaId= "xxxxxxxxxxxxxxx";
-	$ret= $client->getWeixinMediaManager()->get($mediaId);
-	$fileContent = base64_decode($ret['content']);
-	$tmpfname = sys_get_temp_dir().'/'.uniqid().'.jpg';
-	//±£´æÔÚ±¾µØ
-	file_put_contents($tmpfname, $fileContent);
+	$rst= $client->getMediaManager()->get($mediaId);
+	$rst['name'];//æ–‡ä»¶åç§° ä¾‹å¦‚mediaId.jpg
+	$rst['bytes'];//æ–‡ä»¶å†…å®¹ï¼ŒäºŒè¿›åˆ¶
 	
-	//»ñÈ¡Î¢ÐÅÓÃ»§ÐÅÏ¢
-	$userinfo =$client->getWeixinUserManager()->getUserInfo($openid);
+	//èŽ·å–å¾®ä¿¡ç”¨æˆ·ä¿¡æ¯
+	$userinfo =$client->getUserManager()->getUserInfo($fromUserName);
 	print_r($userinfo);
 	echo "<br/>";
 	
-	//Éú³Éticket
+	//ç”Ÿæˆticket
 	$scene_id =1;
-	$ticketInfo = $client->getWeixinQrcodeManager()->create($scene_id,false);
+	$ticketInfo = $client->getQrcodeManager()->create($scene_id,false);
 	print_r($ticketInfo);
 	echo "<br/>";
 
-	//»ñÈ¡ticket
+	//èŽ·å–ticket
 	$ticket = urlencode($ticketInfo['ticket']);
-	$url = $client->getWeixinQrcodeManager()->getQrcodeUrl($ticket);
+	$url = $client->getQrcodeManager()->getQrcodeUrl($ticket);
 	echo $url;
 	echo "<br/>";
 } catch (Exception $e) {
