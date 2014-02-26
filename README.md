@@ -35,6 +35,7 @@ try {
 	
 	$appid="xxxxxxxxxxxx";//appID
 	$secret="xxxxxxxxxxxx";//appsecret
+	$verifyToken = 'XXXXXXXXX';
 	
 	//token的获取
 	$objToken = new \Weixin\Token\Server($appid,$secret);
