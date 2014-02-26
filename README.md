@@ -48,6 +48,13 @@ try {
 	
 	//如果之前没有获得过access_token，那么通过getAccessToken方法 获取access_token
 	$client = new Weixin\Client();
+	
+	//微信推送服务器验证
+	$client->verify($verifyToken);
+	
+	//对于推送过来的消息，进行签名校验
+	$client->checkSignature($verifyToken);
+	
 	$client->setAccessToken($strAccessToken);
 	//通过微信推送过来的消息，获取相应的两个参数
     $client->setFromAndTo($formUserName,$toUserName);
