@@ -6,7 +6,10 @@
  *
  */
 namespace Weixin\Http;
+
 use Weixin\Exception;
+use Guzzle\Http\Client;
+use Guzzle\Http\Message\PostFile;
 
 class Request
 {
@@ -15,9 +18,9 @@ class Request
 
     private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
 
-    private $_accessToken;
+    private $_accessToken = null;
 
-    public function __construct ($accessToken)
+    public function __construct($accessToken)
     {
         $this->_accessToken = $accessToken;
         if (empty($this->_accessToken)) {
@@ -32,13 +35,20 @@ class Request
      * @param array $params            
      * @return mixed
      */
-    public function get ($url, $params = array())
+    public function get($url, $params = array())
     {
-        return json_decode(
-                file_get_contents(
-                        $this->_serviceBaseUrl . $url . '?access_token=' .
-                                 $this->_accessToken . '&' .
-                                 http_build_query($params)), true);
+        $client = new Client($this->_serviceBaseUrl);
+        $params['access_token'] = $this->_accessToken;
+        $request = $client->get($url, array(), array(
+            'query' => $params
+        ));
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+        // return json_decode(file_get_contents($this->_serviceBaseUrl . $url . '?access_token=' . $this->_accessToken . '&' . http_build_query($params)), true);
     }
 
     /**
@@ -48,15 +58,27 @@ class Request
      * @param array $params            
      * @return mixed
      */
-    public function post ($url, $params = array())
+    public function post($url, $params = array())
     {
-        $url = $this->_serviceBaseUrl . $url . '?access_token=' .
-                 $this->_accessToken;
-        $client = new \Zend_Http_Client($url);
-        $rawData = json_encode($params, JSON_UNESCAPED_UNICODE);
-        $client->setRawData($rawData, 'application/json');
-        $response = $client->request('POST');
-        return json_decode($response->getBody(), true);
+        $client = new Client($this->_serviceBaseUrl);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
+        $request = $client->post($url);
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+        
+        // $url = $this->_serviceBaseUrl . $url . '?access_token=' . $this->_accessToken;
+        // $client = new \Zend_Http_Client($url);
+        // $rawData = json_encode($params, JSON_UNESCAPED_UNICODE);
+        // $client->setRawData($rawData, 'application/json');
+        // $response = $client->request('POST');
+        // return json_decode($response->getBody(), true);
     }
 
     /**
@@ -68,28 +90,53 @@ class Request
      * @throws Exception
      * @return mixed
      */
-    public function upload ($type, $media)
+    public function upload($type, $media)
     {
-        $url = 'http://file.api.weixin.qq.com/cgi-bin/media/upload' .
-                 '?access_token=' . $this->_accessToken . '&type=' . $type;
-        $client = new \Zend_Http_Client($url);
-        $client->setEncType(\Zend_Http_Client::ENC_FORMDATA);
+        $client = new Client('http://file.api.weixin.qq.com/cgi-bin/');
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken,
+            'type' => $type
+        ));
+        $request = $client->post('media/upload');
         if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
             $fileInfo = $this->getFileByUrl($media);
             $fileName = $fileInfo['name'];
-            $fileBytes = $fileInfo['bytes'];
-            $client->setFileUpload($fileName, 'media', $fileBytes);
+            $tmp = tempnam(sys_get_temp_dir(), 'temp_file');
+            file_put_contents($tmp, $fileInfo['bytes']);
+            $request->addPostFile(new PostFile('media', $tmp));
+            unlink($tmp);
         } elseif (is_file($media)) {
-            $fileBytes = file_get_contents($media);
-            $fileName = basename($media);
-            $client->setFileUpload($fileName, 'media', $fileBytes);
+            $request->addPostFile(new PostFile('media', $media));
         } else {
             throw new Exception("无效的上传文件");
         }
-        $response = $client->request('POST');
+        
+        $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return json_decode($response->getBody(), true);
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
         }
+        
+        // $url = 'http://file.api.weixin.qq.com/cgi-bin/media/upload' . '?access_token=' . $this->_accessToken . '&type=' . $type;
+        // $client = new \Zend_Http_Client($url);
+        // $client->setEncType(\Zend_Http_Client::ENC_FORMDATA);
+        // if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
+        // $fileInfo = $this->getFileByUrl($media);
+        // $fileName = $fileInfo['name'];
+        // $fileBytes = $fileInfo['bytes'];
+        // $client->setFileUpload($fileName, 'media', $fileBytes);
+        // } elseif (is_file($media)) {
+        // $fileBytes = file_get_contents($media);
+        // $fileName = basename($media);
+        // $client->setFileUpload($fileName, 'media', $fileBytes);
+        // } else {
+        // throw new Exception("无效的上传文件");
+        // }
+        // $response = $client->request('POST');
+        // if ($response->isSuccessful()) {
+        // return json_decode($response->getBody(), true);
+        // }
     }
 
     /**
@@ -98,10 +145,9 @@ class Request
      * @param string $mediaId            
      * @return array
      */
-    public function download ($mediaId)
+    public function download($mediaId)
     {
-        $url = 'http://file.api.weixin.qq.com/cgi-bin/media/get' .
-                 '?access_token=' . $this->_accessToken . '&media_id=' . $mediaId;
+        $url = 'http://file.api.weixin.qq.com/cgi-bin/media/get' . '?access_token=' . $this->_accessToken . '&media_id=' . $mediaId;
         return $this->getFileByUrl($url);
     }
 
@@ -112,32 +158,56 @@ class Request
      * @throws Exception
      * @return array
      */
-    private function getFileByUrl ($url = '')
+    private function getFileByUrl($url = '')
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
             throw new Exception('无效的URL');
         }
-        $client = new \Zend_Http_Client();
-        $client->setUri($url);
-        $response = $client->request('GET');
+        
+        $client = new Client($url);
+        $request = $client->get();
+        $response = $client->send($request);
         if ($response->isSuccessful()) {
-            $disposition = $response->getHeader('Content-disposition');
+            $disposition = $response->getContentDisposition();
             $reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
             if (preg_match($reDispo, $disposition, $mDispo)) {
                 $filename = trim($mDispo['f'], ' ";');
                 $fileBytes = $response->getBody();
                 return array(
-                        'name' => $filename,
-                        'bytes' => $fileBytes
+                    'name' => $filename,
+                    'bytes' => $fileBytes
                 );
             } else {
-                return json_decode($response->getBody(), true);
+                return $response->json();
             }
         } else {
             throw new Exception("获取文件失败，请检查下载文件的URL是否有效");
         }
+        
+        // if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+        // throw new Exception('无效的URL');
+        // }
+        // $client = new \Zend_Http_Client();
+        // $client->setUri($url);
+        // $response = $client->request('GET');
+        // if ($response->isSuccessful()) {
+        // $disposition = $response->getHeader('Content-disposition');
+        // $reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
+        // if (preg_match($reDispo, $disposition, $mDispo)) {
+        // $filename = trim($mDispo['f'], ' ";');
+        // $fileBytes = $response->getBody();
+        // return array(
+        // 'name' => $filename,
+        // 'bytes' => $fileBytes
+        // );
+        // } else {
+        // return json_decode($response->getBody(), true);
+        // }
+        // } else {
+        // throw new Exception("获取文件失败，请检查下载文件的URL是否有效");
+        // }
     }
 
-    public function __destruct ()
+    public function __destruct()
     {}
 }
