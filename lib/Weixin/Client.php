@@ -54,6 +54,7 @@ class Client
     {
         $this->_accessToken = $accessToken;
         $this->initRequest();
+        return $this;
     }
 
     /**
@@ -90,6 +91,7 @@ class Client
     {
         $this->_from = $toUserName;
         $this->_to = $fromUserName;
+        return $this;
     }
 
     /**
@@ -174,6 +176,7 @@ class Client
     public function setSnsAccessToken ($accessToken)
     {
         $this->_snsAccessToken = $accessToken;
+        return $this;
     }
 
     /**
