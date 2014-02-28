@@ -92,22 +92,22 @@ class Request
             'access_token' => $this->_accessToken,
             'type' => $type
         ));
-        $request = $client->post('media/upload');
         if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
             $fileInfo = $this->getFileByUrl($media);
-            var_dump($fileInfo);
             $fileName = $fileInfo['name'];
-            $tmp = tempnam(sys_get_temp_dir(), 'temp_file');
+            $tmp = sys_get_temp_dir() . '/temp_files_' . $fileName;
             file_put_contents($tmp, $fileInfo['bytes']);
-            $request->addPostFile(new PostFile('media', $tmp));
-            unlink($tmp);
+            $media = $tmp;
         } elseif (is_readable($media)) {
-            $request->addPostFile(new PostFile('media', $media));
+            $media = $media;
         } else {
             throw new Exception("无效的上传文件");
         }
-        
-        $response = $client->send($request);
+        $request = $client->post('media/upload')->addPostFile(array(
+            'media' => $media
+        ));
+        $response = $request->send();
+        unlink($tmp);
         if ($response->isSuccessful()) {
             return $response->json();
         } else {
@@ -150,11 +150,11 @@ class Request
                 $filename = trim($mDispo['f'], ' ";');
                 $entityBody = $response->getBody();
                 $filter = $entityBody->getContentEncoding();
-                if($filter!==false) {
+                if ($filter !== false) {
                     $entityBody->uncompress($filter);
                 }
                 $length = $entityBody->getContentLength();
-                $objReader = new ReadLimitEntityBody($entityBody,$length);
+                $objReader = new ReadLimitEntityBody($entityBody, $length);
                 $fileBytes = $objReader->read($length);
                 return array(
                     'name' => $filename,
