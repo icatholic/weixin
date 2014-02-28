@@ -49,7 +49,7 @@ class User
         // openid 是 普通用户的标识，对当前公众号唯一
         $params = array();
         $params['openid'] = $openid;
-        $this->_request->get('user/info', $params);
+        $rst = $this->_request->get('user/info', $params);
         return $this->_client->rst($rst);
     }
 
@@ -68,7 +68,7 @@ class User
         // next_openid 是 第一个拉取的OPENID，不填默认从头开始拉取
         $params = array();
         $params['next_openid'] = $next_openid;
-        $this->_request->get('user/get', $params);
+        $rst = $this->_request->get('user/get', $params);
         return $this->_client->rst($rst);
     }
 }
