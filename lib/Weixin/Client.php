@@ -6,6 +6,7 @@
  *
  */
 namespace Weixin;
+
 use Weixin\Http\Request;
 use Weixin\Exception;
 use Weixin\Manager\Msg;
@@ -29,7 +30,7 @@ class Client
 
     private $_request = null;
 
-    public function __construct ()
+    public function __construct()
     {}
 
     /**
@@ -37,7 +38,7 @@ class Client
      *
      * @throws Exception
      */
-    public function getAccessToken ()
+    public function getAccessToken()
     {
         if (empty($this->_accessToken)) {
             throw new Exception("请设定access_token");
@@ -50,7 +51,7 @@ class Client
      *
      * @param string $accessToken            
      */
-    public function setAccessToken ($accessToken)
+    public function setAccessToken($accessToken)
     {
         $this->_accessToken = $accessToken;
         $this->initRequest();
@@ -62,7 +63,7 @@ class Client
      *
      * @throws Exception
      */
-    public function getFromUserName ()
+    public function getFromUserName()
     {
         if (empty($this->_from))
             throw new Exception('请设定FromUserName');
@@ -74,7 +75,7 @@ class Client
      *
      * @throws Exception
      */
-    public function getToUserName ()
+    public function getToUserName()
     {
         if (empty($this->_to))
             throw new Exception('请设定ToUserName');
@@ -87,7 +88,7 @@ class Client
      * @param string $fromUserName            
      * @param string $toUserName            
      */
-    public function setFromAndTo ($fromUserName, $toUserName)
+    public function setFromAndTo($fromUserName, $toUserName)
     {
         $this->_from = $toUserName;
         $this->_to = $fromUserName;
@@ -97,7 +98,7 @@ class Client
     /**
      * 初始化认证的http请求对象
      */
-    private function initRequest ()
+    private function initRequest()
     {
         $this->_request = new Request($this->getAccessToken());
     }
@@ -105,7 +106,7 @@ class Client
     /**
      * 获取请求对象
      */
-    public function getRequest ()
+    public function getRequest()
     {
         if (empty($this->_request)) {
             throw new Exception('尚未初始化request对象，请确认是否设定了access token');
@@ -118,7 +119,7 @@ class Client
      *
      * @return \Weixin\Manager\Msg
      */
-    public function getMsgManager ()
+    public function getMsgManager()
     {
         return new Msg($this);
     }
@@ -128,7 +129,7 @@ class Client
      *
      * @return \Weixin\Manager\Media
      */
-    public function getMediaManager ()
+    public function getMediaManager()
     {
         return new Media($this);
     }
@@ -138,7 +139,7 @@ class Client
      *
      * @return \Weixin\Manager\Menu
      */
-    public function getMenuManager ()
+    public function getMenuManager()
     {
         return new Menu($this);
     }
@@ -148,7 +149,7 @@ class Client
      *
      * @return \Weixin\Manager\Groups
      */
-    public function getGroupManager ()
+    public function getGroupManager()
     {
         return new Groups($this);
     }
@@ -158,7 +159,7 @@ class Client
      *
      * @return \Weixin\Manager\User
      */
-    public function getUserManager ()
+    public function getUserManager()
     {
         return new User($this);
     }
@@ -168,12 +169,12 @@ class Client
      *
      * @return \Weixin\Manager\Qrcode
      */
-    public function getQrcodeManager ()
+    public function getQrcodeManager()
     {
         return new Qrcode($this);
     }
 
-    public function setSnsAccessToken ($accessToken)
+    public function setSnsAccessToken($accessToken)
     {
         $this->_snsAccessToken = $accessToken;
         return $this;
@@ -184,7 +185,7 @@ class Client
      *
      * @throws Exception
      */
-    public function getSnsAccessToken ()
+    public function getSnsAccessToken()
     {
         if (empty($this->_snsAccessToken))
             throw new Exception('尚未设定用户的授权access token');
@@ -196,7 +197,7 @@ class Client
      *
      * @return \Weixin\Manager\Sns\User
      */
-    public function getSnsManager ()
+    public function getSnsManager()
     {
         $client = clone $this;
         $client->setAccessToken($client->getSnsAccessToken());
@@ -209,15 +210,15 @@ class Client
      * @param string $verifyCode            
      * @return boolean
      */
-    public function checkSignature ($verifyCode)
+    public function checkSignature($verifyCode)
     {
         $signature = isset($_GET['signature']) ? $_GET['signature'] : '';
         $timestamp = isset($_GET['timestamp']) ? $_GET['timestamp'] : '';
         $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
         $tmpArr = array(
-                $verifyCode,
-                $timestamp,
-                $nonce
+            $verifyCode,
+            $timestamp,
+            $nonce
         );
         sort($tmpArr);
         $tmpStr = sha1(implode($tmpArr));
@@ -227,7 +228,7 @@ class Client
     /**
      * 有效性校验
      */
-    public function verify ($verifyCode)
+    public function verify($verifyCode)
     {
         $echoStr = isset($_GET["echostr"]) ? trim($_GET["echostr"]) : '';
         if (! empty($echoStr)) {
@@ -240,11 +241,11 @@ class Client
     /**
      * 标准化处理微信的返回结果
      */
-    public function rst ($rst)
+    public function rst($rst)
     {
         return $rst;
     }
 
-    public function __destruct ()
+    public function __destruct()
     {}
 }
