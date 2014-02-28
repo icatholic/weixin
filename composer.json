@@ -3,7 +3,7 @@
   "description" : "A simple PHP client library for weixin",
   "require" : {
     "php" : ">=5.2.11",
-    "guzzle/http" : "~v3.8.1"
+    "guzzle/http" : "~3.8.1"
   },
   "authors" : [ {
     "name" : "icatholic",
