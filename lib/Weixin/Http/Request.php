@@ -23,6 +23,8 @@ class Request
 
     private $_accessToken = null;
 
+    private $_tmp = null;
+
     public function __construct($accessToken)
     {
         $this->_accessToken = $accessToken;
@@ -92,22 +94,20 @@ class Request
             'access_token' => $this->_accessToken,
             'type' => $type
         ));
+        
         if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
             $fileInfo = $this->getFileByUrl($media);
-            $fileName = $fileInfo['name'];
-            $tmp = sys_get_temp_dir() . '/temp_files_' . $fileName;
-            file_put_contents($tmp, $fileInfo['bytes']);
-            $media = $tmp;
+            $media = $this->saveAsTemp($fileInfo['name'], $fileInfo['bytes']);
         } elseif (is_readable($media)) {
             $media = $media;
         } else {
             throw new Exception("无效的上传文件");
         }
+        
         $request = $client->post('media/upload')->addPostFile(array(
             'media' => $media
         ));
         $response = $request->send();
-        unlink($tmp);
         if ($response->isSuccessful()) {
             return $response->json();
         } else {
@@ -168,6 +168,24 @@ class Request
         }
     }
 
+    /**
+     * 将指定文件名和内容的数据，保存到临时文件中，在析构函数中删除临时文件
+     *
+     * @param string $fileName            
+     * @param bytes $fileBytes            
+     * @return string
+     */
+    private function saveAsTemp($fileName, $fileBytes)
+    {
+        $this->_tmp = sys_get_temp_dir() . '/temp_files_' . $fileName;
+        file_put_contents($this->_tmp, $fileBytes);
+        return $this->_tmp;
+    }
+
     public function __destruct()
-    {}
+    {
+        if (! empty($this->_tmp)) {
+            unlink($this->_tmp);
+        }
+    }
 }
