@@ -105,7 +105,7 @@ class Request
             file_put_contents($tmp, $fileInfo['bytes']);
             $request->addPostFile(new PostFile('media', $tmp));
             unlink($tmp);
-        } elseif (is_file($media)) {
+        } elseif (is_readable($media)) {
             $request->addPostFile(new PostFile('media', $media));
         } else {
             throw new Exception("无效的上传文件");
