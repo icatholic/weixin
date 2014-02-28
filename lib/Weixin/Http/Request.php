@@ -12,6 +12,7 @@ namespace Weixin\Http;
 use Weixin\Exception;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\PostFile;
+use Guzzle\Http\ReadLimitEntityBody;
 
 class Request
 {
@@ -102,6 +103,7 @@ class Request
         $request = $client->post('media/upload');
         if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
             $fileInfo = $this->getFileByUrl($media);
+            var_dump($fileInfo);
             $fileName = $fileInfo['name'];
             $tmp = tempnam(sys_get_temp_dir(), 'temp_file');
             file_put_contents($tmp, $fileInfo['bytes']);
@@ -174,7 +176,14 @@ class Request
             $reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
             if (preg_match($reDispo, $disposition, $mDispo)) {
                 $filename = trim($mDispo['f'], ' ";');
-                $fileBytes = $response->getBody();
+                $entityBody = $response->getBody();
+                $filter = $entityBody->getContentEncoding();
+                if($filter!==false) {
+                    $entityBody->uncompress($filter);
+                }
+                $length = $entityBody->getContentLength();
+                $objReader = new ReadLimitEntityBody($entityBody,$length);
+                $fileBytes = $objReader->read($length);
                 return array(
                     'name' => $filename,
                     'bytes' => $fileBytes

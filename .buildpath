@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
+	<buildpathentry external="true" kind="lib" path="F:/2014/guzzle"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry external="true" kind="lib" path="D:/MyCode/icatholic/http-master"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.USER_LIBRARY/org.eclipse.php.core.PHPNature#Zend Framework 1"/>
 	<buildpathentry kind="src" path=""/>
 </buildpath>
