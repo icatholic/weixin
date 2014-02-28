@@ -104,7 +104,7 @@ class Request
             throw new Exception("无效的上传文件");
         }
         
-        $request = $client->post('media/upload')->addPostFile(array(
+        $request = $client->post('media/upload')->addPostFiles(array(
             'media' => $media
         ));
         $response = $request->send();
