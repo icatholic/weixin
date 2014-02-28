@@ -2,6 +2,8 @@
 /**
  * 处理HTTP请求
  * 
+ * 使用Guzzle http client库做为请求发起者，以便日后采用异步请求等方式加快代码执行速度
+ * 
  * @author young <youngyang@icatholic.net.cn>
  *
  */
