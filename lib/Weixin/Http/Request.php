@@ -89,7 +89,7 @@ class Request
      */
     public function upload($type, $media)
     {
-        $client = new Client('http://file.api.weixin.qq.com/cgi-bin/');
+        $client = new Client($this->_mediaBaseUrl);
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken,
             'type' => $type
@@ -123,7 +123,7 @@ class Request
      */
     public function download($mediaId)
     {
-        $url = 'http://file.api.weixin.qq.com/cgi-bin/media/get' . '?access_token=' . $this->_accessToken . '&media_id=' . $mediaId;
+        $url = $this->_mediaBaseUrl . 'media/get' . '?access_token=' . $this->_accessToken . '&media_id=' . $mediaId;
         return $this->getFileByUrl($url);
     }
 
