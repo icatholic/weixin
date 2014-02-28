@@ -242,11 +242,7 @@ class Client
      */
     public function rst ($rst)
     {
-        if (! empty($rst['errcode'])) {
-            throw new Exception($rst['errmsg'], $rst['errcode']);
-        } else {
-            return $rst;
-        }
+        return $rst;
     }
 
     public function __destruct ()
