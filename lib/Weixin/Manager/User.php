@@ -2,6 +2,7 @@
 namespace Weixin\Manager;
 use Weixin\Exception;
 use Weixin\Client;
+use Weixin\Http\Request;
 
 /**
  * 用户管理-----获取用户基本信息接口
@@ -18,8 +19,16 @@ use Weixin\Client;
 class User
 {
 
+    /**
+     * 微信客户端
+     * @var Client
+     */
     private $_client;
 
+    /**
+     * 请求对象
+     * @var Request
+     */
     private $_request;
 
     public function __construct (Client $client)
@@ -39,7 +48,6 @@ class User
         // access_token 是 调用接口凭证
         // openid 是 普通用户的标识，对当前公众号唯一
         $params = array();
-        $params['access_token'] = $access_token;
         $params['openid'] = $openid;
         $this->_request->get('user/info', $params);
         return $this->_client->rst($rst);
@@ -59,7 +67,6 @@ class User
         // access_token 是 调用接口凭证
         // next_openid 是 第一个拉取的OPENID，不填默认从头开始拉取
         $params = array();
-        $params['access_token'] = $access_token;
         $params['next_openid'] = $next_openid;
         $this->_request->get('user/get', $params);
         return $this->_client->rst($rst);
