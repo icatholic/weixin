@@ -29,6 +29,10 @@ class Client
     private $_to = null;
 
     private $_request = null;
+    
+    private $_signature = null;
+    
+    private $_verifyToken = null;
 
     public function __construct()
     {}
@@ -212,6 +216,7 @@ class Client
      */
     public function checkSignature($verifyCode)
     {
+        $this->_verifyToken = $verifyCode;
         $signature = isset($_GET['signature']) ? $_GET['signature'] : '';
         $timestamp = isset($_GET['timestamp']) ? $_GET['timestamp'] : '';
         $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
@@ -222,7 +227,16 @@ class Client
         );
         sort($tmpArr);
         $tmpStr = sha1(implode($tmpArr));
+        $this->_signature = $tmpStr;
         return $tmpStr === $signature ? true : false;
+    }
+    
+    /**
+     * 获取签名
+     * @return string
+     */
+    public function getSignature() {
+        return $this->_signature;
     }
 
     /**
