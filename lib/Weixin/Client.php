@@ -229,7 +229,7 @@ class Client
             $timestamp,
             $nonce
         );
-        sort($tmpArr);
+        sort($tmpArr,SORT_STRING);//按照字符串来进行比较，否则在某些数字的情况下，sort的结果与微信要求不符合，官方文档有误
         $tmpStr = sha1(implode($tmpArr));
         $this->_signature = $tmpStr;
         return $tmpStr === $signature ? true : false;
