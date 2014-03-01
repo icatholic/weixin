@@ -216,10 +216,14 @@ class Client
      */
     public function checkSignature($verifyCode)
     {
+        if(empty($verifyCode))
+            throw new Exception("请设定校验签名所需的verify_code");
+        
+        $verifyCode = trim($verifyCode);
         $this->_verifyToken = $verifyCode;
-        $signature = isset($_GET['signature']) ? $_GET['signature'] : '';
-        $timestamp = isset($_GET['timestamp']) ? $_GET['timestamp'] : '';
-        $nonce = isset($_GET['nonce']) ? $_GET['nonce'] : '';
+        $signature = isset($_GET['signature']) ? trim($_GET['signature']) : '';
+        $timestamp = isset($_GET['timestamp']) ? trim($_GET['timestamp']) : '';
+        $nonce = isset($_GET['nonce']) ? trim($_GET['nonce']) : '';
         $tmpArr = array(
             $verifyCode,
             $timestamp,
