@@ -159,7 +159,7 @@ class Reply
     {
         $time = time();
         $hqMusicUrl = $hqMusicUrl == '' ? $musicUrl : $hqMusicUrl;
-        
+        $thumbMediaIdXml = empty($thumbMediaId)?"": "<ThumbMediaId><![CDATA[{$thumbMediaId}]]></ThumbMediaId>";
         return "
 	 	<xml>
 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
@@ -171,7 +171,7 @@ class Reply
 		<Description><![CDATA[{$description}]]></Description>
 		<MusicUrl><![CDATA[{$musicUrl}]]></MusicUrl>
 		<HQMusicUrl><![CDATA[{$hqMusicUrl}]]></HQMusicUrl>
-		<ThumbMediaId><![CDATA[{$thumbMediaId}]]></ThumbMediaId>
+		{$thumbMediaIdXml}
 		</Music>
 		</xml>";
     }
