@@ -19,6 +19,8 @@ class Request
 
     private $_serviceBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
+    private $_snsBaseUrl = 'https://api.weixin.qq.com/';
+
     private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
 
     private $_accessToken = null;
@@ -42,7 +44,11 @@ class Request
      */
     public function get($url, $params = array())
     {
-        $client = new Client($this->_serviceBaseUrl);
+        if ($url == 'sns/userinfo') {
+            $client = new Client($this->_snsBaseUrl);
+        } else {
+            $client = new Client($this->_serviceBaseUrl);
+        }
         $params['access_token'] = $this->_accessToken;
         $request = $client->get($url, array(), array(
             'query' => $params

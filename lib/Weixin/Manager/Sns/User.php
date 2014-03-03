@@ -53,7 +53,7 @@ class User
         $params = array();
         $params['openid'] = $openid;
         $params['lang'] = 'zh_CN';
-        $rst = $this->_request->post('sns/userinfo', $params);
+        $rst = $this->_request->get('sns/userinfo', $params);
         return $this->_client->rst($rst);
     }
 }
