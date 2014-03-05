@@ -359,28 +359,15 @@ class Pay {
 	 * 为https://www.outdomain.com/cgi-bin/bizpaygetpackage
 	 *
 	 *
-	 * @param string $body        	
-	 * @param string $attach        	
-	 * @param string $out_trade_no        	
-	 * @param int $total_fee        	
-	 * @param string $notify_url        	
-	 * @param int $spbill_create_ip        	
-	 * @param string $time_start        	
-	 * @param string $time_expire        	
-	 * @param int $transport_fee        	
-	 * @param int $product_fee        	
-	 * @param string $goods_tag        	
+	 * @param string $package        	
 	 * @param string $noncestr
-	 * @param int $timestamp
-	 * @param string $bank_type        	
-	 * @param int $fee_type        	
-	 * @param string $input_charset        	
+	 * @param int $timestamp      	
 	 * @param string $SignMethod        	
 	 * @param int $retcode        	
 	 * @param string $reterrmsg        	
 	 * @return string
 	 */
-	public function getPackageForNativeUrl($body, $attach, $out_trade_no, $total_fee, $notify_url, $spbill_create_ip, $time_start, $time_expire, $transport_fee, $product_fee, $goods_tag, $noncestr, $timestamp, $bank_type = "WX", $fee_type = 1, $input_charset = "GBK", $SignMethod = "sha1", $retcode = 0, $reterrmsg = "ok") {
+	public function getPackageForNativeUrl($package, $noncestr, $timestamp, $SignMethod = "sha1", $retcode = 0, $reterrmsg = "ok") {
 		/**
 		 * 为了返回Package 数据，回调URL 必须返回一个xml 格式的返回数据，形如：
 		 * <xml>
@@ -402,8 +389,6 @@ class Pay {
 		 * 可以在RetErrMsg 中填上UTF8 编码的错误提示信息，比如“该商品已经下架”，客户端会直接提示出来。
 		 */
 		$appid = $this->getAppId ();
-		// 获取package
-		$package = $this->getPackage4JsPay ( $body, $attach, $out_trade_no, $total_fee, $notify_url, $spbill_create_ip, $time_start, $time_expire, $transport_fee, $product_fee, $goods_tag, $bank_type, $fee_type, $input_charset );
 		// 获取app_signature
 		$para = array (
 				"appid" => $appid,
