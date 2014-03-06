@@ -2,6 +2,7 @@
 namespace Weixin;
 use Weixin\Helpers;
 use Weixin\Exception;
+use Weixin\Http\Request;
 
 /**
  * 微信支付接口
@@ -14,9 +15,7 @@ use Weixin\Exception;
 	仅保留在第三方后台和微信后台，不会在网络中传播。
  * @author guoyongrong <handsomegyr@gmail.com>
  */
-class Pay {
-	private $_url = 'https://api.weixin.qq.com/cgi-bin/pay/';
-	
+class Pay {	
 	// appId公众号身份标识。
 	private $appId = "";
 	public function setAppId($appId) {
@@ -85,6 +84,8 @@ class Pay {
 	
 	/**
      * 获取请求对象
+     * 
+     * @return \Weixin\Http\Request
      */
     public function getRequest(){
         if (empty($this->_request)) {
@@ -146,7 +147,7 @@ class Pay {
 		
 		// 参数 说明
 		// access_token 调用接口凭证
-		$access_token = $this->getAccessToken( );
+		//$access_token = $this->getAccessToken( );
 		$postData = array ();
 		$postData ["appid"] = $this->getAppId ();
 		$postData ["openid"] = $openid;
@@ -171,7 +172,7 @@ class Pay {
 		$postData ["app_signature"] = $this->getPaySign ( $para );
 		$postData ["sign_method"] = $sign_method;
 		
-		$rst = $this->getRequest()->post($this->_url . 'delivernotify?access_token=' . $access_token, $postData);
+		$rst = $this->getRequest()->payPost('pay/delivernotify', $postData);
 		if (! empty ( $rst ['errcode'] )) {
 			// 如果有异常，会在errcode 和errmsg 描述出来。
 			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
@@ -223,7 +224,7 @@ class Pay {
 		
 		// 参数 说明
 		// access_token 调用接口凭证
-		$access_token = $this->getAccessToken( );
+		//$access_token = $this->getAccessToken( );
 		
 		$postData = array ();
 		$postData ["appid"] = $this->getAppId ();
@@ -247,7 +248,7 @@ class Pay {
 		$postData ["app_signature"] = $this->getPaySign ( $para );
 		$postData ["sign_method"] = $sign_method;
 		
-		$rst = $this->getRequest()->post($this->_url . 'orderquery?access_token=' . $access_token, $postData);
+		$rst = $this->getRequest()->payPost('pay/orderquery', $postData);
 		if (! empty ( $rst ['errcode'] )) {
 			// 如果有异常，会在errcode 和errmsg 描述出来。
 			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
@@ -585,6 +586,43 @@ class Pay {
 		$package = $this->createPackage ( $para );
 		return $package;
 	}
-
+	
+	/**
+	 * 标记客户的投诉处理状态。 updatefeedback
+	 *
+	 *
+	 * @param string $openid
+	 * @param string $feedbackid
+	 * @throws Exception
+	 * @return Ambigous <mixed, string>
+	 */
+	public function updateFeedback($openid, $feedbackid) {
+		/**
+		 * 接口调用请求说明
+		 * Api的url为： https://api.weixin.qq.com/payfeedback/update?access_token=xxxxx&openid=XXXX&feedbackid=xxxx 
+		 * Url中的参数包含目前微信公众平台凭证access_token，
+		 * 和客户投诉对应的单号feedbackid，以及openid 微信公众平台在校验ok之后，
+		 * 会返回数据表明是否通知成功，例如： {"errcode":0,"errmsg":"ok"}
+		 * 如果有异常，会在 errcode和 errmsg描述出来，如果成功errcode就为0。
+		 */
+	
+		// 参数 说明
+		// access_token 调用接口凭证
+		//$access_token = $this->getAccessToken( );
+		$postData = array ();
+		$postData ["openid"] = $openid;
+		$postData ["feedbackid"] = $feedbackid;
+		
+		$rst = $this->getRequest()->payGet('payfeedback/update', $postData);
+		if (! empty ( $rst ['errcode'] )) {
+			// 如果有异常，会在errcode 和errmsg 描述出来。
+			throw new Exception ( $rst ['errmsg'], $rst ['errcode'] );
+		} else {
+			// 返回说明 正常时的返回JSON数据包示例：
+			// 微信公众平台在校验ok 之后，会返回数据表明是否通知成功，例如：
+			// {"errcode":0,"errmsg":"ok"}
+			return $rst;
+		}
+	}
 }
 
