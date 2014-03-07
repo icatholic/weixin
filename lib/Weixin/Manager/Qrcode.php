@@ -70,7 +70,7 @@ class Qrcode
             $params['action_name'] = "QR_LIMIT_SCENE";
             $params['action_info']['scene']['scene_id'] = min($scene_id, 100000);
         }
-        $this->_request->post('qrcode/create', $params);
+        $rst = $this->_request->post('qrcode/create', $params);
         return $this->_client->rst($rst);
     }
 

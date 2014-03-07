@@ -60,7 +60,8 @@ class Groups
      */
     public function create ($name)
     {
-        $rst = $this->_request->post('groups/create', $params);
+    	$params = array("group"=>array("name"=>$name));
+        $rst = $this->_request->post('groups/create', $params);        
         return $this->_client->rst($rst);
     }
 
