@@ -179,7 +179,13 @@ class Client
     {
         return new Qrcode($this);
     }
-
+	
+    /**
+     * 设置用户授权的token信息
+     * 
+     * @param string $accessToken
+     * @return \Weixin\Client
+     */
     public function setSnsAccessToken($accessToken)
     {
         $this->_snsAccessToken = $accessToken;
