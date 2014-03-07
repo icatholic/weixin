@@ -109,6 +109,8 @@ class Client
 
     /**
      * 获取请求对象
+     * 
+     * @return \Weixin\Http\Request
      */
     public function getRequest()
     {
