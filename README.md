@@ -42,12 +42,7 @@ try {
 	$arrAccessToken = $objToken->getAccessToken();
 	$strAccessToken = $arrAccessToken['access_token'];
 	
-	
-	//如果之前获得access_token，那么在生成WeixinClient对象的时候，直接指定
-	//$access_token = "RWRVPpT1O9SEyN615puzCOQ9uQfgQK0SA63gWUxNo2ABjgHFdnCL82BnFB_wQGeZH4prBLfn17Qz0WSwcwdLW6A2YvX1yN46dDB2-BggdXkqpM0AZXO4lfZ0LSC_5ABj8NxKLxJkqv565EBja32Gpw";
-	//$client = new Weixin\WeixinClient($appid,$secret,$access_token);
-	
-	//如果之前没有获得过access_token，那么通过getAccessToken方法 获取access_token
+	//微信client对象
 	$client = new Weixin\Client();
 	
 	//微信推送服务器验证

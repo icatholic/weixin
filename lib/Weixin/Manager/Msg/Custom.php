@@ -57,7 +57,7 @@ class Custom
      */
     public function send ($params)
     {
-        $rst = $this->_client->getRequest()->post('/message/custom/send', 
+        $rst = $this->_client->getRequest()->post('message/custom/send', 
                 $params);
         return $this->_client->rst($rst);
     }
