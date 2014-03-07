@@ -22,6 +22,9 @@ class Pay {
 		$this->appId = $appId;
 	}
 	public function getAppId() {
+		if(empty($this->appId)){
+			throw new Exception('AppId未设定');
+		}
 		return $this->appId;
 	}
 	
@@ -31,6 +34,9 @@ class Pay {
 		$this->appSecret = $appSecret;
 	}
 	public function getAppSecret() {
+		if(empty($this->appSecret)){
+			throw new Exception('AppSecret未设定');
+		}
 		return $this->appSecret;
 	}
 	
@@ -40,6 +46,9 @@ class Pay {
 		$this->paySignKey = $paySignKey;
 	}
 	public function getPaySignKey() {
+		if(empty($this->paySignKey)){
+			throw new Exception('PaySignKey未设定');
+		}
 		return $this->paySignKey;
 	}
 	
@@ -49,6 +58,9 @@ class Pay {
 		$this->partnerId = $partnerId;
 	}
 	public function getPartnerId() {
+		if(empty($this->partnerId)){
+			throw new Exception('PartnerId未设定');
+		}
 		return $this->partnerId;
 	}
 	// partnerKey财付通商户权限密钥Key。
@@ -57,6 +69,9 @@ class Pay {
 		$this->partnerKey = $partnerKey;
 	}
 	public function getPartnerKey() {
+		if(empty($this->partnerKey)){
+			throw new Exception('PartnerKey未设定');
+		}
 		return $this->partnerKey;
 	}
 	
@@ -160,7 +175,7 @@ class Pay {
 		// 获取app_signature
 		$para = array (
 				"appid" => $postData ["appid"],
-				"appkey" => $this->paySignKey,
+				"appkey" => $this->getPaySignKey(),
 				"openid" => $postData ["openid"],
 				"transid" => $postData ["transid"],
 				"out_trade_no" => $postData ["out_trade_no"],
@@ -232,7 +247,7 @@ class Pay {
 		// 获取package
 		$para = array (
 				"out_trade_no" => $out_trade_no,
-				"partner" => $this->partnerId 
+				"partner" => $this->getPartnerId() 
 		);
 		$package = $this->createPackage ( $para );
 		$postData ["package"] = $package;
@@ -241,7 +256,7 @@ class Pay {
 		// 获取app_signature
 		$para = array (
 				"appid" => $postData ["appid"],
-				"appkey" => $this->paySignKey,
+				"appkey" => $this->getPaySignKey(),
 				"package" => $postData ["package"],
 				"timestamp" => $postData ["timestamp"] 
 		);
@@ -343,7 +358,7 @@ class Pay {
 		$appid = $this->getAppId ();
 		
 		$para = array ("appid" => "adfdfdf",
-				"appkey" => $this->paySignKey,
+				"appkey" => $this->getPaySignKey(),
 				"timestamp" => $timestamp,
 				"noncestr" => $noncestr,
 				"productid" => $productid
@@ -393,7 +408,7 @@ class Pay {
 		// 获取app_signature
 		$para = array (
 				"appid" => $appid,
-				"appkey" => $this->paySignKey,
+				"appkey" => $this->getPaySignKey(),
 				"package" => $package,
 				"timestamp" => $timestamp,
 				"noncestr" => $noncestr,
@@ -488,9 +503,6 @@ class Pay {
 	 * @return string
 	 */
 	public function getSign(array $para) {		
-		if (empty ( $this->partnerKey )) {
-			throw new Exception ( 'partnerKey is empty' );
-		}
 		
 		// a.除sign 字段外，对所有传入参数按照字段名的ASCII 码从小到大排序（字典序）后，
 		// 使用URL 键值对的格式（即key1=value1&key2=value2…）拼接成字符串string1；
@@ -502,7 +514,7 @@ class Pay {
 		
 		// b. 在string1 最后拼接上key=paternerKey 得到stringSignTemp 字符串，
 		// 并对stringSignTemp 进行md5 运算，再将得到的字符串所有字符转换为大写，得到sign 值signValue。
-		$sign = $string1 . '&key=' . $this->partnerKey;
+		$sign = $string1 . '&key=' . $this->getPartnerKey();
 		$sign = strtoupper ( md5 ( $sign ) );
 		
 		return $sign;
@@ -524,7 +536,7 @@ class Pay {
 	 * @param string $out_trade_no        	
 	 * @param int $total_fee        	
 	 * @param string $notify_url        	
-	 * @param int $spbill_create_ip        	
+	 * @param string $spbill_create_ip        	
 	 * @param string $time_start        	
 	 * @param string $time_expire        	
 	 * @param int $transport_fee        	
@@ -570,7 +582,7 @@ class Pay {
 				"bank_type" => $bank_type,
 				"body" => $body,
 				"attach" => $attach,
-				"partner" => $this->partnerId,
+				"partner" => $this->getPartnerId(),
 				"out_trade_no" => $out_trade_no,
 				"total_fee" => $total_fee,
 				"fee_type" => $fee_type,
