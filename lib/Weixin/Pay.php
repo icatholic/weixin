@@ -466,9 +466,6 @@ class Pay {
 	 * @return string
 	 */
 	public function getPaySign(array $para) {
-		if (empty ( $this->paySignKey )) {
-			throw new Exception ( 'paySignKey is empty' );
-		}
 		
 		// 对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，
 		// 使用URL 键值对的格式（即key1=value1&key2=value2…）拼接成字符串string1。
@@ -482,7 +479,7 @@ class Pay {
 		// 除去数组中的空值和签名参数
 		$paraFilter = Helpers::paraFilter ( $paraFilter );
 		//增加或修改appkey
-		$paraFilter['appkey'] = $this->paySignKey;
+		$paraFilter['appkey'] = $this->getPaySignKey();
 		
 		// 对数组排序
 		$paraFilter = Helpers::argSort ( $paraFilter );
