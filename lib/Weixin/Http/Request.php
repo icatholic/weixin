@@ -22,9 +22,9 @@ class Request
     private $_snsBaseUrl = 'https://api.weixin.qq.com/';
 
     private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
-	
+
     private $_payBaseUrl = 'https://api.weixin.qq.com/';
-    
+
     private $_accessToken = null;
 
     private $_tmp = null;
@@ -134,52 +134,51 @@ class Request
         $url = $this->_mediaBaseUrl . 'media/get' . '?access_token=' . $this->_accessToken . '&media_id=' . $mediaId;
         return $this->getFileByUrl($url);
     }
-	
-    
+
     /**
      * 获取微信服务器信息
      *
-     * @param string $url
-     * @param array $params
+     * @param string $url            
+     * @param array $params            
      * @return mixed
      */
     public function payGet($url, $params = array())
     {
-    	$client = new Client($this->_payBaseUrl);
-    	$params['access_token'] = $this->_accessToken;
-    	$request = $client->get($url, array(), array(
-    			'query' => $params
-    	));
-    	$response = $client->send($request);
-    	if ($response->isSuccessful()) {
-    		return $response->json();
-    	} else {
-    		throw new Exception("微信服务器未有效的响应请求");
-    	}
+        $client = new Client($this->_payBaseUrl);
+        $params['access_token'] = $this->_accessToken;
+        $request = $client->get($url, array(), array(
+            'query' => $params
+        ));
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
     }
-    
+
     /**
      * 推送消息给到微信服务器
      *
-     * @param string $url
-     * @param array $params
+     * @param string $url            
+     * @param array $params            
      * @return mixed
      */
     public function payPost($url, $params = array())
     {
-    	$client = new Client($this->_payBaseUrl);
-    	$params['access_token'] = $this->_accessToken;
-    	$client->setDefaultOption('query', $params);
-    	$client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
-    	$request = $client->post($url);
-    	$response = $client->send($request);
-    	if ($response->isSuccessful()) {
-    		return $response->json();
-    	} else {
-    		throw new Exception("微信服务器未有效的响应请求");
-    	}
+        $client = new Client($this->_payBaseUrl);
+        $params['access_token'] = $this->_accessToken;
+        $client->setDefaultOption('query', $params);
+        $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
+        $request = $client->post($url);
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
     }
-    
+
     /**
      * 下载文件
      *
