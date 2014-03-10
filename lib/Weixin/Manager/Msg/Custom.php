@@ -1,5 +1,6 @@
 <?php
 namespace Weixin\Manager\Msg;
+
 use Weixin\Exception;
 use Weixin\Manager\Msg;
 use Weixin\Client;
@@ -24,7 +25,7 @@ class Custom
 
     private $_length = 140;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
     }
@@ -34,17 +35,17 @@ class Custom
      *
      * @return number
      */
-    public function getLength ()
+    public function getLength()
     {
         return $this->_length;
     }
 
     /**
      * 设定图文消息的最大显示文字长度，超过省略
-     * 
+     *
      * @return number
      */
-    public function setLength ()
+    public function setLength()
     {
         return $this->_length;
     }
@@ -55,10 +56,9 @@ class Custom
      * @throws Exception
      * @return array
      */
-    public function send ($params)
+    public function send($params)
     {
-        $rst = $this->_client->getRequest()->post('message/custom/send', 
-                $params);
+        $rst = $this->_client->getRequest()->post('message/custom/send', $params);
         return $this->_client->rst($rst);
     }
 
@@ -69,7 +69,7 @@ class Custom
      * @param string $content            
      * @return string
      */
-    public function sendText ($toUser, $content)
+    public function sendText($toUser, $content)
     {
         $ret = array();
         $ret['touser'] = $toUser;
@@ -85,7 +85,7 @@ class Custom
      * @param string $media_id            
      * @return string
      */
-    public function sendImage ($toUser, $media_id)
+    public function sendImage($toUser, $media_id)
     {
         $ret = array();
         $ret['touser'] = $toUser;
@@ -101,7 +101,7 @@ class Custom
      * @param string $media_id            
      * @return string
      */
-    public function sendVoice ($toUser, $media_id)
+    public function sendVoice($toUser, $media_id)
     {
         $ret = array();
         $ret['touser'] = $toUser;
@@ -118,7 +118,7 @@ class Custom
      * @param string $thumb_media_id            
      * @return string
      */
-    public function sendVideo ($toUser, $media_id, $thumb_media_id)
+    public function sendVideo($toUser, $media_id, $thumb_media_id)
     {
         $ret = array();
         $ret['touser'] = $toUser;
@@ -139,8 +139,7 @@ class Custom
      * @param string $thumb_media_id            
      * @return string
      */
-    public function sendMusic ($toUser, $title, $description, $musicurl, 
-            $hqmusicurl, $thumb_media_id)
+    public function sendMusic($toUser, $title, $description, $musicurl, $hqmusicurl, $thumb_media_id)
     {
         $hqmusicurl = $hqmusicurl == '' ? $musicurl : $hqmusicurl;
         $ret = array();
@@ -161,7 +160,7 @@ class Custom
      * @param string $articles            
      * @return string
      */
-    public function sendGraphText ($toUser, Array $articles)
+    public function sendGraphText($toUser, Array $articles)
     {
         if (! is_array($articles) || count($articles) == 0)
             return '';
@@ -170,14 +169,13 @@ class Custom
         $articleCount = count($articles);
         foreach ($articles as $article) {
             if (mb_strlen($article['description'], 'utf-8') > $this->_length) {
-                $article['description'] = mb_substr($article['description'], 0, 
-                        $this->getLength(), 'utf-8') . '……';
+                $article['description'] = mb_substr($article['description'], 0, $this->getLength(), 'utf-8') . '……';
             }
             $items[] = array(
-                    'title' => $article['title'],
-                    'description' => $article['description'],
-                    'url' => $article['url'],
-                    'picurl' => $article['picurl']
+                'title' => $article['title'],
+                'description' => $article['description'],
+                'url' => $article['url'],
+                'picurl' => $article['picurl']
             );
         }
         $ret = array();
