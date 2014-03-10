@@ -357,7 +357,7 @@ class Pay {
 		 */
 		$appid = $this->getAppId ();
 		
-		$para = array ("appid" => "adfdfdf",
+		$para = array ("appid" => $appid,
 				"appkey" => $this->getPaySignKey(),
 				"timestamp" => $timestamp,
 				"noncestr" => $noncestr,
