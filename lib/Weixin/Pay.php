@@ -424,7 +424,7 @@ class Pay {
 			<RetCode>{$retcode}</RetCode>
 			<RetErrMsg><![CDATA[{$reterrmsg}]]></RetErrMsg>
 			<AppSignature><![CDATA[{$AppSignature}]]></AppSignature>
-			<SignMethod><![CDATA[{$SignMethod}]]></SignMethod >
+			<SignMethod><![CDATA[{$SignMethod}]]></SignMethod>
 		</xml>";
 	}
 	
