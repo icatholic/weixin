@@ -389,13 +389,13 @@ class Pay {
 		 * <xml>
 		 * <AppId><![CDATA[wwwwb4f85f3a797777]]></AppId>
 		 * <Package><![CDATA[a=1&url=http%3A%2F%2Fwww.qq.com]]></Package>
-		 * <TimeStamp> 1369745073</TimeStamp>
+		 * <TimeStamp>1369745073</TimeStamp>
 		 * <NonceStr><![CDATA[iuytxA0cH6PyTAVISB28]]></NonceStr>
 		 * <RetCode>0</RetCode>
-		 * <RetErrMsg><![CDATA[ok]]></ RetErrMsg>
+		 * <RetErrMsg><![CDATA[ok]]></RetErrMsg>
 		 * <AppSignature><![CDATA[53cca9d47b883bd4a5c85a9300df3da0cb48565c]]>
 		 * </AppSignature>
-		 * <SignMethod><![CDATA[sha1]]></ SignMethod >
+		 * <SignMethod><![CDATA[sha1]]></SignMethod>
 		 * </xml>
 		 * 其中，AppSignature 依然是根据前文paySign 所讲的签名方式生成的签名，
 		 * 参与签名的字段为：appid、appkey、package、timestamp、noncestr、retcode、reterrmsg。
