@@ -33,7 +33,7 @@ class Helpers
     public static function paraFilter($para) {
     	$para_filter = array();
     	while (list ($key, $val) = each ($para)) {
-    		if($key == "sign" || $val == "")continue;
+    		if(strtolower(trim($key)) === "sign" || trim($val) === "") continue;
     		else	$para_filter[$key] = $para[$key];
     	}
     	return $para_filter;
@@ -60,11 +60,7 @@ class Helpers
 			$arg.=$key."=".$val."&";
 		}
 		//去掉最后一个&字符
-		$arg = substr($arg,0,count($arg)-2);
-	
-		//如果存在转义字符，那么去掉转义
-		if(get_magic_quotes_gpc()){$arg = stripslashes($arg);}
-	
+		$arg = substr($arg,0,strlen($arg)-1);	
 		return $arg;
 	}
 	
@@ -79,11 +75,8 @@ class Helpers
 			$arg.=$key."=".urlencode($val)."&";
 		}
 		//去掉最后一个&字符
-		$arg = substr($arg,0,count($arg)-2);
-	
-		//如果存在转义字符，那么去掉转义
-		if(get_magic_quotes_gpc()){$arg = stripslashes($arg);}
-	
+		$arg = substr($arg,0,strlen($arg)-1);
+		
 		return $arg;
 	}
 }

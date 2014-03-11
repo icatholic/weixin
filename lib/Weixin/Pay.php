@@ -122,8 +122,8 @@ class Pay {
 	 * @param string $openid        	
 	 * @param string $transid        	
 	 * @param string $out_trade_no        	
-	 * @param int $deliver_timestamp        	
-	 * @param int $deliver_status        	
+	 * @param string $deliver_timestamp        	
+	 * @param string $deliver_status        	
 	 * @param string $deliver_msg        	
 	 * @param string $sign_method        	
 	 * @throws Exception
@@ -205,7 +205,7 @@ class Pay {
 	 * 此时商家可以通过该API 来查询订单的详细支付状态。
 	 *
 	 * @param string $out_trade_no   
-	 * 	@param int $timestamp
+	 * 	@param string $timestamp
 	 * @param string $sign_method        	
 	 * @throws Exception
 	 * @return Ambigous <mixed, string>
@@ -377,9 +377,9 @@ class Pay {
 	 *
 	 * @param string $package        	
 	 * @param string $noncestr
-	 * @param int $timestamp      	
+	 * @param string $timestamp      	
 	 * @param string $SignMethod        	
-	 * @param int $retcode        	
+	 * @param string $retcode        	
 	 * @param string $reterrmsg        	
 	 * @return string
 	 */
@@ -416,16 +416,7 @@ class Pay {
 				"reterrmsg" => $reterrmsg 
 		);
 		$AppSignature = $this->getPaySign ( $para );
-		return "<xml>
-			<AppId><![CDATA[{$appid}]]></AppId>
-			<Package><![CDATA[{$package}]]></Package>
-			<TimeStamp>{$timestamp}</TimeStamp>
-			<NonceStr><![CDATA[{$noncestr}]]></NonceStr>
-			<RetCode>{$retcode}</RetCode>
-			<RetErrMsg><![CDATA[{$reterrmsg}]]></RetErrMsg>
-			<AppSignature><![CDATA[{$AppSignature}]]></AppSignature>
-			<SignMethod><![CDATA[{$SignMethod}]]></SignMethod>
-		</xml>";
+		return "<xml><AppId><![CDATA[{$appid}]]></AppId><NonceStr><![CDATA[{$noncestr}]]></NonceStr><Package><![CDATA[{$package}]]></Package><RetCode>{$retcode}</RetCode><RetErrMsg><![CDATA[{$reterrmsg}]]></RetErrMsg><TimeStamp>{$timestamp}</TimeStamp><AppSignature><![CDATA[{$AppSignature}]]></AppSignature><SignMethod><![CDATA[{$SignMethod}]]></SignMethod></xml>";
 	}
 	
 	/**
@@ -441,20 +432,28 @@ class Pay {
 		// a.除sign 字段外，对所有传入参数按照字段名的ASCII 码从小到大排序（字典序）后，
 		// 使用URL 键值对的格式（即key1=value1&key2=value2…）拼接成字符串string1；
 		// 除去数组中的空值和签名参数
+		unset($para['sign']);
 		$paraFilter = Helpers::paraFilter ( $para );
 		// 对数组排序
-		$paraFilter = Helpers::argSort ( $paraFilter );
+		$paraFilter = Helpers::argSort ( $paraFilter );		
+		$string1 = Helpers::createLinkstring ($paraFilter );
 		
-		// 获取sign
-		$sign = $this->getSign($paraFilter);
+		// b. 在string1 最后拼接上key=paternerKey 得到stringSignTemp 字符串，
+		// 并对stringSignTemp 进行md5 运算，再将得到的字符串所有字符转换为大写，得到sign 值signValue。
+		$sign = $string1 . '&key=' . $this->getPartnerKey();
+		$sign = strtoupper ( md5 ( $sign ) );
+		$paraFilter['sign'] = $sign;
+		//// 获取sign
+		//$sign = $this->getSign($paraFilter);
 		
 		// c.对string1 中的所有键值对中的value 进行urlencode 转码，按照a 步骤重新拼接成字符串，得到string2。
 		// 对于js 前端程序，一定要使用函数encodeURIComponent
 		// 进行urlencode编码（注意！进行urlencode时要将空格转化为%20而不是+）。
+		$paraFilter = Helpers::argSort ( $paraFilter );
 		$string2 = Helpers::createLinkstringUrlencode ($paraFilter );
 		
 		// d.将sign=signValue 拼接到string2 后面得到最终的package 字符串。
-		$package = $string2 . '&sign=' . $sign;
+		$package = $string2;// . '&sign=' . $sign;
 		return $package;
 	}
 	
@@ -531,16 +530,16 @@ class Pay {
 	 * @param string $body        	
 	 * @param string $attach        	
 	 * @param string $out_trade_no        	
-	 * @param int $total_fee        	
+	 * @param string $total_fee        	
 	 * @param string $notify_url        	
 	 * @param string $spbill_create_ip        	
 	 * @param string $time_start        	
 	 * @param string $time_expire        	
-	 * @param int $transport_fee        	
-	 * @param int $product_fee        	
+	 * @param string $transport_fee        	
+	 * @param string $product_fee        	
 	 * @param string $goods_tag        	
 	 * @param string $bank_type        	
-	 * @param int $fee_type        	
+	 * @param string $fee_type        	
 	 * @param string $input_charset        	
 	 * @return string
 	 */
