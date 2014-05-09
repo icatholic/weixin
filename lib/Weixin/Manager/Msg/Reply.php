@@ -1,5 +1,6 @@
 <?php
 namespace Weixin\Manager\Msg;
+
 use Weixin\Exception;
 use Weixin\Manager\Msg;
 use Weixin\Client;
@@ -21,7 +22,7 @@ use Weixin\Client;
  * 假如服务器无法保证在五秒内处理并回复，可以直接回复空串，
  * 微信服务器不会对此作任何处理，并且不会发起重试。
  * 这种情况下，可以使用客服消息接口进行异步回复。
- * 
+ *
  * @author guoyongrong <handsomegyr@gmail.com>
  * @author young <youngyang@icatholic.net.cn>
  */
@@ -33,10 +34,10 @@ class Reply
     private $_to;
 
     private $_from;
-    
+
     private $_length = 140;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
         $this->_from = $this->_client->getFromUserName();
@@ -48,27 +49,28 @@ class Reply
      *
      * @return number
      */
-    public function getLength ()
+    public function getLength()
     {
         return $this->_length;
     }
 
     /**
      * 设定图文消息的最大显示文字长度，超过省略
-     * 
+     *
      * @return number
      */
-    public function setLength ()
+    public function setLength()
     {
         return $this->_length;
     }
 
     /**
      * 回复文本消息
-     * @param string $content
+     *
+     * @param string $content            
      * @return string
      */
-    public function replyText ($content)
+    public function replyText($content)
     {
         $time = time();
         return "
@@ -83,10 +85,11 @@ class Reply
 
     /**
      * 回复图片消息
-     * @param string $media_id
+     *
+     * @param string $media_id            
      * @return string
      */
-    public function replyImage ($media_id)
+    public function replyImage($media_id)
     {
         $time = time();
         return "
@@ -103,10 +106,11 @@ class Reply
 
     /**
      * 回复音频消息
-     * @param string $media_id
+     *
+     * @param string $media_id            
      * @return string
      */
-    public function replyVoice ($media_id)
+    public function replyVoice($media_id)
     {
         $time = time();
         return "
@@ -122,13 +126,56 @@ class Reply
     }
 
     /**
-     * 回复视频消息
-     * @param string $title
-     * @param string $description
-     * @param string $media_id
+     * 回复客服启动消息
+     * 
+     * @param string $media_id            
      * @return string
      */
-    public function replyVideo ($title, $description, $media_id)
+    public function replyCustomerService($media_id)
+    {
+        $time = time();
+        return "
+        <xml>
+        <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+        <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
+        <CreateTime>{$time}</CreateTime>
+        <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+        <Voice>
+        <MediaId><![CDATA[{$media_id}]]></MediaId>
+        </Voice>
+        </xml>";
+    }
+
+    /**
+     * 回复音频消息
+     *
+     * @param string $media_id            
+     * @return string
+     */
+    public function replyVoice($media_id)
+    {
+        $time = time();
+        return "
+        <xml>
+        <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+        <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
+        <CreateTime>{$time}</CreateTime>
+        <MsgType><![CDATA[voice]]></MsgType>
+        <Voice>
+        <MediaId><![CDATA[{$media_id}]]></MediaId>
+        </Voice>
+    		</xml>";
+    }
+
+    /**
+     * 回复视频消息
+     *
+     * @param string $title            
+     * @param string $description            
+     * @param string $media_id            
+     * @return string
+     */
+    public function replyVideo($title, $description, $media_id)
     {
         $time = time();
         return "
@@ -147,19 +194,19 @@ class Reply
 
     /**
      * 回复音乐
-     * @param string $title
-     * @param string $description
-     * @param string $musicUrl
-     * @param string $hqMusicUrl
-     * @param string $thumbMediaId
+     *
+     * @param string $title            
+     * @param string $description            
+     * @param string $musicUrl            
+     * @param string $hqMusicUrl            
+     * @param string $thumbMediaId            
      * @return string
      */
-    public function replyMusic ($title, $description, $musicUrl, $hqMusicUrl = '', 
-            $thumbMediaId = 0)
+    public function replyMusic($title, $description, $musicUrl, $hqMusicUrl = '', $thumbMediaId = 0)
     {
         $time = time();
         $hqMusicUrl = $hqMusicUrl == '' ? $musicUrl : $hqMusicUrl;
-        $thumbMediaIdXml = empty($thumbMediaId)?"": "<ThumbMediaId><![CDATA[{$thumbMediaId}]]></ThumbMediaId>";
+        $thumbMediaIdXml = empty($thumbMediaId) ? "" : "<ThumbMediaId><![CDATA[{$thumbMediaId}]]></ThumbMediaId>";
         return "
 	 	<xml>
 		<ToUserName><![CDATA[{$this->_to}]]></ToUserName>
@@ -178,7 +225,7 @@ class Reply
 
     /**
      * 回复图文信息
-     *    
+     *
      * @param array $articles
      *            子元素
      *            $articles[] = $article
@@ -190,7 +237,7 @@ class Reply
      *            
      * @return string
      */
-    public function replyGraphText (Array $articles)
+    public function replyGraphText(Array $articles)
     {
         $time = time();
         if (! is_array($articles) || count($articles) == 0)
@@ -200,8 +247,7 @@ class Reply
         $articleCount = count($articles);
         foreach ($articles as $article) {
             if (mb_strlen($article['description'], 'utf-8') > $this->_length) {
-                $article['description'] = mb_substr($article['description'], 0, 
-                        $this->getLength(), 'utf-8') . '……';
+                $article['description'] = mb_substr($article['description'], 0, $this->getLength(), 'utf-8') . '……';
             }
             $items .= "
 		 	<item>
