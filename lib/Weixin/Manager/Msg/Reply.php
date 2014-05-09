@@ -126,27 +126,6 @@ class Reply
     }
 
     /**
-     * 回复客服启动消息
-     * 
-     * @param string $media_id            
-     * @return string
-     */
-    public function replyCustomerService($media_id)
-    {
-        $time = time();
-        return "
-        <xml>
-        <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
-        <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
-        <CreateTime>{$time}</CreateTime>
-        <MsgType><![CDATA[transfer_customer_service]]></MsgType>
-        <Voice>
-        <MediaId><![CDATA[{$media_id}]]></MediaId>
-        </Voice>
-        </xml>";
-    }
-
-    /**
      * 回复音频消息
      *
      * @param string $media_id            
@@ -266,5 +245,26 @@ class Reply
  		<ArticleCount>{$articleCount}</ArticleCount>
  		<Articles>{$items}</Articles>
  		</xml>";
+    }
+    
+
+    /**
+     * 回复客服启动消息
+     *
+     * @return string
+     */
+    public function replyCustomerService()
+    {
+        $time = time();
+        return "
+        <xml>
+        <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+        <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
+        <CreateTime>{$time}</CreateTime>
+        <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+        <Voice>
+        <MediaId><![CDATA[{$media_id}]]></MediaId>
+        </Voice>
+        </xml>";
     }
 }
