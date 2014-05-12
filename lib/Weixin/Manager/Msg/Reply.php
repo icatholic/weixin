@@ -262,9 +262,6 @@ class Reply
         <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
         <CreateTime>{$time}</CreateTime>
         <MsgType><![CDATA[transfer_customer_service]]></MsgType>
-        <Voice>
-        <MediaId><![CDATA[{$media_id}]]></MediaId>
-        </Voice>
         </xml>";
     }
 }
