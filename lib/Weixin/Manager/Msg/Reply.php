@@ -126,27 +126,6 @@ class Reply
     }
 
     /**
-     * 回复音频消息
-     *
-     * @param string $media_id            
-     * @return string
-     */
-    public function replyVoice($media_id)
-    {
-        $time = time();
-        return "
-        <xml>
-        <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
-        <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
-        <CreateTime>{$time}</CreateTime>
-        <MsgType><![CDATA[voice]]></MsgType>
-        <Voice>
-        <MediaId><![CDATA[{$media_id}]]></MediaId>
-        </Voice>
-    	</xml>";
-    }
-
-    /**
      * 回复视频消息
      *
      * @param string $title            
