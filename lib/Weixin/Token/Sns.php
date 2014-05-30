@@ -37,7 +37,8 @@ class Sns
      */
     public function setRedirectUri($redirect_uri)
     {
-        $redirect_uri = trim(urldecode($redirect_uri));
+        //$redirect_uri = trim(urldecode($redirect_uri));
+        $redirect_uri = trim($redirect_uri);
         if (filter_var($redirect_uri, FILTER_VALIDATE_URL) === false) {
             throw new Exception('$redirect_uri无效');
         }
