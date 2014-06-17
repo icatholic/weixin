@@ -64,8 +64,9 @@ try {
 	//下载多媒体文件
 	$mediaId= "xxxxxxxxxxxxxxx";
 	$rst= $client->getMediaManager()->get($mediaId);
-	$rst['name'];//文件名称 例如mediaId.jpg
-	$rst['bytes'];//文件内容，二进制
+	echo $rst['name'];//文件名称 例如mediaId.jpg
+	echo $rst['bytes'];//文件内容，二进制
+	echo "<br/>";
 	
 	//获取微信用户信息
 	$userinfo =$client->getUserManager()->getUserInfo($fromUserName);
@@ -103,50 +104,54 @@ try {
 	    "digest" => "扑刺客打刺客",
 	    "show_cover_pic" => "1"
 	);
+	//上传图文消息素材
 	$rst = $client->getMediaManager()->uploadNews($articles);
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
+	//上传视频素材
 	$rst = $client->getMediaManager()->uploadVideo("D3uOxo1WNW52dVi4wZE1jwvqySduzVzCApTOmR7pL2hguFECCk2fq82cOxyewF3X", "TITLE", "Description");
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
+	//根据分组进行群发
 	$group_id = '0';
 	// 发送文本
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendTextByGroup($group_id, 'hello');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 	// 发送图片
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendImageByGroup($group_id, 'PTI4V7PGaH2mXtdArQsih6daoyNnEJRHteXo_sJO5yGQQdscEXi7ONRtXsucRYEC');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 		
 	// 发送音频
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendVoiceByGroup($group_id, 'yntrDDxEaYYzlBKGheHckrJyszWYL3-a0hEXtYt2oy0dfhWz2hjIZypXnupuEnMk');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 	// 发送视频
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendVideoByGroup($group_id, 'g39F9u52K_06kkFzcLilPgyFOgJufnzZr1E39xRjD1NmIu_iEqNI1Kx92eTxipeS');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 	// 发送图文
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendGraphTextByGroup($group_id, 'xjZXFr1U7x8b4MZ3CpkF3UGNddGmpHag6La84uak-bKym27gC-D1N0jmQaGzx9bR');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
+	//根据OpenID列表群发
 	$toUsers = array(
 	    "oq_9ut1KV35fk7PDFyrfZl3LvVuk",
 	    "oq_9ut0Jca_pZA02CFDyuLE0UJCQ"
@@ -155,42 +160,42 @@ try {
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendTextByOpenid($toUsers, 'hello');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 	// 发送图片
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendImageByOpenid($toUsers, 'PTI4V7PGaH2mXtdArQsih6daoyNnEJRHteXo_sJO5yGQQdscEXi7ONRtXsucRYEC');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 		
 	// 发送音频
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendVoiceByOpenid($toUsers, 'yntrDDxEaYYzlBKGheHckrJyszWYL3-a0hEXtYt2oy0dfhWz2hjIZypXnupuEnMk');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 		
 	// 发送视频
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendVideoByOpenid($toUsers, 'xdJyQzOv2uTjWpickq3sQjGtDRj5mFFb9e-GP4HgV72ZtP_UDO0TnH29aTYLXy5p', 'testing', 'testing');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 	// 发送图文
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->sendGraphTextByOpenid($toUsers, 'xjZXFr1U7x8b4MZ3CpkF3UGNddGmpHag6La84uak-bKym27gC-D1N0jmQaGzx9bR');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 	// 删除消息
 	$rst = $client->getMsgManager()
 	    ->getMassSender()
 	    ->delete('2347904591');
-	print_r($$rst);
+	print_r($rst);
 	echo "<br/>";
 	
 } catch (Exception $e) {
