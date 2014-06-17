@@ -8,6 +8,7 @@ namespace Weixin\Manager;
 use Weixin\Client;
 use Weixin\Manager\Msg\Custom;
 use Weixin\Manager\Msg\Reply;
+use Weixin\Manager\Msg\Mass;
 
 class Msg
 {
@@ -37,6 +38,16 @@ class Msg
     public function getCustomSender ()
     {
         return new Custom($this->_client);
+    }
+    
+    /**
+     * 获取群发管理器
+     *
+     * @return \Weixin\Manager\Msg\Mass
+     */
+    public function getMassSender()
+    {
+    	return new Mass($this->_client);
     }
 
     public function __destruct ()

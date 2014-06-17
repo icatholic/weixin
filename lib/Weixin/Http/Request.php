@@ -23,8 +23,8 @@ class Request
 
     private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
 
-    private $_payBaseUrl = 'https://api.weixin.qq.com/';
-
+    private $_payBaseUrl = 'https://api.weixin.qq.com/';    
+    
     private $_accessToken = null;
 
     private $_tmp = null;
@@ -122,7 +122,30 @@ class Request
             throw new Exception("微信服务器未有效的响应请求");
         }
     }
-
+    
+    /**
+     * 推送消息给到微信服务器
+     *
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public function mediaPost($url, $params = array())
+    {
+        $client = new Client($this->_mediaBaseUrl);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
+        $request = $client->post($url);
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+        
     /**
      * 下载指定路径的文件资源
      *
