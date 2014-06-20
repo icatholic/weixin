@@ -16,6 +16,7 @@ use Weixin\Manager\Menu;
 use Weixin\Manager\User;
 use Weixin\Manager\Sns\User as SnsUser;
 use Weixin\Manager\Media;
+use Weixin\Manager\CustomService;
 
 class Client
 {
@@ -180,6 +181,16 @@ class Client
         return new Qrcode($this);
     }
 	
+    /**
+     * 获取客服聊天管理器
+     *
+     * @return \Weixin\Manager\CustomService
+     */
+    public function getCustomServiceManager()
+    {
+        return new CustomService($this);
+    }
+    
     /**
      * 设置用户授权的token信息
      * 
