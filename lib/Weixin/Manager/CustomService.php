@@ -45,7 +45,23 @@ class CustomService
      */
     public function getRecord($openid, $starttime, $endtime, $pageindex = 1, $pagesize = 1000)
     {
-        $rst = $this->_request->post('customservice/getrecord');
+        $params = array();
+        /**
+         * openid 否 普通用户的标识，对当前公众号唯一
+         * starttime 是 查询开始时间，UNIX时间戳
+         * endtime 是 查询结束时间，UNIX时间戳，每次查询不能跨日查询
+         * pagesize 是 每页大小，每页最多拉取1000条
+         * pageindex 是 查询第几页，从1开始
+         */
+        if ($openid) {
+            $params['openid'] = $openid;
+        }
+        $params['starttime'] = $starttime;
+        $params['endtime'] = $endtime;
+        $params['pageindex'] = $pageindex;
+        $params['pagesize'] = $pagesize;
+        
+        $rst = $this->_request->post('customservice/getrecord', $params);
         return $this->_client->rst($rst);
     }
 }
