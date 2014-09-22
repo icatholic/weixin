@@ -5,41 +5,43 @@
  *
  */
 namespace Weixin\Manager;
+
 use Weixin\Client;
 use Weixin\Manager\Msg\Custom;
 use Weixin\Manager\Msg\Reply;
 use Weixin\Manager\Msg\Mass;
+use Weixin\Manager\Msg\Template;
 
 class Msg
 {
 
     private $_client;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
     }
 
     /**
      * 获取被动回复发送器
-     * 
+     *
      * @return \Weixin\Manager\Msg\Reply
      */
-    public function getReplySender ()
+    public function getReplySender()
     {
         return new Reply($this->_client);
     }
 
     /**
      * 获取主动客户回复发送器
-     * 
+     *
      * @return \Weixin\Manager\Msg\Custom
      */
-    public function getCustomSender ()
+    public function getCustomSender()
     {
         return new Custom($this->_client);
     }
-    
+
     /**
      * 获取群发管理器
      *
@@ -47,9 +49,19 @@ class Msg
      */
     public function getMassSender()
     {
-    	return new Mass($this->_client);
+        return new Mass($this->_client);
     }
 
-    public function __destruct ()
+    /**
+     * 获取模板消息管理器
+     *
+     * @return \Weixin\Manager\Msg\Template
+     */
+    public function getTemplateSender()
+    {
+        return new Template($this->_client);
+    }
+
+    public function __destruct()
     {}
 }

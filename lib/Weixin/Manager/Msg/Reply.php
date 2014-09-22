@@ -1,8 +1,6 @@
 <?php
 namespace Weixin\Manager\Msg;
 
-use Weixin\Exception;
-use Weixin\Manager\Msg;
 use Weixin\Client;
 
 /**
@@ -225,7 +223,6 @@ class Reply
  		<Articles>{$items}</Articles>
  		</xml>";
     }
-    
 
     /**
      * 回复客服启动消息

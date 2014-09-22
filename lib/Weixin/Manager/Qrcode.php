@@ -1,6 +1,6 @@
 <?php
 namespace Weixin\Manager;
-use Weixin\Exception;
+
 use Weixin\Client;
 
 /**
@@ -26,7 +26,7 @@ class Qrcode
 
     private $_request;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
         $this->_request = $client->getRequest();
@@ -40,7 +40,7 @@ class Qrcode
      * @author Kan
      *        
      */
-    public function create ($scene_id, $isTemporary = true, $expire_seconds = 0)
+    public function create($scene_id, $isTemporary = true, $expire_seconds = 0)
     {
         // 临时二维码请求说明
         // http请求方式: POST
@@ -78,7 +78,7 @@ class Qrcode
      * 通过ticket换取二维码
      * 获取二维码ticket后，开发者可用ticket换取二维码图片。请注意，本接口无须登录态即可调用
      */
-    public function getQrcodeUrl ($ticket)
+    public function getQrcodeUrl($ticket)
     {
         // 请求说明
         // HTTP GET请求（请使用https协议）

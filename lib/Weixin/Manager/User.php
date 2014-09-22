@@ -1,6 +1,6 @@
 <?php
 namespace Weixin\Manager;
-use Weixin\Exception;
+
 use Weixin\Client;
 use Weixin\Http\Request;
 
@@ -21,17 +21,19 @@ class User
 
     /**
      * 微信客户端
+     *
      * @var Client
      */
     private $_client;
 
     /**
      * 请求对象
+     *
      * @var Request
      */
     private $_request;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
         $this->_request = $client->getRequest();
@@ -41,7 +43,7 @@ class User
      * 获取用户基本信息
      * 开发者可通过OpenID来获取用户基本信息。请使用https协议。
      */
-    public function getUserInfo ($openid)
+    public function getUserInfo($openid)
     {
         // http请求方式: GET
         // https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID
@@ -60,7 +62,7 @@ class User
      * 一次拉取调用最多拉取10000个关注者的OpenID，
      * 可以通过多次拉取的方式来满足需求。
      */
-    public function getUser ($next_openid = "")
+    public function getUser($next_openid = "")
     {
         // http请求方式: GET（请使用https协议）
         // https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
@@ -69,6 +71,28 @@ class User
         $params = array();
         $params['next_openid'] = $next_openid;
         $rst = $this->_request->get('user/get', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 设置备注名
+     * 开发者可以通过该接口对指定用户设置备注名，该接口暂时开放给微信认证的服务号
+     */
+    public function updateRemark($openid, $remark)
+    {
+        /**
+         * https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=ACCESS_TOKEN
+         * POST数据格式：JSON
+         * POST数据例子：
+         * {
+         * "openid":"oDF3iY9ffA-hqb2vVvbr7qxf6A0Q",
+         * "remark":"pangzi"
+         * }
+         */
+        $params = array();
+        $params['openid'] = $openid;
+        $params['remark'] = $remark; // 新的备注名，长度必须小于30字符
+        $rst = $this->_request->post('user/info/updateremark', $params);
         return $this->_client->rst($rst);
     }
 }

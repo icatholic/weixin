@@ -17,6 +17,7 @@ use Weixin\Manager\User;
 use Weixin\Manager\Sns\User as SnsUser;
 use Weixin\Manager\Media;
 use Weixin\Manager\CustomService;
+use Weixin\Manager\ShortUrl;
 
 class Client
 {
@@ -30,9 +31,9 @@ class Client
     private $_to = null;
 
     private $_request = null;
-    
+
     private $_signature = null;
-    
+
     private $_verifyToken = null;
 
     public function __construct()
@@ -110,7 +111,7 @@ class Client
 
     /**
      * 获取请求对象
-     * 
+     *
      * @return \Weixin\Http\Request
      */
     public function getRequest()
@@ -180,7 +181,7 @@ class Client
     {
         return new Qrcode($this);
     }
-	
+
     /**
      * 获取客服聊天管理器
      *
@@ -190,11 +191,21 @@ class Client
     {
         return new CustomService($this);
     }
-    
+
+    /**
+     * 获取长链接转短链接管理器
+     *
+     * @return \Weixin\Manager\ShortUrl
+     */
+    public function getShortUrlManager()
+    {
+        return new ShortUrl($this);
+    }
+
     /**
      * 设置用户授权的token信息
-     * 
-     * @param string $accessToken
+     *
+     * @param string $accessToken            
      * @return \Weixin\Client
      */
     public function setSnsAccessToken($accessToken)
@@ -235,7 +246,7 @@ class Client
      */
     public function checkSignature($verifyCode)
     {
-        if(empty($verifyCode))
+        if (empty($verifyCode))
             throw new Exception("请设定校验签名所需的verify_code");
         
         $verifyCode = trim($verifyCode);
@@ -248,17 +259,19 @@ class Client
             $timestamp,
             $nonce
         );
-        sort($tmpArr,SORT_STRING);//按照字符串来进行比较，否则在某些数字的情况下，sort的结果与微信要求不符合，官方文档中给出的签名算法有误
+        sort($tmpArr, SORT_STRING); // 按照字符串来进行比较，否则在某些数字的情况下，sort的结果与微信要求不符合，官方文档中给出的签名算法有误
         $tmpStr = sha1(implode($tmpArr));
         $this->_signature = $tmpStr;
         return $tmpStr === $signature ? true : false;
     }
-    
+
     /**
      * 获取签名
+     * 
      * @return string
      */
-    public function getSignature() {
+    public function getSignature()
+    {
         return $this->_signature;
     }
 

@@ -1,6 +1,6 @@
 <?php
 namespace Weixin\Manager\Sns;
-use Weixin\Exception;
+
 use Weixin\Client;
 
 /**
@@ -42,13 +42,13 @@ class User
 
     private $_request;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
         $this->_request = $client->getRequest();
     }
 
-    public function getSnsUserInfo ($openid)
+    public function getSnsUserInfo($openid)
     {
         $params = array();
         $params['openid'] = $openid;

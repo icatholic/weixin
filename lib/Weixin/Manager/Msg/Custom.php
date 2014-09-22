@@ -1,8 +1,6 @@
 <?php
 namespace Weixin\Manager\Msg;
 
-use Weixin\Exception;
-use Weixin\Manager\Msg;
 use Weixin\Client;
 
 /**

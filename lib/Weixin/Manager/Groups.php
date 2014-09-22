@@ -1,6 +1,6 @@
 <?php
 namespace Weixin\Manager;
-use Weixin\Exception;
+
 use Weixin\Client;
 
 /**
@@ -19,7 +19,7 @@ class Groups
 
     private $_request;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
         $this->_request = $client->getRequest();
@@ -35,7 +35,7 @@ class Groups
      *
      * @return mixed
      */
-    public function get ()
+    public function get()
     {
         $rst = $this->_request->get('groups/get');
         return $this->_client->rst($rst);
@@ -58,10 +58,14 @@ class Groups
      *            $name
      * @return mixed
      */
-    public function create ($name)
+    public function create($name)
     {
-    	$params = array("group"=>array("name"=>$name));
-        $rst = $this->_request->post('groups/create', $params);        
+        $params = array(
+            "group" => array(
+                "name" => $name
+            )
+        );
+        $rst = $this->_request->post('groups/create', $params);
         return $this->_client->rst($rst);
     }
 
@@ -85,7 +89,7 @@ class Groups
      *            $name
      * @return mixed
      */
-    public function update ($id, $name)
+    public function update($id, $name)
     {
         $params = array();
         $params['group']['id'] = $id;
@@ -114,7 +118,7 @@ class Groups
      *            $to_groupid
      * @return mixed
      */
-    public function membersUpdate ($openid, $to_groupid)
+    public function membersUpdate($openid, $to_groupid)
     {
         $params = array();
         $params['openid'] = $openid;

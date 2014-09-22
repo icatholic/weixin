@@ -7,7 +7,7 @@
  * @author young <youngyang@icatholic.net.cn>
  */
 namespace Weixin\Manager;
-use Weixin\Exception;
+
 use Weixin\Client;
 
 class Menu
@@ -17,31 +17,31 @@ class Menu
 
     private $_request;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->_client = $client;
         $this->_request = $client->getRequest();
     }
 
-    public function create ($menus)
+    public function create($menus)
     {
         $rst = $this->_request->post('menu/create', $menus);
         return $this->_client->rst($rst);
     }
 
-    public function get ()
+    public function get()
     {
         $rst = $this->_request->post('menu/get');
         return $this->_client->rst($rst);
     }
 
-    public function delete ($menus)
+    public function delete($menus)
     {
         $rst = $this->_request->post('menu/delete', $menus);
         return $this->_client->rst($rst);
     }
 
-    private function validateSubbutton ($menus)
+    private function validateSubbutton($menus)
     {
         $ret = 0;
         foreach ($menus as $menu) {
@@ -59,7 +59,7 @@ class Menu
         return $ret;
     }
 
-    private function validateKey ($menu)
+    private function validateKey($menu)
     {
         // 类型为click必须
         if (strtolower($menu['type']) == 'click') {
@@ -72,7 +72,7 @@ class Menu
         return 0;
     }
 
-    private function validateName ($menu)
+    private function validateName($menu)
     {
         // 按钮描述，既按钮名字，不超过16个字节，子菜单不超过40个字节
         if ($menu['fatherNode'])         // 子菜单
@@ -87,7 +87,7 @@ class Menu
         return 0;
     }
 
-    public function validateMenu ($menu)
+    public function validateMenu($menu)
     {
         $errcode = $this->validateName($menu);
         if ($errcode) {
@@ -100,7 +100,7 @@ class Menu
         return 0;
     }
 
-    public function validateAllMenus ($menus)
+    public function validateAllMenus($menus)
     {
         // 按钮数组，按钮个数应为1~3个
         $button_num = count($menus);
