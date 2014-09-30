@@ -16,6 +16,10 @@ class Sns
 
     private $_state = '';
 
+    private $_request;
+
+    private $_context;
+
     public function __construct($appid, $secret)
     {
         if (empty($appid)) {
@@ -27,17 +31,29 @@ class Sns
         
         $this->_appid = $appid;
         $this->_secret = $secret;
+        
+        $opts = array(
+            'http' => array(
+                'follow_location' => 3,
+                'max_redirects' => 3,
+                'timeout' => 10,
+                'method' => "GET",
+                'header' => "Connection: close\r\n",
+                'user_agent' => 'iCatholic R&D'
+            )
+        );
+        $this->_context = stream_context_create($opts);
     }
 
     /**
      * 设定微信回调地址
-     * 
+     *
      * @param string $redirect_uri            
      * @throws Exception
      */
     public function setRedirectUri($redirect_uri)
     {
-        //$redirect_uri = trim(urldecode($redirect_uri));
+        // $redirect_uri = trim(urldecode($redirect_uri));
         $redirect_uri = trim($redirect_uri);
         if (filter_var($redirect_uri, FILTER_VALIDATE_URL) === false) {
             throw new Exception('$redirect_uri无效');
@@ -47,7 +63,7 @@ class Sns
 
     /**
      * 设定作用域类型
-     * 
+     *
      * @param string $scope            
      * @throws Exception
      */
@@ -64,7 +80,7 @@ class Sns
 
     /**
      * 设定携带参数信息，请使用rawurlencode编码
-     * 
+     *
      * @param string $state            
      */
     public function setState($state)
@@ -94,8 +110,9 @@ class Sns
         if ($code == '') {
             throw new Exception('code不能为空');
         }
-        $response = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->_appid}&secret={$this->_secret}&code={$code}&grant_type=authorization_code");
+        $response = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->_appid}&secret={$this->_secret}&code={$code}&grant_type=authorization_code", false, $this->_context);
         $response = json_decode($response, true);
+        
         return $response;
     }
 
@@ -104,7 +121,7 @@ class Sns
      */
     public function getRefreshToken($refreshToken)
     {
-        $response = file_get_contents("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={$this->_appid}&grant_type=refresh_token&refresh_token={$refreshToken}");
+        $response = file_get_contents("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={$this->_appid}&grant_type=refresh_token&refresh_token={$refreshToken}", false, $this->_context);
         $response = json_decode($response, true);
         return $response;
     }
