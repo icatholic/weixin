@@ -123,7 +123,7 @@ class Groups
         $params = array();
         $params['openid'] = $openid;
         $params['to_groupid'] = $to_groupid;
-        $rst = $this->_request->post('groups/members', $params);
+        $rst = $this->_request->post('groups/members/update', $params);
         return $this->_client->rst($rst);
     }
 }
