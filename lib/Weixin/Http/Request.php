@@ -23,8 +23,8 @@ class Request
 
     private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
 
-    private $_payBaseUrl = 'https://api.weixin.qq.com/';    
-    
+    private $_payBaseUrl = 'https://api.weixin.qq.com/';
+
     private $_accessToken = null;
 
     private $_tmp = null;
@@ -55,6 +55,7 @@ class Request
         $request = $client->get($url, array(), array(
             'query' => $params
         ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->json();
@@ -78,6 +79,7 @@ class Request
         ));
         $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
         $request = $client->post($url);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->json();
@@ -115,6 +117,8 @@ class Request
         $request = $client->post('media/upload')->addPostFiles(array(
             'media' => $media
         ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        
         $response = $request->send();
         if ($response->isSuccessful()) {
             return $response->json();
@@ -122,12 +126,12 @@ class Request
             throw new Exception("微信服务器未有效的响应请求");
         }
     }
-    
+
     /**
      * 推送消息给到微信服务器
      *
-     * @param string $url
-     * @param array $params
+     * @param string $url            
+     * @param array $params            
      * @return mixed
      */
     public function mediaPost($url, $params = array())
@@ -138,6 +142,8 @@ class Request
         ));
         $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
         $request = $client->post($url);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->json();
@@ -145,7 +151,7 @@ class Request
             throw new Exception("微信服务器未有效的响应请求");
         }
     }
-        
+
     /**
      * 下载指定路径的文件资源
      *
@@ -172,6 +178,7 @@ class Request
         $request = $client->get($url, array(), array(
             'query' => $params
         ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->json();
@@ -194,6 +201,7 @@ class Request
         $client->setDefaultOption('query', $params);
         $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
         $request = $client->post($url);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->json();
@@ -217,6 +225,7 @@ class Request
         
         $client = new Client($url);
         $request = $client->get();
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             $disposition = $response->getContentDisposition();
