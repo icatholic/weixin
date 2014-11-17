@@ -18,6 +18,7 @@ use Weixin\Manager\Sns\User as SnsUser;
 use Weixin\Manager\Media;
 use Weixin\Manager\CustomService;
 use Weixin\Manager\ShortUrl;
+use Weixin\Manager\Semantic;
 
 class Client
 {
@@ -202,6 +203,16 @@ class Client
         return new ShortUrl($this);
     }
 
+    /**
+     * 获取智能接口管理器
+     *
+     * @return \Weixin\Manager\Semantic
+     */
+    public function getSemanticManager()
+    {
+        return new Semantic($this);
+    }
+    
     /**
      * 设置用户授权的token信息
      *
