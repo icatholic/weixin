@@ -19,6 +19,7 @@ use Weixin\Manager\Media;
 use Weixin\Manager\CustomService;
 use Weixin\Manager\ShortUrl;
 use Weixin\Manager\Semantic;
+use Weixin\Manager\Card;
 
 class Client
 {
@@ -212,7 +213,17 @@ class Client
     {
         return new Semantic($this);
     }
-    
+
+    /**
+     * 获取卡券接口管理器
+     *
+     * @return \Weixin\Manager\Card
+     */
+    public function getCardManager()
+    {
+        return new Card($this);
+    }
+
     /**
      * 设置用户授权的token信息
      *
@@ -278,7 +289,7 @@ class Client
 
     /**
      * 获取签名
-     * 
+     *
      * @return string
      */
     public function getSignature()
