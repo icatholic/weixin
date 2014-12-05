@@ -242,7 +242,7 @@ class Card
         $params['offset'] = $offset;
         $params['count'] = $count;
         
-        $rst = $this->_request->payGet('card/location/batchget', $params);
+        $rst = $this->_request->payPost('card/location/batchget', $params);
         return $this->_client->rst($rst);
     }
 
