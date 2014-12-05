@@ -197,8 +197,9 @@ class Request
     public function payPost($url, $params = array())
     {
         $client = new Client($this->_payBaseUrl);
-        $params['access_token'] = $this->_accessToken;
-        $client->setDefaultOption('query', $params);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
         $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
         $request = $client->post($url);
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1

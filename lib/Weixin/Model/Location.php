@@ -3,7 +3,6 @@ namespace Weixin\Model;
 
 class Location
 {
-
     /**
      * business_name
      * 门店名称
