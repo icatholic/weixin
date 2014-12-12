@@ -126,4 +126,42 @@ class Groups
         $rst = $this->_request->post('groups/members/update', $params);
         return $this->_client->rst($rst);
     }
+
+    /**
+     * 查询用户所在分组
+     * 通过用户的OpenID查询其所在的GroupID。 接口调用请求说明
+     *
+     * http请求方式: POST（请使用https协议）
+     * https://api.weixin.qq.com/cgi-bin/groups/getid?access_token=ACCESS_TOKEN
+     * POST数据格式：json
+     * POST数据例子：{"openid":"od8XIjsmk6QdVTETa9jLtGWA6KBc"}
+     * 参数说明
+     *
+     * 参数	说明
+     * access_token 调用接口凭证
+     * openid 用户的OpenID
+     * 返回说明 正常时的返回JSON数据包示例：
+     *
+     * {
+     * "groupid": 102
+     * }
+     * 参数说明
+     *
+     * 参数	说明
+     * groupid 用户所属的groupid
+     * 错误时的JSON数据包示例（该示例为OpenID无效错误）：
+     *
+     * {"errcode":40003,"errmsg":"invalid openid"}
+     *
+     * @param
+     *            $openid
+     * @return mixed
+     */
+    public function getid($openid)
+    {
+        $params = array();
+        $params['openid'] = $openid;
+        $rst = $this->_request->post('groups/getid', $params);
+        return $this->_client->rst($rst);
+    }
 }
