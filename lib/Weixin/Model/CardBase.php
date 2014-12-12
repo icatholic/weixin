@@ -35,6 +35,7 @@ abstract class CardBase
     public function __construct(BaseInfo $base_info)
     {
         $this->base_info = $base_info;
+        $this->card_id = $base_info->card_id;
     }
 
     protected function getParams()

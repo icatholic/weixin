@@ -165,6 +165,12 @@ class BaseInfo
      */
     public $custom_url = NULL;
 
+    /**
+     * card_id
+     * 否
+     */
+    public $card_id = NULL;
+
     public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info, Sku $sku)
     {
         if (! $date_info instanceof DateInfo)
@@ -245,6 +251,11 @@ class BaseInfo
     public function set_custom_url($custom_url)
     {
         $this->custom_url = $custom_url;
+    }
+
+    public function set_card_id($card_id)
+    {
+        $this->card_id = $card_id;
     }
 
     public function getParams()
