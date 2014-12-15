@@ -128,6 +128,45 @@ class Request
     }
 
     /**
+     * 上传客服头像
+     *
+     * @param string $kf_account            
+     * @param string $media
+     *            url或者filepath
+     * @throws Exception
+     * @return mixed
+     */
+    public function uploadheadimg4KfAcount($kf_account, $media)
+    {
+        $client = new Client($this->_payBaseUrl);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken,
+            'kf_account' => $kf_account
+        ));
+        
+        if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
+            $fileInfo = $this->getFileByUrl($media);
+            $media = $this->saveAsTemp($fileInfo['name'], $fileInfo['bytes']);
+        } elseif (is_readable($media)) {
+            $media = $media;
+        } else {
+            throw new Exception("无效的上传文件");
+        }
+        
+        $request = $client->post('customservice/kfacount/uploadheadimg')->addPostFiles(array(
+            'media' => $media
+        ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        
+        $response = $request->send();
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    /**
      * 推送消息给到微信服务器
      *
      * @param string $url            
