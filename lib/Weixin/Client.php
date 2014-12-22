@@ -20,6 +20,7 @@ use Weixin\Manager\CustomService;
 use Weixin\Manager\ShortUrl;
 use Weixin\Manager\Semantic;
 use Weixin\Manager\Card;
+use Weixin\Manager\Ip;
 
 class Client
 {
@@ -224,6 +225,16 @@ class Client
         return new Card($this);
     }
 
+    /**
+     * 获取微信服务器IP地址管理器
+     *
+     * @return \Weixin\Manager\Ip
+     */
+    public function getIpManager()
+    {
+        return new Ip($this);
+    }
+    
     /**
      * 设置用户授权的token信息
      *
