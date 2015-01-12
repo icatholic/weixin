@@ -149,11 +149,13 @@ class Jssdk
      *
      * @return array
      */
-    public function getSignPackage($url)
+    public function getSignPackage($url, $jsapiTicket = "")
     {
-        $ret = $this->getJsApiTicket();
-        $jsapiTicket = $ret['ticket'];
-        
+        if (empty($jsapiTicket)) {
+            // 重新生成jsapiTicket
+            $ret = $this->getJsApiTicket();
+            $jsapiTicket = $ret['ticket'];
+        }
         // $url = "{$http}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
         $timestamp = time();
         $nonceStr = Helpers::createNonceStr();
