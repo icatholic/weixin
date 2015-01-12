@@ -25,6 +25,8 @@ class Request
 
     private $_payBaseUrl = 'https://api.weixin.qq.com/';
 
+    private $_pay337BaseUrl = 'https://api.mch.weixin.qq.com/';
+
     private $_accessToken = null;
 
     private $_tmp = null;
@@ -245,6 +247,53 @@ class Request
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    /**
+     * 获取微信服务器信息
+     *
+     * @param string $url            
+     * @param array $params            
+     * @return mixed
+     */
+    public function pay337Get($url, $params = array())
+    {
+        $client = new Client($this->_pay337BaseUrl);
+        $params['access_token'] = $this->_accessToken;
+        $request = $client->get($url, array(), array(
+            'query' => $params
+        ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->getBody(true);
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    /**
+     * 推送消息给到微信服务器
+     *
+     * @param string $url            
+     * @param string $xml            
+     * @return mixed
+     */
+    public function pay337Post($url, $xml)
+    {
+        $client = new Client($this->_pay337BaseUrl);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        $client->setDefaultOption('body', $xml);
+        $request = $client->post($url);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->getBody(true);
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
