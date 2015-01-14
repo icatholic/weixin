@@ -19,6 +19,8 @@ class Request
 
     private $_serviceBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
+    private $_serviceBaseUrl2 = 'http://api.weixin.qq.com/';
+
     private $_snsBaseUrl = 'https://api.weixin.qq.com/';
 
     private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
@@ -107,6 +109,30 @@ class Request
         if(!empty($this->getCert())) {
             $client->setSslVerification($this->getCert());
         }
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
+        $request = $client->post($url);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    /**
+     * 推送消息给到微信服务器
+     *
+     * @param string $url            
+     * @param array $params            
+     * @return mixed
+     */
+    public function post2($url, $params = array())
+    {
+        $client = new Client($this->_serviceBaseUrl2);
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
