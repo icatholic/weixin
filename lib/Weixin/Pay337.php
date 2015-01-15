@@ -210,7 +210,7 @@ class Pay337
         
         $sign = $this->getSign($postData);
         $postData["sign"] = $sign;
-        $xml = $this->arrayToXml($postData);
+        $xml = Helpers::arrayToXml($postData);
         $rst = $this->getRequest()->pay337Post('pay/unifiedorder', $xml);
         return $this->returnResult($rst);
     }
@@ -268,8 +268,22 @@ class Pay337
         $postData["out_trade_no"] = $out_trade_no;
         $postData["nonce_str"] = $nonce_str;
         $postData["sign"] = $this->getSign($postData);
-        $xml = $this->arrayToXml($postData);
+        $xml = Helpers::arrayToXml($postData);
         $rst = $this->getRequest()->pay337Post('pay/orderquery', $xml);
+        return $this->returnResult($rst);
+    }
+
+    public function closeorder($out_trade_no, $nonce_str)
+    {
+        $postData = array();
+        $postData["appid"] = $this->getAppId();
+        $postData["mch_id"] = $this->getMchid();
+        $postData["out_trade_no"] = $out_trade_no;
+        $postData["nonce_str"] = $nonce_str;
+        $sign = $this->getSign($postData);
+        $postData["sign"] = $sign;
+        $xml = Helpers::arrayToXml($postData);
+        $rst = $this->getRequest()->pay337Post('pay/closeorder', $xml);
         return $this->returnResult($rst);
     }
 
@@ -427,7 +441,7 @@ class Pay337
      */
     public function getNotifyData($xml)
     {
-        return $this->xmlToArray($xml);
+        return Helpers::xmlToArray($xml);
     }
 
     /**
@@ -444,13 +458,13 @@ class Pay337
 
     private function returnResult($rst)
     {
-        $rst = $this->xmlToArray($rst);
+        $rst = Helpers::xmlToArray($rst);
         if (! empty($rst['return_code'])) {
             if ($rst['return_code'] == 'FAIL') {
                 throw new \Exception($rst['return_msg']);
             } else {
                 if ($rst['result_code'] == 'FAIL') {
-                    throw new \Exception($rst['err_code_des'], $rst['err_code']);
+                    throw new \Exception($rst['err_code'] . ":" . $rst['err_code_des']);
                 } else {
                     return $rst;
                 }
@@ -458,31 +472,6 @@ class Pay337
         } else {
             throw new \Exception("网络请求失败");
         }
-    }
-
-    /**
-     * 作用：array转xml
-     */
-    private function arrayToXml($arr)
-    {
-        $xml = "<xml>";
-        foreach ($arr as $key => $val) {
-            if (is_numeric($val)) {
-                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
-            } else
-                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
-        }
-        $xml .= "</xml>";
-        return $xml;
-    }
-
-    /**
-     * 作用：将xml转为array
-     */
-    private function xmlToArray($xml)
-    {
-        $object = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
-        return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
     }
 }
 
