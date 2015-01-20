@@ -21,6 +21,7 @@ use Weixin\Manager\ShortUrl;
 use Weixin\Manager\Semantic;
 use Weixin\Manager\Card;
 use Weixin\Manager\Ip;
+use Weixin\Manager\Datacube;
 
 class Client
 {
@@ -234,7 +235,17 @@ class Client
     {
         return new Ip($this);
     }
-    
+
+    /**
+     * 获取数据统计管理器
+     *
+     * @return \Weixin\Manager\Datacube
+     */
+    public function getDatacubeManager()
+    {
+        return new Datacube($this);
+    }
+
     /**
      * 设置用户授权的token信息
      *
