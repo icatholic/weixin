@@ -79,9 +79,6 @@ class Request
         } else {
             $client = new Client($this->_serviceBaseUrl);
         }
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         
         $params['access_token'] = $this->_accessToken;
         $request = $client->get($url, array(), array(
@@ -106,9 +103,6 @@ class Request
     public function post($url, $params = array())
     {
         $client = new Client($this->_serviceBaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
@@ -159,9 +153,6 @@ class Request
     public function upload($type, $media)
     {
         $client = new Client($this->_mediaBaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken,
             'type' => $type
@@ -201,9 +192,6 @@ class Request
     public function uploadheadimg4KfAcount($kf_account, $media)
     {
         $client = new Client($this->_payBaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken,
             'kf_account' => $kf_account
@@ -241,9 +229,6 @@ class Request
     public function mediaPost($url, $params = array())
     {
         $client = new Client($this->_mediaBaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
@@ -281,9 +266,6 @@ class Request
     public function payGet($url, $params = array())
     {
         $client = new Client($this->_payBaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $params['access_token'] = $this->_accessToken;
         $request = $client->get($url, array(), array(
             'query' => $params
@@ -307,9 +289,6 @@ class Request
     public function payPost($url, $params = array())
     {
         $client = new Client($this->_payBaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
@@ -334,9 +313,6 @@ class Request
     public function pay337Get($url, $params = array())
     {
         $client = new Client($this->_pay337BaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $params['access_token'] = $this->_accessToken;
         $request = $client->get($url, array(), array(
             'query' => $params
@@ -360,9 +336,6 @@ class Request
     public function pay337Post($url, $xml)
     {
         $client = new Client($this->_pay337BaseUrl);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
@@ -391,9 +364,6 @@ class Request
         }
         
         $client = new Client($url);
-        if(!empty($this->getCert())) {
-            $client->setSslVerification($this->getCert());
-        }
         $request = $client->get();
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
