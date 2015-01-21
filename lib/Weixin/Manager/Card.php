@@ -1,6 +1,7 @@
 <?php
 namespace Weixin\Manager;
 
+use Weixin\Exception;
 use Weixin\Client;
 use Weixin\Model\CardBase;
 
@@ -1436,6 +1437,8 @@ class Card
      */
     public function uploadLogoUrl($logo)
     {
+        $options = array();
+        $options['fieldName'] = 'buffer';
         return $this->_request->uploadFile('https://api.weixin.qq.com/cgi-bin/', 'media/uploadimg', $logo);
     }
 }

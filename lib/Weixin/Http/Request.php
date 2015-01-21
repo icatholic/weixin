@@ -198,13 +198,13 @@ class Request
      * 上传文件
      *
      * @param string $baseUrl            
-     * @param string $uri           
+     * @param string $uri            
      * @param string $media
      *            url或者filepath
      * @throws Exception
      * @return mixed
      */
-    public function uploadFile($baseUrl, $uri, $media, array $options = array())
+    public function uploadFile($baseUrl, $uri, $media, array $options = array('fieldName'=>'media'))
     {
         $client = new Client($this->baseUrl);
         $client->setDefaultOption('query', array(
@@ -221,7 +221,7 @@ class Request
         }
         
         $request = $client->post($uri)->addPostFiles(array(
-            'media' => $media
+            $options['fieldName'] => $media
         ));
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         
