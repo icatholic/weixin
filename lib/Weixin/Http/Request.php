@@ -32,8 +32,6 @@ class Request
     private $_accessToken = null;
 
     private $_tmp = null;
-    
-    private $_cert = null;
 
     public function __construct($accessToken)
     {
@@ -41,28 +39,6 @@ class Request
         if (empty($this->_accessToken)) {
             throw new Exception("access_token为空");
         }
-    }
-
-    /**
-     * 设定证书的路径
-     *
-     * @param string $path            
-     * @return void
-     */
-    public function setCert($path)
-    {
-        if (! empty($path))
-            $this->_cert = $path;
-    }
-
-    /**
-     * 获取证书的路径
-     *
-     * @return string
-     */
-    public function getCert()
-    {
-        return $this->_cert;
     }
 
     /**
@@ -79,7 +55,6 @@ class Request
         } else {
             $client = new Client($this->_serviceBaseUrl);
         }
-        
         $params['access_token'] = $this->_accessToken;
         $request = $client->get($url, array(), array(
             'query' => $params
@@ -207,6 +182,45 @@ class Request
         }
         
         $request = $client->post('customservice/kfacount/uploadheadimg')->addPostFiles(array(
+            'media' => $media
+        ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        
+        $response = $request->send();
+        if ($response->isSuccessful()) {
+            return $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param string $baseUrl            
+     * @param string $uri           
+     * @param string $media
+     *            url或者filepath
+     * @throws Exception
+     * @return mixed
+     */
+    public function uploadFile($baseUrl, $uri, $media, array $options = array())
+    {
+        $client = new Client($this->baseUrl);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        
+        if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
+            $fileInfo = $this->getFileByUrl($media);
+            $media = $this->saveAsTemp($fileInfo['name'], $fileInfo['bytes']);
+        } elseif (is_readable($media)) {
+            $media = $media;
+        } else {
+            throw new Exception("无效的上传文件");
+        }
+        
+        $request = $client->post($uri)->addPostFiles(array(
             'media' => $media
         ));
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
