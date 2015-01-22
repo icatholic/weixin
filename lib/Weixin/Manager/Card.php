@@ -1406,7 +1406,7 @@ class Card
         $params = array();
         $params['card_id'] = $card_id;
         $params['code'] = $codes;
-        $rst = $this->_request->payPost('card/code/checkcode', $params);
+        $rst = $this->_request->post2('card/code/checkcode', $params);
         return $this->_client->rst($rst);
     }
 
