@@ -206,7 +206,7 @@ class Request
      */
     public function uploadFile($baseUrl, $uri, $media, array $options = array('fieldName'=>'media'))
     {
-        $client = new Client($this->baseUrl);
+        $client = new Client($baseUrl);
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
