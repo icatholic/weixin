@@ -43,14 +43,16 @@ class User
      * 获取用户基本信息
      * 开发者可通过OpenID来获取用户基本信息。请使用https协议。
      */
-    public function getUserInfo($openid)
+    public function getUserInfo($openid, $lang = "zh_CN")
     {
         // http请求方式: GET
-        // https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID
+        // https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         // access_token 是 调用接口凭证
         // openid 是 普通用户的标识，对当前公众号唯一
+        // lang 否 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
         $params = array();
         $params['openid'] = $openid;
+        $params['lang'] = $lang;
         $rst = $this->_request->get('user/info', $params);
         return $this->_client->rst($rst);
     }
