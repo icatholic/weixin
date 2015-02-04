@@ -48,11 +48,11 @@ class User
         $this->_request = $client->getRequest();
     }
 
-    public function getSnsUserInfo($openid)
+    public function getSnsUserInfo($openid, $lang = 'zh_CN')
     {
         $params = array();
         $params['openid'] = $openid;
-        $params['lang'] = 'zh_CN';
+        $params['lang'] = $lang;
         $rst = $this->_request->get('sns/userinfo', $params);
         return $this->_client->rst($rst);
     }
