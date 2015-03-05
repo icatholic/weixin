@@ -23,6 +23,8 @@ class Custom
 
     private $_length = 140;
 
+    private $_kf_account = "";
+
     public function __construct(Client $client)
     {
         $this->_client = $client;
@@ -49,13 +51,29 @@ class Custom
     }
 
     /**
+     * 设定客服帐号
+     *
+     * @return string
+     */
+    public function setKfAccount($kf_account)
+    {
+        return $this->_kf_account;
+    }
+
+    /**
      *
      * @param array $params            
      * @throws Exception
      * @return array
      */
-    public function send($params)
+    public function send(array $params)
     {
+        if (! empty($this->_kf_account)) {
+            // 如果需要以某个客服帐号来发消息（在微信6.0.2及以上版本中显示自定义头像），则需在JSON数据包的后半部分加入customservice参数
+            $params['customservice'] = array(
+                "kf_account" => $this->_kf_account
+            );
+        }
         $rst = $this->_client->getRequest()->post('message/custom/send', $params);
         return $this->_client->rst($rst);
     }
@@ -104,8 +122,8 @@ class Custom
         $ret = array();
         $ret['touser'] = $toUser;
         $ret['msgtype'] = 'voice';
-        $ret['image']['media_id'] = $media_id;
-        return json_encode($ret);
+        $ret['voice']['media_id'] = $media_id;
+        return $this->send($ret);
     }
 
     /**
@@ -114,15 +132,19 @@ class Custom
      * @param string $toUser            
      * @param string $media_id            
      * @param string $thumb_media_id            
+     * @param string $title            
+     * @param string $description            
      * @return string
      */
-    public function sendVideo($toUser, $media_id, $thumb_media_id)
+    public function sendVideo($toUser, $media_id, $thumb_media_id, $title, $description)
     {
         $ret = array();
         $ret['touser'] = $toUser;
         $ret['msgtype'] = 'video';
-        $ret['image']['media_id'] = $media_id;
-        $ret['image']['thumb_media_id'] = $thumb_media_id;
+        $ret['video']['media_id'] = $media_id;
+        $ret['video']['thumb_media_id'] = $thumb_media_id;
+        $ret['video']['title'] = $title;
+        $ret['video']['description'] = $description;
         return $this->send($ret);
     }
 
