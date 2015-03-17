@@ -386,21 +386,22 @@ class Request
             $reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
             if (preg_match($reDispo, $disposition, $mDispo)) {
                 $filename = trim($mDispo['f'], ' ";');
-                $entityBody = $response->getBody();
-                $filter = $entityBody->getContentEncoding();
-                if ($filter !== false) {
-                    $entityBody->uncompress($filter);
-                }
-                $length = $entityBody->getContentLength();
-                $objReader = new ReadLimitEntityBody($entityBody, $length);
-                $fileBytes = $objReader->read($length);
-                return array(
-                    'name' => $filename,
-                    'bytes' => $fileBytes
-                );
             } else {
-                return $response->json();
+                $filename = uniqid().'.jpg';
             }
+            $entityBody = $response->getBody();
+            $filter = $entityBody->getContentEncoding();
+            if ($filter !== false) {
+                $entityBody->uncompress($filter);
+            }
+            $length = $entityBody->getContentLength();
+            $objReader = new ReadLimitEntityBody($entityBody, $length);
+            $fileBytes = $objReader->read($length);
+            return array(
+                'name' => $filename,
+                'bytes' => $fileBytes
+            );
+            
         } else {
             throw new Exception("获取文件失败，请检查下载文件的URL是否有效");
         }
