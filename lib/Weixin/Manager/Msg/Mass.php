@@ -12,6 +12,8 @@ use Weixin\Client;
 class Mass
 {
 
+    public $is_to_all = false;
+
     private $_client;
 
     public function __construct(Client $client)
@@ -45,6 +47,9 @@ class Mass
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
         $ret['msgtype'] = 'text';
         $ret['text']['content'] = $content;
         $ret['text']['title'] = $title;
@@ -65,6 +70,9 @@ class Mass
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
         $ret['msgtype'] = 'image';
         $ret['image']['media_id'] = $media_id;
         $ret['image']['title'] = $title;
@@ -85,6 +93,9 @@ class Mass
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
         $ret['msgtype'] = 'voice';
         $ret['voice']['media_id'] = $media_id;
         $ret['voice']['title'] = $title;
@@ -105,6 +116,9 @@ class Mass
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
         $ret['msgtype'] = 'mpvideo';
         $ret['mpvideo']['media_id'] = $media_id;
         $ret['mpvideo']['title'] = $title;
@@ -125,6 +139,9 @@ class Mass
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
         $ret['msgtype'] = 'mpnews';
         $ret['mpnews']['media_id'] = $media_id;
         $ret['mpnews']['title'] = $title;
@@ -256,6 +273,19 @@ class Mass
         $ret = array();
         $ret['msgid'] = $msgid;
         $rst = $this->_client->getRequest()->post("message/mass/delete", $ret);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 预览接口【订阅号与服务号认证后均可用】
+     * 开发者可通过该接口发送消息给指定用户，在手机端查看消息的样式和排版。
+     *
+     * @param array $params            
+     * @return array
+     */
+    public function preview($params)
+    {
+        $rst = $this->_client->getRequest()->post("message/mass/preview", $params);
         return $this->_client->rst($rst);
     }
 }
