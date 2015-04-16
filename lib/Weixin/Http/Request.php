@@ -22,8 +22,8 @@ class Request
     private $_serviceBaseUrl2 = 'http://api.weixin.qq.com/';
 
     private $_snsBaseUrl = 'https://api.weixin.qq.com/';
-
-    //private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
+    
+    // private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
     private $_mediaBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_payBaseUrl = 'https://api.weixin.qq.com/';
@@ -385,7 +385,8 @@ class Request
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             $disposition = $response->getContentDisposition();
-            //$reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
+            $disposition = iconv('UTF-8', 'GBK//IGNORE', $disposition);
+            // $reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
             $reDispo = '/^.*?filename=(?<f>.*\.[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
             if (preg_match($reDispo, $disposition, $mDispo)) {
                 $filename = trim($mDispo['f'], ' ";');
