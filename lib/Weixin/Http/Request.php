@@ -385,7 +385,8 @@ class Request
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             $disposition = $response->getContentDisposition();
-            $reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
+            //$reDispo = '/^.*?filename=(?<f>[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
+            $reDispo = '/^.*?filename=(?<f>.*\.[^\s]+|\x22[^\x22]+\x22)\x3B?.*$/m';
             if (preg_match($reDispo, $disposition, $mDispo)) {
                 $filename = trim($mDispo['f'], ' ";');
             } else {
