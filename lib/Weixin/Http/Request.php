@@ -23,7 +23,8 @@ class Request
 
     private $_snsBaseUrl = 'https://api.weixin.qq.com/';
 
-    private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
+    //private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
+    private $_mediaBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_payBaseUrl = 'https://api.weixin.qq.com/';
 
@@ -242,7 +243,8 @@ class Request
      */
     public function mediaPost($url, $params = array())
     {
-        $client = new Client($this->_mediaBaseUrl);
+        // $client = new Client($this->_mediaBaseUrl);
+        $client = new Client();
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
@@ -387,7 +389,7 @@ class Request
             if (preg_match($reDispo, $disposition, $mDispo)) {
                 $filename = trim($mDispo['f'], ' ";');
             } else {
-                $filename = uniqid().'.jpg';
+                $filename = uniqid() . '.jpg';
             }
             $entityBody = $response->getBody();
             $filter = $entityBody->getContentEncoding();
@@ -401,7 +403,6 @@ class Request
                 'name' => $filename,
                 'bytes' => $fileBytes
             );
-            
         } else {
             throw new Exception("获取文件失败，请检查下载文件的URL是否有效");
         }

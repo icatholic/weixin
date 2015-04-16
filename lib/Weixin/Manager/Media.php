@@ -55,7 +55,7 @@ class Media
         if (count($articles) < 1 || count($articles) > 10) {
             throw new Exception("一个图文消息只支持1到10条图文");
         }
-        return $this->_request->mediaPost('media/uploadnews', array(
+        return $this->_request->mediaPost('https://api.weixin.qq.com/cgi-bin/media/uploadnews', array(
             'articles' => $articles
         ));
     }
@@ -73,7 +73,7 @@ class Media
         $video["media_id"] = $media_id;
         $video["title"] = $title;
         $video["description"] = $description;
-        return $this->_request->mediaPost('media/uploadvideo', $video);
+        return $this->_request->mediaPost('https://file.api.weixin.qq.com/cgi-bin/media/uploadvideo', $video);
     }
 
     public function __destruct()
