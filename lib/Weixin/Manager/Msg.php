@@ -11,7 +11,6 @@ use Weixin\Manager\Msg\Custom;
 use Weixin\Manager\Msg\Reply;
 use Weixin\Manager\Msg\Mass;
 use Weixin\Manager\Msg\Template;
-use Weixin\Manager\Msg\AutoReply;
 
 class Msg
 {
