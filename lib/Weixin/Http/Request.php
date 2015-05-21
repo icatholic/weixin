@@ -202,6 +202,7 @@ class Request
      * @param string $uri            
      * @param string $media
      *            url或者filepath
+     * @param array $options            
      * @throws Exception
      * @return mixed
      */
@@ -251,6 +252,8 @@ class Request
         $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
         $request = $client->post($url);
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        $request->getCurlOptions()->set(CURLOPT_SSL_VERIFYPEER, FALSE);
+        $request->getCurlOptions()->set(CURLOPT_SSL_VERIFYHOST, FALSE);
         
         $response = $client->send($request);
         if ($response->isSuccessful()) {
@@ -361,6 +364,50 @@ class Request
         $response = $client->send($request);
         if ($response->isSuccessful()) {
             return $response->getBody(true);
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param string $uri            
+     * @param array $fileParams            
+     * @param array $extraParams            
+     * @throws Exception
+     * @return mixed
+     */
+    public function uploadFiles($uri, array $fileParams, array $extraParams = array())
+    {
+        $client = new Client();
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        
+        $files = array();
+        foreach ($fileParams as $fileName => $media) {
+            if (filter_var($media, FILTER_VALIDATE_URL) !== false) {
+                $fileInfo = $this->getFileByUrl($media);
+                $media = $this->saveAsTemp($fileInfo['name'], $fileInfo['bytes']);
+            } elseif (is_readable($media)) {
+                $media = $media;
+            } else {
+                throw new Exception("无效的上传文件");
+            }
+            $files[$fileName] = $media;
+        }
+        $request = $client->post($uri);
+        // 如果需要额外的提交参数的话
+        if (! empty($extraParams)) {
+            $request->addPostFields($extraParams);
+        }
+        $request->addPostFiles($files);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        
+        $response = $request->send();
+        if ($response->isSuccessful()) {
+            return $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }

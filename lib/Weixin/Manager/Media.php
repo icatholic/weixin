@@ -75,7 +75,7 @@ class Media
         $video["description"] = $description;
         return $this->_request->mediaPost('http://file.api.weixin.qq.com/cgi-bin/media/uploadvideo', $video);
     }
-
+    
     public function __destruct()
     {}
 }
