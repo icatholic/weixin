@@ -22,6 +22,7 @@ use Weixin\Manager\Semantic;
 use Weixin\Manager\Card;
 use Weixin\Manager\Ip;
 use Weixin\Manager\Datacube;
+use Weixin\Manager\Poi;
 
 class Client
 {
@@ -244,6 +245,16 @@ class Client
     public function getDatacubeManager()
     {
         return new Datacube($this);
+    }
+
+    /**
+     * 获取POI 门店管理器
+     *
+     * @return \Weixin\Manager\Poi
+     */
+    public function getPoiManager()
+    {
+        return new Poi($this);
     }
 
     /**
