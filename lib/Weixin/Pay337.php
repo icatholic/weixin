@@ -533,7 +533,7 @@ class Pay337
         return Helpers::xmlToArray($xml);
     }
 
-    private function returnResult($rst)
+    public function returnResult($rst)
     {
         $rst = Helpers::xmlToArray($rst);
         if (! empty($rst['return_code'])) {
