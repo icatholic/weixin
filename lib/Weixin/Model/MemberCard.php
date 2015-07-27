@@ -173,12 +173,10 @@ class MemberCard extends CardBase
     {
         $params = array();
         
-        if ($this->supply_bonus != NULL) {
-            $params['supply_bonus'] = $this->supply_bonus;
-        }
-        if ($this->supply_balance != NULL) {
-            $params['supply_balance'] = $this->supply_balance;
-        }
+        $params['supply_bonus'] = $this->supply_bonus;
+        
+        $params['supply_balance'] = $this->supply_balance;
+        
         if ($this->custom_field1 != NULL) {
             $params['custom_field1'] = $this->custom_field1->getParams();
         }
