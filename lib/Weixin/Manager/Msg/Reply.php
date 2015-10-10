@@ -135,17 +135,17 @@ class Reply
     {
         $time = time();
         return "
-		 <xml>
-		 <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
-		 <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
-		 <CreateTime>{$time}</CreateTime>
-		 <MsgType><![CDATA[video]]></MsgType>
-		 <Video>
-		 <MediaId><![CDATA[{$media_id}]]></MediaId>
-		 <Title><![CDATA[{$title}]]></Title>
+        <xml>
+        <ToUserName><![CDATA[{$this->_to}]]></ToUserName>
+        <FromUserName><![CDATA[{$this->_from}]]></FromUserName>
+        <CreateTime>{$time}</CreateTime>
+        <MsgType><![CDATA[video]]></MsgType>
+        <Video>
+        <MediaId><![CDATA[{$media_id}]]></MediaId>
+        <Title><![CDATA[{$title}]]></Title>
         <Description><![CDATA[{$description}]]></Description>
-		 </Video>
-		 </xml>";
+        </Video>
+        </xml>";
     }
 
     /**

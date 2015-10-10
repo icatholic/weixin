@@ -150,6 +150,27 @@ class Mass
     }
 
     /**
+     * 发送卡券消息
+     *
+     * @param string $group_id
+     * @param string $card_id
+     * @param array $card_ext
+     * @return array
+     */
+    public function sendWxcardByGroup($group_id, $card_id, array $card_ext)
+    {
+        $ret = array();
+        $ret['filter']['group_id'] = $group_id;
+        if (! empty($this->is_to_all)) {
+            $ret['filter']['is_to_all'] = $this->is_to_all;
+        }
+        $ret['msgtype'] = 'wxcard';
+        $ret['wxcard']['card_id'] = $card_id;
+        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        return $this->sendAll($ret);
+    }
+    
+    /**
      * 根据OpenID列表群发
      *
      * @param array $params            
@@ -262,6 +283,24 @@ class Mass
         return $this->send($ret);
     }
 
+    /**
+     * 发送卡券消息
+     *
+     * @param array $toUsers
+     * @param string $card_id
+     * @param array $card_ext
+     * @return array
+     */
+    public function sendWxcardByOpenid(array $toUsers, $card_id, array $card_ext)
+    {
+        $ret = array();
+        $ret['touser'] = $toUsers;
+        $ret['msgtype'] = 'wxcard';
+        $ret['wxcard']['card_id'] = $card_id;
+        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        return $this->send($ret);
+    }
+    
     /**
      * 删除群发
      *
