@@ -1871,4 +1871,19 @@ class Card
         $rst = $this->_request->payPost('card/paycell/set', $params);
         return $this->_client->rst($rst);
     }
+
+    /**
+     * 拉取微信会员信息
+     *
+     * @param string $code            
+     * @param string $card_id            
+     */
+    public function getMembercardUserInfo($code, $card_id)
+    {
+        $params = array();
+        $params['code'] = $code;
+        $params['card_id'] = $card_id;
+        $rst = $this->_request->payPost('card/membercard/userinfo/get', $params);
+        return $this->_client->rst($rst);
+    }
 }
