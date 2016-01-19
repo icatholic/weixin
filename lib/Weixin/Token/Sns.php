@@ -71,7 +71,8 @@ class Sns
     {
         if (! in_array($scope, array(
             'snsapi_userinfo',
-            'snsapi_base'
+            'snsapi_base',
+            'snsapi_login'
         ), true)) {
             throw new Exception('$scope无效');
         }
