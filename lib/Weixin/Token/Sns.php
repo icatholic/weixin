@@ -93,7 +93,11 @@ class Sns
      */
     public function getAuthorizeUrl()
     {
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
+        if ($this->_scope != 'snsapi_login') {
+            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
+        } else {
+            $url = "https://open.weixin.qq.com/connect/qrconnect?appid={$this->_appid}&redirect_uri={$this->_redirect_uri}&response_type=code&scope={$this->_scope}&state={$this->_state}#wechat_redirect";
+        }
         header("location:{$url}");
         exit();
     }
