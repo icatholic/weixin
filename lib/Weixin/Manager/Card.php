@@ -2115,7 +2115,9 @@ class Card
     {
         $params = array();
         $params['openid'] = $openid;
-        $params['card_id'] = $card_id;
+        if (! empty($card_id)) {
+            $params['card_id'] = $card_id;
+        }
         $rst = $this->_request->payPost('card/user/getcardlist', $params);
         return $this->_client->rst($rst);
     }
