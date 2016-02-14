@@ -266,6 +266,16 @@ class Card
         return $this->_client->rst($rst);
     }
 
+    public function qrcodeCreate4Multiple(array $card_list)
+    {
+        $params = array();
+        $params['action_name'] = "QR_MULTIPLE_CARD";
+        $params['action_info']['multiple_card'] = array();
+        $params['action_info']['multiple_card']['card_list'] = $card_list;
+        $rst = $this->_request->payPost('card/qrcode/create', $params);
+        return $this->_client->rst($rst);
+    }
+
     /**
      * 获取api_ticket
      * api_ticket 是用于调用微信 JSAPI 的临时票据， 有效期为 7200 秒， 通过 access_token来获取。
