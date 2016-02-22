@@ -430,7 +430,7 @@ class Pay337
      * <total_amount>1</total_amount>
      * </xml>
      */
-    public function sendredpack($nonce_str, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id,$act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl)
+    public function sendredpack($nonce_str, $mch_billno, $nick_name, $send_name, $re_openid, $total_amount, $min_value, $max_value, $total_num, $wishing, $client_ip, $act_id, $act_name, $remark, $logo_imgurl, $share_content, $share_url, $share_imgurl)
     {
         $postData = array();
         $postData["nonce_str"] = $nonce_str;
@@ -535,6 +535,7 @@ class Pay337
 
     public function returnResult($rst)
     {
+        $api_response_xml = $rst;
         $rst = Helpers::xmlToArray($rst);
         if (! empty($rst['return_code'])) {
             if ($rst['return_code'] == 'FAIL') {
@@ -543,6 +544,7 @@ class Pay337
                 if ($rst['result_code'] == 'FAIL') {
                     throw new \Exception($rst['err_code'] . ":" . $rst['err_code_des']);
                 } else {
+                    $rst['api_response_xml'] = $api_response_xml;
                     return $rst;
                 }
             }
