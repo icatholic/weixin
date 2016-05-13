@@ -466,6 +466,159 @@ class Pay337
     }
 
     /**
+     * 使用说明
+     * 用于商户对已发放的红包进行查询红包的具体信息，可支持普通红包和裂变包。
+     * 接口调用请求说明
+     * 请求Url https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo
+     * 是否需要证书 是（证书及使用说明详见商户证书）
+     * 请求方式 POST
+     * 请求参数
+     * 字段名 字段 必填 示例值 类型 说明
+     * 随机字符串 nonce_str 是 5K8264ILTKCH16CQ2502SI8ZNMTM67VS String(32) 随机字符串，不长于32位
+     * 签名 sign 是 C380BEC2BFD727A4B6845133519F3AD6 String(32) 详见签名生成算法
+     * 商户订单号 mch_billno 是 10000098201411111234567890 String(28) 商户发放红包的商户订单号
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * Appid appid 是 wxe062425f740d30d8 String(32) 微信分配的公众账号ID（企业号corpid即为此appId），接口传入的所有appid应该为公众号的appid（在mp.weixin.qq.com申请的），不能为APP的appid（在open.weixin.qq.com申请的）。
+     * 订单类型 bill_type 是 MCHT String(32) MCHT:通过商户订单号获取红包信息。
+     * 数据示例：
+     *
+     * <xml>
+     * <sign><![CDATA[E1EE61A91C8E90F299DE6AE075D60A2D]]></sign>
+     * <mch_billno><![CDATA[0010010404201411170000046545]]></mch_billno>
+     * <mch_id><![CDATA[10000097]]></mch_id>
+     * <appid><![CDATA[wxe062425f740c30d8]]></appid>
+     * <bill_type><![CDATA[MCHT]]></ bill_type>
+     * <nonce_str><![CDATA[50780e0cca98c8c8e814883e5caa672e]]></nonce_str>
+     * </xml>
+     * 返回参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 返回状态码 return_code 是 SUCCESS String(16) SUCCESS/FAIL
+     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
+     * 返回信息 return_msg 否 签名失败 String(128) 返回信息，如非空，为错误原因
+     * 签名失败
+     * 参数格式校验错误
+     * 以下字段在return_code为SUCCESS的时候有返回
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 签名 sign 是 C380BEC2BFD727A4B6845133519F3AD6 String(32) 详见签名生成算法
+     * 业务结果 result_code 是 SUCCESS String(16) SUCCESS/FAIL
+     * 错误代码 err_code 否 SYSTEMERROR String(32) 错误码信息
+     * 错误代码描述 err_code_des 否 系统错误 String(128) 结果信息描述
+     * 以下字段在return_code 和result_code都为SUCCESS的时候有返回
+     *
+     * 字段名 变量名 必填 示例值 类型 描述
+     * 商户订单号 mch_billno 是 10000098201411111234567890 String(28) 商户使用查询API填写的商户单号的原路返回
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 红包单号 detail_id 是 1000000000201503283103439304 String(32) 使用API发放现金红包时返回的红包单号
+     * 红包状态 status 是 RECEIVED string(16) SENDING:发放中
+     * SENT:已发放待领取
+     * FAILED：发放失败
+     * RECEIVED:已领取
+     * REFUND:已退款
+     * 发放类型 send_type 是 API String(32) API:通过API接口发放
+     * UPLOAD:通过上传文件方式发放
+     * ACTIVITY:通过活动方式发放
+     * 红包类型 hb_type 是 GROUP String(32) GROUP:裂变红包
+     * NORMAL:普通红包
+     * 红包个数 total_num 是 1 int 红包个数
+     * 红包金额 total_amount 是 5000 int 红包总金额（单位分）
+     * 失败原因 reason 否 余额不足 String(32) 发送失败原因
+     * 红包发送时间 send_time 是 2015-04-21 20:00:00 String(32)
+     * 红包退款时间 refund_time 否 2015-04-21 23:03:00 String(32) 红包的退款时间（如果其未领取的退款）
+     * 红包退款金额 refund_amount 否 8000 Int 红包退款金额
+     * 祝福语 wishing 否 新年快乐 String(128) 祝福语
+     * 活动描述 remark 否 新年红包 String(256) 活动描述，低版本微信可见
+     * 活动名称 act_name 否 新年红包 String(32) 发红包的活动名称
+     * 裂变红包领取列表 hblist 否 内容如下表 裂变红包的领取列表
+     * 领取红包的Openid openid 是 ohO4GtzOAAYMp2yapORH3dQB3W18 String(32) 领取红包的openid
+     * 金额 amount 是 100 int 领取金额
+     * 接收时间 rcv_time 是 2015-04-21 20:00:00 String(32) 领取红包的时间
+     * 成功示例：
+     *
+     * <xml>
+     * <return_code><![CDATA[SUCCESS]]></return_code>
+     * <return_msg><![CDATA[获取成功]]></return_msg>
+     * <result_code><![CDATA[SUCCESS]]></result_code>
+     * <mch_id>10000098</mch_id>
+     * <appid><![CDATA[wxe062425f740c30d8]]></appid>
+     * <detail_id><![CDATA[1000000000201503283103439304]]></detail_id>
+     * <mch_billno><![CDATA[1000005901201407261446939628]]></mch_billno>
+     * <status><![CDATA[RECEIVED]]></status>
+     * <send_type><![CDATA[API]]></send_type>
+     * <hb_type><![CDATA[GROUP]]></hb_type>
+     * <total_num>4</total_num>
+     * <total_amount>650</total_amount>
+     * <send_time><![CDATA[2015-04-21 20:00:00]]></send_time>
+     * <wishing><![CDATA[开开心心]]></wishing>
+     * <remark><![CDATA[福利]]></remark>
+     * <act_name><![CDATA[福利测试]]></act_name>
+     * <hblist>
+     * <hbinfo>
+     * <openid><![CDATA[ohO4GtzOAAYMp2yapORH3dQB3W18]]></openid>
+     * <status><![CDATA[RECEIVED]]></status>
+     * <amount>1</amount>
+     * <rcv_time><![CDATA[2015-04-21 20:00:00]]></rcv_time>
+     * </hbinfo>
+     * <hbinfo>
+     * <openid><![CDATA[ohO4GtzOAAYMp2yapORH3dQB3W17]]></openid>
+     * <status><![CDATA[RECEIVED]]></status>
+     * <amount>1</amount>
+     * <rcv_time><![CDATA[2015-04-21 20:00:00]]></rcv_time>
+     * </hbinfo>
+     * <hbinfo>
+     * <openid><![CDATA[ohO4GtzOAAYMp2yapORH3dQB3W16]]></openid>
+     * <status><![CDATA[RECEIVED]]></status>
+     * <amount>1</amount>
+     * <rcv_time><![CDATA[2015-04-21 20:00:00]]></rcv_time>
+     * </hbinfo>
+     * <hbinfo>
+     * <openid><![CDATA[ohO4GtzOAAYMp2yapORH3dQB3W15]]></openid>
+     * <status><![CDATA[RECEIVED]]></status>
+     * <amount>1</amount>
+     * <rcv_time><![CDATA[2015-04-21 20:00:00]]></rcv_time>
+     * </hbinfo>
+     * </hblist>
+     * </xml>
+     * 失败示例：
+     *
+     * <xml>
+     * <return_code><![CDATA[FAIL]]></return_code>
+     * <return_msg><![CDATA[指定单号数据不存在]]></return_msg>
+     * <result_code><![CDATA[FAIL]]></result_code>
+     * <err_code><![CDATA[SYSTEMERROR]]></err_code>
+     * <err_code_des><![CDATA[指定单号数据不存在]]></err_code_des>
+     * <mch_id>666</mch_id>
+     * <mch_billno><![CDATA[1000005901201407261446939688]]></mch_billno>
+     * </xml>
+     * 5.错误码
+     * 错误代码 描述 解决方案
+     * CA_ERROR 请求未携带证书，或请求携带的证书出错 到商户平台下载证书，请求带上证书后重试。
+     * SIGN_ERROR 商户签名错误 按文档要求重新生成签名后再重试。
+     * NO_AUTH 没有权限 请联系微信支付开通api权限
+     * NOT_FOUND 指定单号数据不存在 查询单号对应的数据不存在，请使用正确的商户订单号查询
+     * FREQ_LIMIT 受频率限制 请对请求做频率控制
+     * XML_ERROR 请求的xml格式错误，或者post的数据为空 检查请求串，确认无误后重试
+     * PARAM_ERROR 参数错误 请查看err_code_des，修改设置错误的参数
+     * SYSTEMERROR 系统繁忙，请再试。 红包系统繁忙。
+     */
+    public function gethbinfo($nonce_str, $mch_billno, $bill_type = 'MCHT')
+    {
+        $postData = array();
+        $postData["nonce_str"] = $nonce_str;
+        $postData["mch_billno"] = $mch_billno;
+        $postData["mch_id"] = $this->getMchid();
+        $postData["appid"] = $this->getAppId();
+        $postData["bill_type"] = $bill_type;
+        $sign = $this->getSign($postData);
+        $postData["sign"] = $sign;
+        $xml = Helpers::arrayToXml($postData);
+        $options = array();
+        $options['cert'] = $this->getCert();
+        $options['ssl_key'] = $this->getCertKey();
+        $rst = $this->post($this->_url . 'mmpaymkttransfers/gethbinfo', $xml, $options);
+        return $this->returnResult($rst);
+    }
+
+    /**
      * Sign签名生成方法
      *
      * @param array $para            
