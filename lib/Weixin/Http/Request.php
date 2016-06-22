@@ -63,7 +63,27 @@ class Request
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+
+    public function get2($url, $params = array())
+    {
+        if ($url == 'sns/userinfo') {
+            $client = new Client($this->_snsBaseUrl);
+        } else {
+            $client = new Client($this->_serviceBaseUrl);
+        }
+        $params['access_token'] = $this->_accessToken;
+        $request = $client->get($url, array(), array(
+            'query' => $params
+        ));
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->getBody(true);
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -87,7 +107,7 @@ class Request
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -111,7 +131,7 @@ class Request
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -150,7 +170,7 @@ class Request
         
         $response = $request->send();
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -189,7 +209,7 @@ class Request
         
         $response = $request->send();
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -229,7 +249,7 @@ class Request
         
         $response = $request->send();
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -259,7 +279,7 @@ class Request
         
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -294,7 +314,7 @@ class Request
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -318,7 +338,7 @@ class Request
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -409,7 +429,7 @@ class Request
         
         $response = $request->send();
         if ($response->isSuccessful()) {
-            return $response->json();
+            return $this->getJson($response); // $response->json();
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -478,5 +498,13 @@ class Request
         if (! empty($this->_tmp)) {
             unlink($this->_tmp);
         }
+    }
+
+    private function getJson($response)
+    {
+        $body = $response->getBody(true);        
+        $body = substr(str_replace('\"', '"', json_encode($body)), 1, - 1);
+        $response->setBody($body);
+        return $response->json();
     }
 }
