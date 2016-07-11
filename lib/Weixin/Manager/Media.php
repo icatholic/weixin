@@ -76,6 +76,13 @@ class Media
         return $this->_request->mediaPost('http://file.api.weixin.qq.com/cgi-bin/media/uploadvideo', $video);
     }
     
+	public function uploadImg($img)
+    {
+        $options = array();
+        $options['fieldName'] = 'media';
+        return $this->_request->uploadFile('https://api.weixin.qq.com/cgi-bin/', 'media/uploadimg', $img);
+    }
+	
     public function __destruct()
     {}
 }
