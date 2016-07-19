@@ -292,12 +292,12 @@ class BaseInfo
      * 否
      */
     public $promotion_url_name_type = NULL;
-
-    public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info, Sku $sku)
+	
+    public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info=NULL, Sku $sku=NULL)
     {
-        if (! $date_info instanceof DateInfo)
+        if ($this->isNotNull($date_info) && ! $date_info instanceof DateInfo)
             exit("date_info Error");
-        if (! $sku instanceof Sku)
+        if ($this->isNotNull($sku) && ! $sku instanceof Sku)
             exit("sku Error");
         
         $this->logo_url = $logo_url;
@@ -311,6 +311,17 @@ class BaseInfo
         $this->sku = $sku;
     }
 
+	public static function getEmptyBaseInfo()
+	{
+		$objBase = new BaseInfo(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+		$objBase->set_get_custom_code_mode(NULL);
+		$objBase->set_use_custom_code(NULL);
+		$objBase->set_bind_openid(NULL);
+		$objBase->set_can_share(NULL);
+		$objBase->set_can_give_friend(NULL);
+		return $objBase;
+	}
+	
     public function set_sub_title($sub_title)
     {
         $this->sub_title = $sub_title;

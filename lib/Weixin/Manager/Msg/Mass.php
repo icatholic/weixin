@@ -157,7 +157,7 @@ class Mass
      * @param array $card_ext
      * @return array
      */
-    public function sendWxcardByGroup($group_id, $card_id, array $card_ext)
+    public function sendWxcardByGroup($group_id, $card_id, array $card_ext=array())
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
@@ -166,7 +166,9 @@ class Mass
         }
         $ret['msgtype'] = 'wxcard';
         $ret['wxcard']['card_id'] = $card_id;
-        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+		if(!empty($card_ext)){
+			$ret['wxcard']['card_ext'] = json_encode($card_ext);
+		}        
         return $this->sendAll($ret);
     }
     
@@ -291,13 +293,15 @@ class Mass
      * @param array $card_ext
      * @return array
      */
-    public function sendWxcardByOpenid(array $toUsers, $card_id, array $card_ext)
+    public function sendWxcardByOpenid(array $toUsers, $card_id, array $card_ext=array())
     {
         $ret = array();
         $ret['touser'] = $toUsers;
         $ret['msgtype'] = 'wxcard';
         $ret['wxcard']['card_id'] = $card_id;
-        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+		if(!empty($card_ext)){
+			$ret['wxcard']['card_ext'] = json_encode($card_ext);
+		}
         return $this->send($ret);
     }
     
