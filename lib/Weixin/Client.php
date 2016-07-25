@@ -348,6 +348,16 @@ class Client
      */
     public function rst($rst)
     {
+        if (isset($rst['errcode'])) {
+            switch ($rst['errcode']) {
+                case 40001:
+                case 40014:
+                case 42001:
+                case 42007:
+                    $GLOBALS['__WEIXIN_ACCESS_TOKEN_INVALID__'] = true;
+                    break;
+            }
+        }
         return $rst;
     }
 
