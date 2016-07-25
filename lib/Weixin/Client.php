@@ -349,7 +349,7 @@ class Client
     public function rst($rst)
     {
         if (isset($rst['errcode'])) {
-            switch ($rst['errcode']) {
+            switch (intval($rst['errcode'])) {
                 case 40001:
                 case 40014:
                 case 42001:
