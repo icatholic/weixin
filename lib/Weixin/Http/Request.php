@@ -504,6 +504,7 @@ class Request
     {
         $body = $response->getBody(true);        
         $body = substr(str_replace('\"', '"', json_encode($body)), 1, - 1);
+		$body = stripcslashes($body);
         $response->setBody($body);
         return $response->json();
     }
