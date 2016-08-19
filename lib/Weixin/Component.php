@@ -29,7 +29,7 @@ class Component
     /**
      * 获取请求对象
      *
-     * @return \Weixin\Http\Request
+     * @return \Weixin\Http\Request2
      */
     protected function getRequest()
     {
