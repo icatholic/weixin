@@ -32,7 +32,7 @@ class WXBizMsgCrypt
 
     /**
      * 构造函数
-     * 
+     *
      * @param $token string
      *            公众平台上，开发者设置的token
      * @param $encodingAesKey string
@@ -40,7 +40,7 @@ class WXBizMsgCrypt
      * @param $appId string
      *            公众平台的appId
      */
-    public function WXBizMsgCrypt($token, $encodingAesKey, $appId)
+    public function __construct($token, $encodingAesKey, $appId)
     {
         $this->token = $token;
         $this->encodingAesKey = $encodingAesKey;

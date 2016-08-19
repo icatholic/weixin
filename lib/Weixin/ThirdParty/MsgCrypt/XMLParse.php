@@ -26,8 +26,8 @@ class XMLParse
             $xml->loadXML($xmltext);
             $array_e = $xml->getElementsByTagName('Encrypt');
             $array_a = $xml->getElementsByTagName('ToUserName');
-            $encrypt = $array_e->item(0)->nodeValue;
-            $tousername = $array_a->item(0)->nodeValue;
+            $encrypt = empty($array_e) || empty($array_e->length) ? '' : $array_e->item(0)->nodeValue;
+            $tousername = empty($array_a) || empty($array_a->length) ? '' : $array_a->item(0)->nodeValue;
             return array(
                 0,
                 $encrypt,
