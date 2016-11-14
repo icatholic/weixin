@@ -502,10 +502,15 @@ class Request
 
     private function getJson($response)
     {
-        $body = $response->getBody(true);        
-        $body = substr(str_replace('\"', '"', json_encode($body)), 1, - 1);
-		$body = stripcslashes($body);
-        $response->setBody($body);
-        return $response->json();
+        $body = $response->getBody(true);
+        $result = json_decode($body, true);
+        if (empty($result)) {
+            $body = substr(str_replace('\"', '"', json_encode($body)), 1, - 1);
+            $body = stripcslashes($body);
+            $response->setBody($body);
+            return $response->json();
+        } else {
+            return $result;
+        }
     }
 }
