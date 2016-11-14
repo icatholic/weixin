@@ -23,6 +23,7 @@ use Weixin\Manager\Card;
 use Weixin\Manager\Ip;
 use Weixin\Manager\Datacube;
 use Weixin\Manager\Poi;
+use Weixin\Manager\Material;
 
 class Client
 {
@@ -257,6 +258,16 @@ class Client
         return new Poi($this);
     }
 
+	/**
+     * 获取素材-永久素材管理器
+     *
+     * @return \Weixin\Manager\Material
+     */
+    public function getMaterialManager()
+    {
+        return new Material($this);
+    }
+	
     /**
      * 设置用户授权的token信息
      *
