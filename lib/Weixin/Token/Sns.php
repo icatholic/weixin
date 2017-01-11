@@ -28,7 +28,7 @@ class Sns
         if (empty($secret)) {
             throw new Exception('请设定$secret');
         }
-        
+        $this->_state = uniqid();
         $this->_appid = $appid;
         $this->_secret = $secret;
         
@@ -132,6 +132,23 @@ class Sns
     {
         $response = file_get_contents("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={$this->_appid}&grant_type=refresh_token&refresh_token={$refreshToken}", false, $this->_context);
         $response = json_decode($response, true);
+        return $response;
+    }
+
+    /**
+     * code 换取 session_key
+     *
+     * @throws Exception
+     * @return array
+     */
+    public function getJscode2session($js_code)
+    {
+        if (empty($js_code)) {
+            throw new Exception('js_code不能为空');
+        }
+        $response = file_get_contents("https://api.weixin.qq.com/sns/jscode2session?appid={$this->_appid}&secret={$this->_secret}&js_code={$js_code}&grant_type=authorization_code", false, $this->_context);
+        $response = json_decode($response, true);
+        
         return $response;
     }
 
