@@ -436,24 +436,24 @@ class Pay337
         $postData["nonce_str"] = $nonce_str;
         $postData["mch_billno"] = $mch_billno;
         $postData["mch_id"] = $this->getMchid();
-        $postData["sub_mch_id"] = $this->getSubMchId();
+        // $postData["sub_mch_id"] = $this->getSubMchId();
         $postData["wxappid"] = $this->getAppId();
-        $postData["nick_name"] = $nick_name;
+        // $postData["nick_name"] = $nick_name;
         $postData["send_name"] = $send_name;
         $postData["re_openid"] = $re_openid;
         $postData["total_amount"] = $total_amount;
-        $postData["min_value"] = $min_value;
-        $postData["max_value"] = $max_value;
+        // $postData["min_value"] = $min_value;
+        // $postData["max_value"] = $max_value;
         $postData["total_num"] = $total_num;
         $postData["wishing"] = $wishing;
         $postData["client_ip"] = $client_ip;
-        $postData["act_id"] = $act_id;
+        // $postData["act_id"] = $act_id;
         $postData["act_name"] = $act_name;
         $postData["remark"] = $remark;
-        $postData["logo_imgurl"] = $logo_imgurl;
-        $postData["share_content"] = $share_content;
-        $postData["share_url"] = $share_url;
-        $postData["share_imgurl"] = $share_imgurl;
+        // $postData["logo_imgurl"] = $logo_imgurl;
+        // $postData["share_content"] = $share_content;
+        // $postData["share_url"] = $share_url;
+        // $postData["share_imgurl"] = $share_imgurl;
         
         $sign = $this->getSign($postData);
         $postData["sign"] = $sign;
@@ -615,6 +615,426 @@ class Pay337
         $options['cert'] = $this->getCert();
         $options['ssl_key'] = $this->getCertKey();
         $rst = $this->post($this->_url . 'mmpaymkttransfers/gethbinfo', $xml, $options);
+        return $this->returnResult($rst);
+    }
+
+    /**
+     * 发放代金券
+     * 接口请求链接
+     * https://api.mch.weixin.qq.com/mmpaymkttransfers/send_coupon
+     * 是否需要证书
+     * 请求需要双向证书。 详见证书使用
+     * 请求参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 代金券批次id coupon_stock_id 是 1757 String 代金券批次id
+     * openid记录数 openid_count 是 1 int openid记录数（目前支持num=1）
+     * 商户单据号 partner_trade_no 是 1000009820141203515766 String 商户此次发放凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性
+     * 用户openid openid 是 onqOjjrXT-776SpHnfexGm1_P7iE String Openid信息
+     * 公众账号ID appid 是 wx5edab3bdfba3dc1c String(32) 微信分配的公众账号ID（企业号corpid即为此appId）
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 操作员 op_user_id 否 10000098 String(32) 操作员帐号, 默认为商户号
+     * 可在商户平台配置操作员对应的api权限
+     * 设备号 device_info 否 String(32) 微信支付分配的终端设备号
+     * 随机字符串 nonce_str 是 1417574675 String(32) 随机字符串，不长于32位
+     * 签名 sign 是 841B3002FE2220C87A2D08ABD8A8F791 String(32) 签名，具体参见3.2.1
+     * 协议版本 version 否 1.0 String(32) 默认1.0
+     * 协议类型 type 否 XML String(32) XML【目前仅支持默认XML】
+     * 请求参数示例：
+     *
+     * <xml>
+     * <appid> wx5edab3bdfba3dc1c</appid>
+     * <coupon_stock_id>1757</coupon_stock_id>
+     * <mch_id>10010405</mch_id>
+     * <nonce_str>1417574675</nonce_str>
+     * <openid>onqOjjrXT-776SpHnfexGm1_P7iE</openid>
+     * <openid_count>1</openid_count>
+     * <partner_trade_no>1000009820141203515766</partner_trade_no>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * </xml>
+     * CURL请求带证书代码样例：
+     *
+     * curl --cert 10010405.pem --key 10010405.key -H
+     * "Content-Type：text/xml" -d
+     * '<xml><mch_id>10010405</mch_id><appid>121512345</appid><nonce_str>1417582740</nonce_str><coupon_stock_id>1757</coupon_stock_id><openid_count>1</openid_count><openid>onqOjjrXT-776SpHnfexGm1_P7iE</openid><partner_trade_no>121512345456</partner_trade_no></xml>' https://api.mch.weixin.qq.com/secapi/promotion/send_coupon/ -i
+     * 返回参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 返回状态码 return_code 是 SUCCESS或者FAIL String(16)
+     * SUCCESS/FAIL
+     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
+     * 返回信息 return_msg 否 成功：返回空” String(128) 返回信息，如非空，为通信错误原因
+     * 公众账号ID appid 是 wx5edab3bdfba3dc1c String(32) 微信分配的公众账号ID（企业号corpid即为此appId）
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 设备号 device_info 否 123456sb String(32) 微信支付分配的终端设备号，
+     * 随机字符串 nonce_str 是 1417574675 String(32) 随机字符串，不长于32位
+     * 签名 sign 是 841B3002FE2220C87A2D08ABD8A8F791 String(32) 请具体参见3.2.1
+     * 业务结果 result_code 是 SUCCESS或者FAIL String(16) SUCCESS/FAIL
+     * 错误代码 err_code 否 十进制表示 String(32) 详见业务错误代码章节
+     * 错误代码描述 err_code_des 否 错误描述信息 String(128) 结果信息描述
+     * 代金券批次id coupon_stock_id 是 1757 String 用户在商户appid下的唯一标识
+     * 返回记录数 resp_count 是 1 Int 返回记录数
+     * 成功记录数 success_count 是 1或者0 Int 成功记录数
+     * 失败记录数 failed_count 是 1或者0 Int 失败记录数
+     * 用户标识 openid 是 onqOjjrXT-776SpHnfexGm1_P7iE String 用户在商户appid下的唯一标识
+     * 返回码 ret_code 是 SUCCESS或者FAILED String 返回码，SUCCESS/FAILED
+     * 代金券id coupon_id 是 1870 String
+     * 对一个用户成功发放代金券则返回代金券id，即ret_code为SUCCESS的时候；
+     * 如果ret_code为FAILED则填写空串""
+     * 返回信息 ret_msg 是 失败描述信息，例如：“用户已达领用上限” String 返回信息，当返回码是FAILED的时候填写，否则填空串“”
+     * 返回参数示例：
+     * 成功示例格式：
+     *
+     * <xml>
+     * <return_code>SUCCESS</return_code>
+     * <appid>wx5edab3bdfba3dc1c</appid>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417579335</nonce_str>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * <result_code>SUCCESS</result_code>
+     * <coupon_stock_id>1717</coupon_stock_id>
+     * <resp_count>1</resp_count>
+     * <success_count>1</success_count>
+     * <failed_count>0</failed_count>
+     * <openid>onqOjjrXT-776SpHnfexGm1_P7iE</openid>
+     * <ret_code>SUCCESS</ret_code>
+     * <coupon_id>6954</coupon_id>
+     * </xml>
+     * 失败示例格式：
+     * <xml>
+     * <return_code>SUCCESS</return_code>
+     * <appid>wx5edab3bdfba3dc1c</appid>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417579335</nonce_str>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * <result_code>FAIL</result_code>
+     * <err_code>268456007</err_code>
+     * <err_code_des>你已领取过该代金券</err_code_des>
+     * <coupon_stock_id>1717</coupon_stock_id>
+     * <resp_count>1</resp_count>
+     * <success_count>0</success_count>
+     * <failed_count>1</failed_count>
+     * <openid>onqOjjrXT-776SpHnfexGm1_P7iE</openid>
+     * <ret_code>FAIL</ret_code>
+     * <ret_msg>你已领取过该代金券<ret_msg/>
+     * <coupon_id></coupon_id>
+     * </xml>
+     * 错误码
+     * 错误代码 描述 解决方案
+     * USER_AL_GET_COUPON 你已领取过该代金券 用户已领过，正常逻辑报错
+     * NETWORK ERROR 网络环境不佳，请重试 请重试
+     * AL_STOCK_OVER 活动已结束 活动已结束，属于正常逻辑错误
+     * FREQ_OVER_LIMIT 超过发放频率限制，请稍后再试 请求对发放请求做频率控制
+     * PARAM_ERROR 校验参数错误（会返回具体哪个参数错误） 根据错误提示确认参数无误并更正
+     * SIGN_ERROR 签名错误 验证签名有误，参见3.2.1
+     * CA_ERROR 证书有误 确认证书正确，或者联系商户平台更新证书
+     * REQ_PARAM_XML_ERR 输入参数xml格式有误 检查入参的xml格式是否正确
+     * COUPON_STOCK_ID_EMPTY 批次ID为空 确保批次id正确传入
+     * MCH_ID_EMPTY 商户ID为空 确保商户id正确传入
+     * CODE_2_ID_ERR 商户id有误 检查商户id是否正确并合法
+     * OPEN_ID_EMPTY 用户openid为空 检查用户openid是否正确并合法
+     * ERR_VERIFY_SSL_SERIAL 获取客户端证书序列号失败! 检查证书是否正确
+     * ERR_VERIFY_SSL_SN 获取客户端证书特征名称(DN)域失败! 检查证书是否正确
+     * CA_VERIFY_FAILED 证书验证失败 检查证书是否正确
+     * STOCK_IS_NOT_VALID 抱歉，该代金券已失效
+     */
+    public function sendcoupon($openid, $coupon_stock_id, $partner_trade_no, $nonce_str, $openid_count = 1, $op_user_id = "", $device_info = "", $version = "1.0", $type = "XML")
+    {
+        $postData = array();
+        $postData["coupon_stock_id"] = $coupon_stock_id;
+        $postData["openid_count"] = $openid_count;
+        $postData["partner_trade_no"] = $partner_trade_no;
+        $postData["openid"] = $openid;
+        $postData["appid"] = $this->getAppId();
+        $postData["mch_id"] = $this->getMchid();
+        $postData["op_user_id"] = $op_user_id;
+        $postData["device_info"] = $device_info;
+        $postData["nonce_str"] = $nonce_str;
+        $postData["version"] = $version;
+        $postData["type"] = $type;
+        
+        $sign = $this->getSign($postData);
+        $postData["sign"] = $sign;
+        $xml = Helpers::arrayToXml($postData);
+        $options = array();
+        $options['cert'] = $this->getCert();
+        $options['ssl_key'] = $this->getCertKey();
+        $rst = $this->post($this->_url . 'mmpaymkttransfers/send_coupon', $xml, $options);
+        return $this->returnResult($rst);
+    }
+
+    /**
+     * 查询代金券批次
+     * 接口请求链接
+     * https://api.mch.weixin.qq.com/mmpaymkttransfers/query_coupon_stock
+     * 是否需要证书
+     * 不需要。
+     * 请求参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 代金券批次id coupon_stock_id 是 1757 String 代金券批次id
+     * 公众账号ID appid 是 wx5edab3bdfba3dc1c String(32) 微信分配的公众账号ID（企业号corpid即为此appId）
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 操作员 op_user_id 否 10000098 String(32) 操作员帐号, 默认为商户号
+     * 可在商户平台配置操作员对应的api权限
+     * 设备号 device_info 否 String(32) 微信支付分配的终端设备号
+     * 随机字符串 nonce_str 是 1417574675 String(32) 随机字符串，不长于32位
+     * 签名 sign 是 841B3002FE2220C87A2D08ABD8A8F791 String(32) 签名，详见签名生成算法
+     * 协议版本 version 否 1.0 String(32) 默认1.0
+     * 协议类型 type 否 XML String(32) XML【目前仅支持默认XML】
+     * 请求参数示例：
+     *
+     * <xml>
+     * <appid>121512345</appid>
+     * <coupon_stock_id>1757</coupon_stock_id>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417575000</nonce_str>
+     * <sign>BBB998301C99F96F41E6EA727ADFC45D</sign>
+     * </xml>
+     * 返回参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 返回状态码 return_code 是 SUCCESS或者FAIL String(16) SUCCESS/FAIL
+     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
+     * 返回信息 return_msg 否 成功：返回空” String(128) 返回信息，如非空，为通信错误原因
+     * 公众账号ID appid 是 wx5edab3bdfba3dc1c String(32) 微信分配的公众账号ID
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 设备号 device_info 否 123456sb String(32) 微信支付分配的终端设备号，
+     * 随机字符串 nonce_str 是 1417574675 String(32) 随机字符串，不长于32位
+     * 签名 sign 是 841B3002FE2220C87A2D08ABD8A8F791 String(32) 签名，详见签名生成算法
+     * 业务结果 result_code 是 SUCCESS或者FAIL String(16) SUCCESS/FAIL
+     * 错误代码 err_code 否 COUPON_STOCK_ID_NOT_VALID String(32) 详见业务错误代码章节
+     * 错误代码描述 err_code_des 否 错误描述信息 String(128) 结果信息描述
+     * 代金券批次ID coupon_stock_id 是 1757 String 代金券批次Id
+     * 代金券名称 coupon_name 否 测试代金券 String 代金券名称
+     * 代金券面额 coupon_value 是 5 Unsinged int 代金券面值,单位是分
+     * 代金券使用最低限额 coupon_mininumn 否 10 Unsinged int 代金券使用最低限额,单位是分
+     * 代金券类型 coupon_type 是 1 int 代金券类型：1-代金券无门槛，2-代金券有门槛互斥，3-代金券有门槛叠加，
+     * 代金券批次状态 coupon_stock_status 是 4 int 批次状态： 1-未激活；2-审批中；4-已激活；8-已作废；16-中止发放；
+     * 代金券数量 coupon_total 是 100 Unsigned int 代金券数量
+     * 代金券最大领取数量 max_quota 否 1 Unsigned int 代金券每个人最多能领取的数量, 如果为0，则表示没有限制
+     * 代金券锁定数量 locked_num 否 0 Unsigned int 代金券锁定数量
+     * 代金券已使用数量 used_num 否 0 Unsigned int 代金券已使用数量
+     * 代金券已经发送的数量 is_send_num 否 0 Unsigned int 代金券已经发送的数量
+     * 生效开始时间 begin_time 是 1943787483 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 生效结束时间 end_time 是 1943787490 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 创建时间 create_time 是 1943787420 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 代金券预算额度 coupon_budget 否 500 Unsigned int 代金券预算额度
+     * 返回参数示例：
+     * 成功示例
+     *
+     * <return_code>SUCCESS</return_code>
+     * <appid>wx5edab3bdfba3dc1c</appid>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417583379</nonce_str>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * <result_code>SUCCESS</result_code>
+     * <coupon_stock_id>1717</coupon_stock_id>
+     * <coupon_value>5</coupon_value>
+     * <coupon_mininumn>10</coupon_mininumn>
+     * <coupon_type>1</coupon_type>
+     * <coupon_stock_status>4</coupon_stock_status>
+     * <coupon_total>100</coupon_total>
+     * <begin_time>1943787483</begin_time>
+     * <end_time>1943787490</end_time>
+     * <create_time>1943787420</create_time>
+     * <coupon_budget>500</coupon_budget>
+     * </xml>
+     * 失败示例
+     *
+     * <xml>
+     * <return_code>SUCCESS</return_code>
+     * <appid>wx5edab3bdfba3dc1c</appid>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417583379</nonce_str>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * <result_code>SUCCESS</result_code>
+     * <err_code>268456007</err_code>
+     * <err_code_des>批次ID信息不正确</err_code_des>
+     * <coupon_stock_id>1717</coupon_stock_id>
+     * </xml>
+     * 错误码
+     * 错误代码 描述 解决方案
+     * COUPON_STOCK_ID_NOT_VALID 批次id不正确 确认批次id正确性，以及和商户id所属关系是否正确
+     * SIGN_ERROR 签名错误 验证签名有误，参见3.2.1
+     * REQ_PARAM_XML_ERR 输入参数xml格式有误 检查入参的xml格式是否正确
+     * COUPON_STOCK_ID_EMPTY 批次ID为空 确保批次id正确传入
+     * MCH_ID_EMPTY 商户ID为空 确保商户id正确传入
+     * CODE_2_ID_ERR 商户id有误 检查商户id是否正确并合法
+     * GET_COUPON_STOCK_FAIL 获取批次信息失败 确认批次id信息正确
+     * COUPON_STOCK_NOT_FOUND 批次信息不存在 确认批次id信息正确
+     */
+    public function querycouponstock($coupon_stock_id, $nonce_str, $op_user_id = "", $device_info = "", $version = "1.0", $type = "XML")
+    {
+        $postData = array();
+        $postData["coupon_stock_id"] = $coupon_stock_id;
+        $postData["appid"] = $this->getAppId();
+        $postData["mch_id"] = $this->getMchid();
+        
+        $postData["op_user_id"] = $op_user_id;
+        $postData["device_info"] = $device_info;
+        $postData["nonce_str"] = $nonce_str;
+        $postData["version"] = $version;
+        $postData["type"] = $type;
+        
+        $sign = $this->getSign($postData);
+        $postData["sign"] = $sign;
+        $xml = Helpers::arrayToXml($postData);
+        $options = array();
+        // $options['cert'] = $this->getCert();
+        // $options['ssl_key'] = $this->getCertKey();
+        $rst = $this->post($this->_url . 'mmpaymkttransfers/query_coupon_stock', $xml, $options);
+        return $this->returnResult($rst);
+    }
+
+    /**
+     * 查询代金券信息
+     * 接口请求链接
+     * https://api.mch.weixin.qq.com/mmpaymkttransfers/querycouponsinfo
+     * 请求参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 代金券id coupon_id 是 1565 String 代金券id
+     * 用户标识 openid 是 onqOjjrXT-776SpHnfexGm1_P7iE String 用户在商户appid下的唯一标识
+     * 公众账号ID appid 是 wx5edab3bdfba3dc1c String(32) 微信分配的公众账号ID
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 批次号 stock_id 是 58818 String(32) 代金劵对应的批次号
+     * 操作员 op_user_id 否 10000098 String(32) 操作员帐号, 默认为商户号
+     * 可在商户平台配置操作员对应的api权限
+     * 设备号 device_info 否 String(32) 微信支付分配的终端设备号
+     * 随机字符串 nonce_str 是 1417574675 String(32) 随机字符串，不长于32位
+     * 签名 sign 是 841B3002FE2220C87A2D08ABD8A8F791 String(32) 签名，详见签名生成算法
+     * 协议版本 version 否 1.0 String(32) 默认1.0
+     * 协议类型 type 否 XML String(32) XML【目前仅支持默认XML】
+     * 请求参数示例：
+     *
+     * <xml>
+     * <appid>121512345</appid>
+     * <coupon_id>121512345456</coupon_id>
+     * <mch_id>10010405</mch_id>
+     * <nonce_str>1417575784</nonce_str>
+     * <openid>onqOjjrXT-776SpHnfexGm1_P7iE</openid>
+     * <sign>16F1415792512A5C340170B35F6C60E6</sign>
+     * </xml>
+     * 返回参数
+     * 字段名 变量名 必填 示例值 类型 说明
+     * 返回状态码 return_code 是 SUCCESS或者FAIL String(16) SUCCESS/FAIL
+     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
+     * 返回信息 return_msg 否 成功：返回空” String(128) 返回信息，如非空，为通信错误原因
+     * 公众账号ID appid 是 wx5edab3bdfba3dc1c String(32) 微信分配的公众账号ID
+     * 商户号 mch_id 是 10000098 String(32) 微信支付分配的商户号
+     * 子商户号 sub_mch_id 否 10000098 String(32) 微信支付分配的子商户号，受理模式下必填
+     * 设备号 device_info 否 123456sb String(32) 微信支付分配的终端设备号，
+     * 随机字符串 nonce_str 是 1417574675 String(32) 随机字符串，不长于32位
+     * 签名 sign 是 841B3002FE2220C87A2D08ABD8A8F791 String(32) 签名，详见签名生成算法
+     * 业务结果 result_code 是 SUCCESS或者FAIL String(16) SUCCESS/FAIL
+     * 错误代码 err_code 否 十进制表示 String(32) 详见业务错误代码章节
+     * 错误代码描述 err_code_des 否 错误描述信息 String(128) 结果信息描述
+     * 批次ID coupon_stock_id 是 1567 String 代金券批次Id
+     * 批次类型 coupon_stock_type 是 1 int 批次类型；1-批量型，2-触发型
+     * 代金券id coupon_id 是 4242 String 代金券id
+     * 代金券面额 coupon_value 是 4 Unsinged int 代金券面值,单位是分
+     * 代金券使用门槛 coupon_mininum 是 10 Unsinged int 代金券使用最低限额,单位是分
+     * 代金券名称 coupon_name 是 测试代金券 String 代金券名称
+     * 代金券状态 coupon_state 是 2 int 代金券状态：2-已激活，4-已锁定，8-已实扣
+     * 代金券类型 coupon_type 是 1 int 代金券类型：1-代金券无门槛，2-代金券有门槛互斥，3-代金券有门槛叠加，
+     * 代金券描述 coupon_desc 是 微信支付-代金券 String 代金券描述
+     * 实际优惠金额 coupon_use_value 是 0 Unsinged int 代金券实际使用金额
+     * 优惠剩余可用额 coupon_remain_value 是 4 Unsinged int 代金券剩余金额：部分使用情况下，可能会存在券剩余金额
+     * 生效开始时间 begin_time 是 1943787483 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 生效结束时间 end_time 是 1943787484 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 发放时间 send_time 是 1943787420 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 使用时间 use_time 否 1943787483 String 格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+     * 使用单号 trade_no 否 20091227091010 String 代金券使用后，关联的大单收单单号
+     * 消耗方商户id consumer_mch_id 否 10000098 String 代金券使用后，消耗方商户id
+     * 消耗方商户名称 consumer_mch_name 否 测试商户 String 代金券使用后，消耗方商户名称
+     * 消耗方商户appid consumer_mch_appid 否 wx5edab3bdfba3dc1c String 代金券使用后，消耗方商户appid
+     * 发放来源 send_source 是 1 String 代金券发放来源:JIFA-即发即用 NORMAL-普通发劵 FULL_SEND-满送活动送劵 SCAN_CODE-扫码领劵 OZ-刮奖领劵 AJUST-对账调账
+     * 是否允许部分使用 is_partial_use 否 1 String 该代金券是否允许部分使用标识：1-表示支持部分使用
+     * 返回参数示例：
+     * 成功示例
+     *
+     * <xml>
+     * <return_code>SUCCESS</return_code>
+     * <appid>wx5edab3bdfba3dc1c</appid>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417586982</nonce_str>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * <result_code>SUCCESS</result_code>
+     * <coupon_stock_id>1717</coupon_stock_id>
+     * <coupon_stock_type>1</coupon_stock_type>
+     * <coupon_id>1442</coupon_id>
+     * <coupon_value>5</coupon_value>
+     * <coupon_mininum>10</coupon_mininum>
+     * <coupon_name>测试代金券</coupon_name>
+     * <coupon_state>2</coupon_state>
+     * <coupon_type>1</coupon_type>
+     * <coupon_desc>微信支付-代金券</coupon_desc>
+     * <coupon_use_value>0</coupon_use_value>
+     * <coupon_remain_value>5</coupon_remain_value>
+     * <begin_time>1943787483</begin_time>
+     * <end_time>1943787484</end_time>
+     * <send_time>1943787420</send_time>
+     * <send_source>1</send_source>
+     * </xml>
+     * 失败示例
+     *
+     * <xml>
+     * <return_code>SUCCESS</return_code>
+     * <appid>wx5edab3bdfba3dc1c</appid>
+     * <mch_id>10000098</mch_id>
+     * <nonce_str>1417586982</nonce_str>
+     * <sign>841B3002FE2220C87A2D08ABD8A8F791</sign>
+     * <result_code>SUCCESS</result_code>
+     * <err_code>268456007</err_code>
+     * <err_code_des>你已领取过包</err_code_des>
+     * <coupon_stock_id>1717</coupon_stock_id>
+     * <coupon_stock_type>1</coupon_stock_type>
+     * <coupon_id>1442</coupon_id>
+     * <coupon_value>5</coupon_value>
+     * <coupon_mininum>10</coupon_mininum>
+     * <coupon_name>测试代金券</coupon_name>
+     * <coupon_state>2</coupon_state>
+     * <coupon_type>1</coupon_type>
+     * <coupon_desc>微信支付-代金券</coupon_desc>
+     * <coupon_use_value>0</coupon_use_value>
+     * <coupon_remain_value>5</coupon_remain_value>
+     * <begin_time>1943787483</begin_time>
+     * <end_time>1943787484</end_time>
+     * <send_time>1943787420</send_time>
+     * <send_source>1</send_source>
+     * </xml>
+     * 错误码
+     * 错误代码 描述 解决方案
+     * COUPON_NOT_FOUND 券没有查找成功 确认券id、用户openid的正确性
+     * SIGN_ERROR 签名错误 验证签名有误，参见3.2.1
+     * COUPON_STOCK_ID_NOT_VALID 批次id不正确 确认批次id正确性以及和商户id的所属关系是否正确
+     * REQ_PARAM_XML_ERR 输入的参数xml格式有误 检查输入的xml格式是否正确
+     * COUPON_STOCK_ID_EMPTY 批次id为空 确认批次id正确传入
+     * MCH_ID_EMPTY 商户id为空 确认商户id正确传入
+     * CODE_2_ID_ERR 商户id有误 确认商户id是否正确并合法
+     * GET_COUPON_STOCK_FAIL 获取批次信息失败 确认批次id信息正确
+     * COUPON_STOCK_NOT_FOUND 批次信息不存在 确认批次id信息正确
+     * NETWORKERROR 网络环境不佳,请重试 请重试
+     */
+    public function querycouponsinfo($openid, $coupon_id, $stock_id, $nonce_str, $op_user_id = "", $device_info = "", $version = "1.0", $type = "XML")
+    {
+        $postData = array();
+        $postData["coupon_id"] = $coupon_id;
+        $postData["openid"] = $openid;
+        $postData["stock_id"] = $stock_id;
+        
+        $postData["appid"] = $this->getAppId();
+        $postData["mch_id"] = $this->getMchid();
+        
+        $postData["op_user_id"] = $op_user_id;
+        $postData["device_info"] = $device_info;
+        $postData["nonce_str"] = $nonce_str;
+        $postData["version"] = $version;
+        $postData["type"] = $type;
+        
+        $sign = $this->getSign($postData);
+        $postData["sign"] = $sign;
+        $xml = Helpers::arrayToXml($postData);
+        $options = array();
+        // $options['cert'] = $this->getCert();
+        // $options['ssl_key'] = $this->getCertKey();
+        $rst = $this->post($this->_url . 'mmpaymkttransfers/querycouponsinfo', $xml, $options);
         return $this->returnResult($rst);
     }
 
