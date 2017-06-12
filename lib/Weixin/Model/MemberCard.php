@@ -98,6 +98,18 @@ class MemberCard extends CardBase
     public $custom_cell2 = NULL;
 
     /**
+     * 高级自定义字段
+     * @var unknown
+     */
+    public $advanced_info = NULL;
+
+    /***
+     * 商家自定义会员卡背景图
+     * @var unknown
+     */
+    public $background_pic_url = NULL;
+    
+    /**
      * activate_url
      * 激活会员卡的url，与“bind_old_card_url”字段二选一必填。
      * 否
@@ -169,6 +181,100 @@ class MemberCard extends CardBase
         $this->custom_cell2 = $custom_cell2;
     }
 
+    /**
+     * 创建优惠券特有的高级字段
+     *
+     * @param string $accept_category            
+     * @param string $reject_category            
+     * @param string $can_use_with_other_discount            
+     */
+    public function set_advanced_info($accept_category = '', $reject_category = '', $can_use_with_other_discount = true)
+    {
+        if (! empty($accept_category)) {
+            $this->advanced_info['use_condition']['accept_category'] = $accept_category;
+        }
+        if (! empty($reject_category)) {
+            $this->advanced_info['use_condition']['reject_category'] = $reject_category;
+        }
+        if (! empty($accept_category) || ! empty($reject_category)) {
+            $this->advanced_info['use_condition']['can_use_with_other_discount'] = $can_use_with_other_discount;
+        }
+    }
+
+    /**
+     * 封面摘要结构体名称
+     *
+     * @param string $abstract
+     *            封面摘要简介。
+     * @param array $icon_url_list
+     *            封面图片列表，仅支持填入一个封面图片链接，上传图片接口上传获取图片获得链接，填写非CDN链接会报错，并在此填入。建议图片尺寸像素850*350
+     */
+    public function set_abstract($abstract = '', $icon_url_list = array())
+    {
+        if (! empty($abstract)) {
+            $this->advanced_info['abstract']['abstract'] = $abstract;
+        }
+        if (! empty($icon_url_list)) {
+            $this->advanced_info['abstract']['icon_url_list'] = $icon_url_list;
+        }
+    }
+
+    /**
+     * 图文列表，显示在详情内页，优惠券券开发者须至少传入一组图文列表
+     *
+     * @param array $text_image_list
+     *            [ {
+     *            "image_url": "http://mmbiz.qpic.cn/mmbiz/p98FjXy8LacgHxp3sJ3vn97bGLz0ib0Sfz1bjiaoOYA027iasqSG0sjpiby4vce3AtaPu6cIhBHkt6IjlkY9YnDsfw/0",
+     *            "text": "此菜品精选食材，以独特的烹饪方法，最大程度地刺激食 客的味蕾"
+     *            } ]
+     */
+    public function set_text_image_list($text_image_list = array())
+    {
+        $this->advanced_info['text_image_list'] = $text_image_list;
+    }
+
+    /**
+     * 使用时段限制
+     *
+     * @param array $time_limit
+     *            [ {
+     *            "type": "MONDAY",
+     *            "begin_hour":0,
+     *            "end_hour":10,
+     *            "begin_minute":10,
+     *            "end_minute":59
+     *            } ]
+     *            
+     */
+    public function set_time_limit($time_limit = array())
+    {
+        $this->advanced_info['time_limit'] = $time_limit;
+    }
+
+    /**
+     * 商家服务类型：
+     * BIZ_SERVICE_DELIVER 外卖服务；
+     * BIZ_SERVICE_FREE_PARK 停车位；
+     * BIZ_SERVICE_WITH_PET 可带宠物；
+     * BIZ_SERVICE_FREE_WIFI 免费wifi，
+     * 可多选
+     *
+     * @param array $business_service            
+     */
+    public function set_business_service($business_service = array())
+    {
+        $this->advanced_info['business_service'] = $business_service;
+    }
+
+    /**
+     * 卡面设计请遵循微信会员卡自定义背景设计规范  ,像素大小控制在1000像素*600像素以下
+     * @param unknown $background_pic_url
+     */
+    public function set_background_pic_url($background_pic_url)
+    {
+        $this->background_pic_url = $background_pic_url;
+    }
+    
     protected function getParams()
     {
         $params = array();
@@ -213,6 +319,12 @@ class MemberCard extends CardBase
         }
         if ($this->isNotNull($this->custom_cell2)) {
             $params['custom_cell2'] = $this->custom_cell2->getParams();
+        }
+        if ($this->isNotNull($this->advanced_info)) {
+            $params['advanced_info'] = $this->advanced_info;
+        }
+        if ($this->isNotNull($this->background_pic_url)) {
+            $params['background_pic_url'] = $this->background_pic_url;
         }
         return $params;
     }
