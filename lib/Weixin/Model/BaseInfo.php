@@ -96,6 +96,13 @@ class BaseInfo
     public $location_id_list = NULL;
 
     /**
+     * use_all_locations
+     * 会员卡是否支持全部门店，填写后商户门店更新时会自动同步至卡券
+     * 否 bool
+     */
+    public $use_all_locations = true;
+
+    /**
      * use_custom_code
      * 是否自定义code 码。填写true或false，不填代表默认为false。（该权限申请及说明详见Q&A)
      * 否
@@ -188,7 +195,7 @@ class BaseInfo
     /**
      * center_title
      * 否
-     * string（18）	立即使用
+     * string（18） 立即使用
      * 卡券顶部居中的按钮，仅在卡券状态正常(可以核销)时显示，建议开发者设置此按钮时code_type选择CODE_TYPE_NONE类型。
      */
     public $center_title = NULL;
@@ -196,7 +203,7 @@ class BaseInfo
     /**
      * center_sub_title
      * 否
-     * string（24）	立即享受优惠
+     * string（24） 立即享受优惠
      * 显示在入口下方的提示语，仅在卡券状态正常(可以核销)时显示。
      */
     public $center_sub_title = NULL;
@@ -204,7 +211,7 @@ class BaseInfo
     /**
      * center_url
      * 否
-     * string（128）	www.xxx.com
+     * string（128） www.xxx.com
      * 顶部居中的url，仅在卡券状态正常(可以核销)时显示。
      */
     public $center_url = NULL;
@@ -292,8 +299,8 @@ class BaseInfo
      * 否
      */
     public $promotion_url_name_type = NULL;
-	
-    public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info=NULL, Sku $sku=NULL)
+
+    public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info = NULL, Sku $sku = NULL)
     {
         if ($this->isNotNull($date_info) && ! $date_info instanceof DateInfo)
             exit("date_info Error");
@@ -311,17 +318,17 @@ class BaseInfo
         $this->sku = $sku;
     }
 
-	public static function getEmptyBaseInfo()
-	{
-		$objBase = new BaseInfo(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-		$objBase->set_get_custom_code_mode(NULL);
-		$objBase->set_use_custom_code(NULL);
-		$objBase->set_bind_openid(NULL);
-		$objBase->set_can_share(NULL);
-		$objBase->set_can_give_friend(NULL);
-		return $objBase;
-	}
-	
+    public static function getEmptyBaseInfo()
+    {
+        $objBase = new BaseInfo(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        $objBase->set_get_custom_code_mode(NULL);
+        $objBase->set_use_custom_code(NULL);
+        $objBase->set_bind_openid(NULL);
+        $objBase->set_can_share(NULL);
+        $objBase->set_can_give_friend(NULL);
+        return $objBase;
+    }
+
     public function set_sub_title($sub_title)
     {
         $this->sub_title = $sub_title;
@@ -332,6 +339,11 @@ class BaseInfo
         $this->location_id_list = $location_id_list;
     }
 
+    public function set_use_all_locations($use_all_locations)
+    {
+        $this->use_all_locations = $use_all_locations;
+    }
+    
     public function set_use_custom_code($use_custom_code)
     {
         $this->use_custom_code = $use_custom_code;
@@ -499,6 +511,9 @@ class BaseInfo
         }
         if ($this->isNotNull($this->location_id_list)) {
             $params['location_id_list'] = $this->location_id_list;
+        }
+        if ($this->isNotNull($this->use_all_locations)) {
+            $params['use_all_locations'] = $this->use_all_locations;
         }
         if ($this->isNotNull($this->use_custom_code)) {
             $params['use_custom_code'] = $this->use_custom_code;
