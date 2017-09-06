@@ -1160,7 +1160,7 @@ class Pay337
      * XML_FORMAT_ERROR XML格式错误 XML格式错误 请检查XML参数格式是否正确
      * FREQUENCY_LIMITED 频率限制 2个月之前的订单申请退款有频率限制 该笔退款未受理，请降低频率后重试
      */
-    public function refund($nonce_str, $transaction_id, $out_trade_no, $out_refund_no, $total_fee, $refund_fee, $sign_type = 'md5', $refund_fee_type = 'CNY', $refund_desc = '', $refund_account = '')
+    public function refund($nonce_str, $transaction_id, $out_trade_no, $out_refund_no, $total_fee, $refund_fee, $sign_type = 'MD5', $refund_fee_type = 'CNY', $refund_desc = '', $refund_account = '')
     {
         $postData = array();
         $postData["appid"] = $this->getAppId();
@@ -1175,6 +1175,7 @@ class Pay337
         $postData["refund_fee_type"] = $refund_fee_type;
         $postData["refund_desc"] = $refund_desc;
         $postData["refund_account"] = $refund_account;
+        // $postData["op_user_id"] = $this->getMchid();
         
         $sign = $this->getSign($postData);
         $postData["sign"] = $sign;
