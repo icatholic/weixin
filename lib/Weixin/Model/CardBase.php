@@ -4,7 +4,7 @@ namespace Weixin\Model;
 /**
  * 卡的基类
  */
-abstract class CardBase
+abstract class CardBase extends Base
 {
 
     public static $CARD_TYPE = Array(
@@ -18,7 +18,8 @@ abstract class CardBase
         "MOVIE_TICKET" => "MOVIE_TICKET",
         "BOARDING_PASS" => "BOARDING_PASS",
         "LUCKY_MONEY" => "LUCKY_MONEY",
-        "MEETING_TICKET" => "MEETING_TICKET"
+        "MEETING_TICKET" => "MEETING_TICKET",
+        "GENERAL_CARD" => "GENERAL_CARD"
     );
 
     /**
@@ -37,12 +38,6 @@ abstract class CardBase
     {
         $this->base_info = $base_info;
         $this->card_id = $base_info->card_id;
-    }
-
-    protected function getParams()
-    {
-        $params = array();
-        return $params;
     }
 
     public function getParams4Create()
@@ -68,10 +63,5 @@ abstract class CardBase
             $params[$this->create_key][$key] = $value;
         }
         return $params;
-    }
-
-    protected function isNotNull($var)
-    {
-        return ! is_null($var);
     }
 }

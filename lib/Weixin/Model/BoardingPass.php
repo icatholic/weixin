@@ -112,7 +112,7 @@ class BoardingPass extends CardBase
         $this->air_model = $air_model;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         

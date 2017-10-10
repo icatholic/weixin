@@ -275,7 +275,7 @@ class MemberCard extends CardBase
         $this->background_pic_url = $background_pic_url;
     }
     
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         if ($this->isNotNull($this->supply_bonus)) {

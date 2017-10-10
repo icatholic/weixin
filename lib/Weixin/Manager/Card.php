@@ -1646,8 +1646,8 @@ class Card
      * http://api.weixin.qq.com/card/code/getdepositcount?access_token=ACCESS_TOKEN
      * 请求参数说明
      *
-     * 参数	是否必须	说明
-     * access_token	是	调用接口凭证
+     * 参数 是否必须 说明
+     * access_token 是 调用接口凭证
      * 请POST数据
      *
      * 数据示例
@@ -1658,8 +1658,8 @@ class Card
      *
      * 字段说明：
      *
-     * 字段	说明	是否必填
-     * cardid	进行导入code的卡券ID。	是
+     * 字段 说明 是否必填
+     * cardid 进行导入code的卡券ID。 是
      * 返回数据说明
      *
      * 返回示例：
@@ -1672,10 +1672,10 @@ class Card
      *
      * 字段说明：
      *
-     * 字段	说明
-     * errcode	错误码，0为正常。
-     * errmsg	错误信息。
-     * count	已经成功存入的code数目。
+     * 字段 说明
+     * errcode 错误码，0为正常。
+     * errmsg 错误信息。
+     * count 已经成功存入的code数目。
      */
     public function codeGetDepositCount($card_id)
     {
@@ -1898,9 +1898,9 @@ class Card
      * https://api.weixin.qq.com/card/paycell/set?access_token=TOKEN
      * 参数说明
      *
-     * 参数	是否必须	说明
-     * access_token	是	调用接口凭证
-     * POST数据	是	Json数据
+     * 参数 是否必须 说明
+     * access_token 是 调用接口凭证
+     * POST数据 是 Json数据
      * POST数据
      *
      * {
@@ -1909,9 +1909,9 @@ class Card
      * }
      * 字段说明
      *
-     * 字段名	说明
-     * cardid	卡券ID。
-     * is_open	是否开启买单功能，填true/false
+     * 字段名 说明
+     * cardid 卡券ID。
+     * is_open 是否开启买单功能，填true/false
      * 返回数据
      *
      * {
@@ -1920,9 +1920,9 @@ class Card
      * }
      * 字段说明
      *
-     * 字段名	说明
-     * 错误码	错误码，0为正常；43008为商户没有开通微信支付权限或者没有在商户后台申请微信买单功能；
-     * errmsg	错误信息
+     * 字段名 说明
+     * 错误码 错误码，0为正常；43008为商户没有开通微信支付权限或者没有在商户后台申请微信买单功能；
+     * errmsg 错误信息
      */
     public function paycellSet($card_id, $is_open = false)
     {
@@ -1962,16 +1962,16 @@ class Card
      * https://api.weixin.qq.com/card/mpnews/gethtml?access_token=TOKEN
      * 参数说明
      *
-     * 参数	是否必须	说明
-     * POST数据	是	Json数据
-     * access_token	是	调用接口凭证
+     * 参数 是否必须 说明
+     * POST数据 是 Json数据
+     * access_token 是 调用接口凭证
      * POST数据
      *
      * {
      * "card_id":"p1Pj9jr90_SQRaVqYI239Ka1erkI"
      * }
-     * 参数名	必填	类型	示例值	描述
-     * cardid	否	string(32)	pFS7Fjg8kV1IdDz01r4SQwMkuCKc	卡券ID。
+     * 参数名 必填 类型 示例值 描述
+     * cardid 否 string(32) pFS7Fjg8kV1IdDz01r4SQwMkuCKc 卡券ID。
      * 返回数据
      *
      * 数据示例：
@@ -1981,10 +1981,10 @@ class Card
      * "errmsg":"ok",
      * "content":"<iframeclass=\"res_iframecard_iframejs_editor_card\"data-src=\"http: \/\/mp.weixin.qq.com\/bizmall\/appmsgcard?action=show&biz=MjM5OTAwODk4MA%3D%3D&cardid=p1Pj9jnXTLf2nF7lccYScFUYqJ0&wechat_card_js=1#wechat_redirect\">"
      * }
-     * 参数名	描述
-     * errcode	错误码
-     * errmsg	错误信息
-     * content	返回一段html代码，可以直接嵌入到图文消息的正文里。即可以把这段代码嵌入到上传图文消息素材接口中的content字段里。
+     * 参数名 描述
+     * errcode 错误码
+     * errmsg 错误信息
+     * content 返回一段html代码，可以直接嵌入到图文消息的正文里。即可以把这段代码嵌入到上传图文消息素材接口中的content字段里。
      */
     public function mpnewsGetHtml($card_id)
     {
@@ -2009,9 +2009,9 @@ class Card
      * https://api.weixin.qq.com/card/landingpage/create?access_token=$TOKEN
      * 请求参数说明
      *
-     * 参数	是否必须	说明
-     * access_token	是	调用接口凭证
-     * buffer	是	文件的数据流
+     * 参数 是否必须 说明
+     * access_token 是 调用接口凭证
+     * buffer 是 文件的数据流
      * POST数据
      *
      * {
@@ -2032,17 +2032,17 @@ class Card
      * }
      * 参数说明：
      *
-     * 字段	说明	是否必填
-     * banner	页面的banner图片链接，须调用，建议尺寸为640*300。	是
-     * title	页面的title。	是
-     * can_share	页面是否可以分享,填入true/false	是
-     * scene	投放页面的场景值；
-     * SCENE_NEAR_BY 附近 SCENE_MENU	自定义菜单 SCENE_QRCODE	二维码 SCENE_ARTICLE	公众号文章 SCENE_H5	h5页面 SCENE_IVR	自动回复 SCENE_CARD_CUSTOM_CELL	卡券自定义cell
+     * 字段 说明 是否必填
+     * banner 页面的banner图片链接，须调用，建议尺寸为640*300。 是
+     * title 页面的title。 是
+     * can_share 页面是否可以分享,填入true/false 是
+     * scene 投放页面的场景值；
+     * SCENE_NEAR_BY 附近 SCENE_MENU 自定义菜单 SCENE_QRCODE 二维码 SCENE_ARTICLE 公众号文章 SCENE_H5 h5页面 SCENE_IVR 自动回复 SCENE_CARD_CUSTOM_CELL 卡券自定义cell
      *
      * 是
-     * cardlist	卡券列表，每个item有两个字段	是
-     * cardid	所要在页面投放的cardid	是
-     * thumb_url	缩略图url	是
+     * cardlist 卡券列表，每个item有两个字段 是
+     * cardid 所要在页面投放的cardid 是
+     * thumb_url 缩略图url 是
      * 返回数据说明
      *
      * {
@@ -2053,11 +2053,11 @@ class Card
      * }
      * 字段说明：
      *
-     * 字段	说明
-     * errcode	错误码，0为正常。
-     * errmsg	错误信息。
-     * url	货架链接。
-     * page_id	货架ID。货架的唯一标识。
+     * 字段 说明
+     * errcode 错误码，0为正常。
+     * errmsg 错误信息。
+     * url 货架链接。
+     * page_id 货架ID。货架的唯一标识。
      */
     public function landingpageCreate($banner, $title, $can_share, $scene, array $cardlist)
     {
@@ -2082,18 +2082,18 @@ class Card
      * https://api.weixin.qq.com/card/user/getcardlist?access_token=TOKEN
      * 参数说明
      *
-     * 参数	是否必须	说明
-     * POST数据	是	Json数据
-     * access_token	是	调用接口凭证
+     * 参数 是否必须 说明
+     * POST数据 是 Json数据
+     * access_token 是 调用接口凭证
      * POST数据
      *
      * {
      * "openid": "12312313",
      * "card_id": "xxxxxxxxxx"
      * }
-     * 参数名	必填	类型	示例值	描述
-     * openid	是	string(64)	1231231	需要查询的用户openid
-     * card_id	否	string(32)	pFS7Fjg8kV1IdDz01xxxxx	卡券ID。不填写时默认查询当前appid下的卡券。
+     * 参数名 必填 类型 示例值 描述
+     * openid 是 string(64) 1231231 需要查询的用户openid
+     * card_id 否 string(32) pFS7Fjg8kV1IdDz01xxxxx 卡券ID。不填写时默认查询当前appid下的卡券。
      * 返回数据
      *
      * 数据示例：
@@ -2106,10 +2106,10 @@ class Card
      * {"code": "xxx1434079155", "card_id": "xxxxxxxxxx"}
      * ]
      * }
-     * 参数名	描述
-     * errcode	错误码
-     * errmsg	错误信息
-     * card_list	卡券列表
+     * 参数名 描述
+     * errcode 错误码
+     * errmsg 错误信息
+     * card_list 卡券列表
      */
     public function userGetcardlist($openid, $card_id = '')
     {
@@ -2119,6 +2119,352 @@ class Card
             $params['card_id'] = $card_id;
         }
         $rst = $this->_request->payPost('card/user/getcardlist', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 9.2.2.2设置支付后开票功能
+     * 设置支付后开票信息
+     *
+     * 接口说明
+     * 商户可以通过该接口设置某个商户号发生收款后在支付消息上出现开票授权按钮。
+     * 请求
+     * url：
+     * https://api.weixin.qq.com/card/invoice/setbizattr?action=set_pay_mch&access_token={access_token}
+     * 请求方法：POST
+     * 请求参数
+     * 数据格式：JSON
+     * 参数 类型 是否必填 描述
+     * paymch_info Object 是 授权页字段
+     * paymch_info包含以下字段：
+     * 参数 类型 是否必填 描述
+     * mchid String 是 微信支付商户号
+     * s_pappid String 是 开票平台id，需要找开票平台提供
+     * 返回参数
+     * 数据格式：JSON
+     * 参数 类型 是否必填 描述
+     * errcode Int 是 错误码
+     * errmsg String 是 错误信息
+     *
+     * 示例
+     * 请求：
+     * {
+     * "paymch_info": {
+     * "mchid": "1234",
+     * "s_pappid": "wxabcd"
+     * }
+     * }
+     * 返回：
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok"
+     * }
+     */
+    public function setPaymch4InvoiceSetbizattr(\Weixin\Model\Invoice\PaymchInfo $paymch_info)
+    {
+        $params = array();
+        $params['paymch_info'] = $paymch_info->getParams();
+        $rst = $this->_request->payPost("card/invoice/setbizattr?action=set_pay_mch", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 查询支付后开票信息接口
+     *
+     * 请求
+     * url：
+     * https://api.weixin.qq.com/card/invoice/setbizattr?action=get_pay_mch&access_token={access_token}
+     * 请求方法：POST
+     * 请求参数
+     * 数据格式：JSON
+     * 数据为空，传{}
+     * 返回参数
+     * 数据格式：JSON
+     * 参数 类型 是否必填 描述
+     * errcode Int 是 错误码
+     * errmsg String 是 错误信息
+     * 当错误码为0是，有以下信息：
+     * 参数 类型 是否必填 描述
+     * paymch_info Object 否 授权页字段
+     * paymch_info包含以下字段：
+     * 参数 类型 是否必填 描述
+     * mchid String 是 微信支付商户号
+     * s_pappid String 是 开票平台id，需要找开票平台提供
+     * 示例
+     * 请求：
+     * {}
+     * 返回：
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok",
+     * "paymch_info": {
+     * "mchid": "1234",
+     * "s_pappid": "wxabcd"
+     * }
+     * }
+     */
+    public function getPaymch4InvoiceSetbizattr(\Weixin\Model\Invoice\PaymchInfo $paymch_info)
+    {
+        $params = array();
+        $params['paymch_info'] = $paymch_info->getParams();
+        $rst = $this->_request->payPost("card/invoice/setbizattr?action=get_pay_mch", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 9.2.2.3 设置开票页面信息接口
+     *
+     * 设置授权页字段信息接口
+     *
+     * 使用说明
+     * 商户可以通过该接口设置用户授权时应该填写的内容
+     * 请求说明
+     * url：
+     * https://api.weixin.qq.com/card/invoice/setbizattr?action=set_auth_field&access_token={access_token}
+     * 请求方法：POST
+     * 请求参数
+     * 数据格式：JSON
+     * 参数 类型 是否必填 描述
+     * auth_field Object 是 授权页字段
+     * auth_field包含以下字段：
+     * 参数 类型 是否必填 描述
+     * user_field Object 是 授权页个人发票字段
+     * biz_field Object 是 授权页单位发票字段
+     * user_field包含以下字段：
+     * 参数 类型 是否必填 描述
+     * show_title Int 否 是否填写抬头，0为否，1为是
+     * show_phone Int 否 是否填写电话号码，0为否，1为是
+     * show_email Int 否 是否填写邮箱，0为否，1为是
+     * custom_field Object 否 自定义字段
+     * biz_field包含以下字段：
+     * 参数 类型 是否必填 描述
+     * show_title Int 否 是否填写抬头，0为否，1为是
+     * show_tax_no Int 否 是否填写税号，0为否，1为是
+     * show_addr Int 否 是否填写单位地址，0为否，1为是
+     * show_phone Int 否 是否填写电话号码，0为否，1为是
+     * show_bank_type Int 否 是否填写开户银行，0为否，1为是
+     * show_bank_no Int 否 是否填写银行帐号，0为否，1为是
+     * custom_field Object 否 自定义字段
+     * custom_field为list，每个对象包含以下字段：
+     * 参数 类型 是否必填 描述
+     * key String 是 自定义字段名称，最长5个字
+     * 返回参数
+     * 数据格式：JSON
+     * 参数 类型 是否必填 描述
+     * errcode Int 是 错误码
+     * errmsg String 是 错误信息
+     * 示例
+     * 请求：
+     * {
+     * "auth_field": {
+     * "user_field": {
+     * "show_title": 1,
+     * "show_phone": 1,
+     * "show_email": 1,
+     * "custom_field": [{"key": "field1"}]
+     * },
+     * "biz_field": {
+     * "show_title": 1,
+     * "show_tax_no": 1,
+     * "show_addr": 1,
+     * "show_phone": 1,
+     * "show_bank_type": 1,
+     * "show_bank_no":1,
+     * "custom_field": [{"key": "field2"}]
+     * }
+     * }
+     * }
+     * 返回：
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok"
+     * }
+     * 备注
+     * 默认会显示个人发票的title和单位发票的title
+     */
+    public function setAuthField4InvoiceSetbizattr(\Weixin\Model\Invoice\AuthField $auth_field)
+    {
+        $params = array();
+        $params['auth_field'] = $auth_field->getParams();
+        $rst = $this->_request->payPost("card/invoice/setbizattr?action=set_auth_field", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 查询授权页字段信息接口
+     *
+     * 接口说明
+     * 开发者可以通过该接口查看授权页抬头的填写项。
+     * 请求说明
+     * url：
+     * https://api.weixin.qq.com/card/invoice/setbizattr?action=get_auth_field&access_token={access_token}
+     * 请求方法：POST
+     * 请求参数
+     * 数据格式：JSON
+     * 数据为空，传{}
+     * 返回参数
+     * 数据格式：JSON
+     * 参数 类型 是否必填 描述
+     * errcode Int 是 错误码
+     * errmsg String 是 错误信息
+     * 当错误码为0是，有以下信息：
+     * 参数 类型 是否必填 描述
+     * auth_field Object 是 授权页字段
+     * auth_field包含以下字段：
+     * 参数 类型 是否必填 描述
+     * user_field Object 否 授权页个人发票字段
+     * biz_field Object 否 授权页单位发票字段
+     * user_field包含以下字段：
+     * 参数 类型 是否必填 描述
+     * show_title Int 否 是否填写抬头，0为否，1为是
+     * show_phone Int 否 是否填写电话号码，0为否，1为是
+     * show_email Int 否 是否填写邮箱，0为否，1为是
+     * custom_field Object 否 自定义字段
+     * biz_field包含以下字段：
+     * 参数 类型 是否必填 描述
+     * show_title Int 否 是否填写抬头，0为否，1为是
+     * show_tax_no Int 否 是否填写税号，0为否，1为是
+     * show_addr Int 否 是否填写单位地址，0为否，1为是
+     * show_phone Int 否 是否填写电话号码，0为否，1为是
+     * show_bank_type Int 否 是否填写开户银行，0为否，1为是
+     * show_bank_no Int 否 是否填写银行帐号，0为否，1为是
+     * custom_field Object 否 自定义字段
+     * custom_field为list，每个对象包含以下字段：
+     * 参数 类型 是否必填 描述
+     * key String 是 自定义字段名称，最长5个字
+     * 请求示例
+     * 请求：
+     * {}
+     * 返回：
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok",
+     * "auth_field": {
+     * "user_field": {
+     * "show_title": 1,
+     * "show_phone": 1,
+     * "show_email": 1,
+     * "custom_field": [{"key": "field1"}]
+     * },
+     * "biz_field": {
+     * "show_title": 1,
+     * "show_tax_no": 1,
+     * "show_addr": 1,
+     * "show_phone": 1,
+     * "show_bank_type": 1,
+     * "show_bank_no": 1,
+     * "custom_field": [{"key": "field2"}]
+     * }
+     * }
+     * }
+     */
+    public function getAuthField4InvoiceSetbizattr(\Weixin\Model\Invoice\AuthField $auth_field)
+    {
+        $params = array();
+        $params['auth_field'] = $auth_field->getParams();
+        $rst = $this->_request->payPost("card/invoice/setbizattr?action=get_auth_field", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 9.2.2.5查询开票信息
+     * 接口说明
+     * 用户完成授权后，商户可以调用该接口查询某一个订单
+     * 请求格式
+     * URL: https://api.weixin.qq.com/card/invoice/getauthdata?access_token={access_token}
+     * 请求方法:POST
+     * 协议：HTTPS
+     * 请求参数
+     * 数据格式：POST
+     * 参数 类型 是否必填 描述
+     * order_id string 是 发票order_id
+     * s_appid String 是 发票平台的身份id
+     *
+     * 返回参数
+     * 数据格式：POST
+     * 参数 类型 是否必填 描述
+     * errcode Int 是 错误码
+     * errmsg String 是 错误信息
+     * 当错误码为0是，有以下信息：
+     * 参数 类型 描述
+     * invoice_status String 订单授权状态，见备注
+     * auth_time Int 授权时间，为十位时间戳（utc+8）
+     * user_auth_info JSON 用户授权信息结构体，仅在type=1时出现
+     * user_auth_info是一个JSON结构，包含以下结构
+     * 参数 类型 描述
+     * user_field JSON 个人类型发票的授权信息结构体
+     * biz_field JSON 单位类型发票的授权信息结构体
+     * title String 个人/单位抬头
+     * phone String 个人/单位联系电话
+     * email String 个人邮箱
+     * title String 单位抬头
+     * tax_no String 单位税号
+     * addr String 单位注册地址
+     * bank_type String 单位开户银行
+     * bank_no String 单位开户银行账号
+     * custom_field JSON 商户自定义信息结构体
+     * user_auth_info是一个JSON结构，包含以下结构
+     * 参数 类型 描述
+     * key String 商户自定义填写项名称
+     * value String 商户自定义填写项用户填写的信息
+     *
+     * 请求示例
+     * 请求参数
+     * {
+     * "s_pappid": "{s_pappid}",
+     * "order_id": "{order_id}"
+     * }
+     * 返回数据：
+     * 个人抬头：
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok",
+     * "invoice_status": "auth success",
+     * "auth_time": 1480342498,
+     * "user_auth_info": {
+     * "user_field": {
+     * "title": "Dhxhhx ",
+     * "phone": "5554545",
+     * "email": "dhxhxhhx@qq.cind",
+     * "custom_field": [
+     * {
+     * "key": "field1",
+     * "value": "管理理论"
+     * }
+     * ]
+     * }
+     * }
+     * }
+     * 单位抬头：
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok",
+     * "invoice_status": "auth success",
+     * "auth_time": 1480342897,
+     * "user_auth_info": {
+     * "biz_field": {
+     * "title": "王xx",
+     * "tax_no": "6464646766",
+     * "addr": "后过敏",
+     * "phone": "1557548768",
+     * "bank_type": "仔仔细细",
+     * "bank_no": "545454646",
+     * "custom_field": [
+     * {
+     * "key": "field2",
+     * "value": "哈哈哈啊"
+     * }
+     * ]
+     * }
+     * }
+     * }
+     */
+    public function invoiceGetauthdata($order_id, $s_appid)
+    {
+        $params = array();
+        $params['order_id'] = $order_id;
+        $params['s_appid'] = $s_appid;
+        $rst = $this->_request->payPost("card/invoice/getauthdata", $params);
         return $this->_client->rst($rst);
     }
 }

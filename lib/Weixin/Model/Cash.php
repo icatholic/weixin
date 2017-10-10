@@ -34,7 +34,7 @@ class Cash extends CardBase
         $this->least_cost = $least_cost;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         if ($this->isNotNull($this->least_cost)) {

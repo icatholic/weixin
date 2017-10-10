@@ -4,7 +4,7 @@ namespace Weixin\Model;
 /**
  * 基本的卡券数据
  */
-class BaseInfo
+class BaseInfo extends Base
 {
 
     /**
@@ -299,6 +299,36 @@ class BaseInfo
      * 否
      */
     public $promotion_url_name_type = NULL;
+    
+    // -----以下字段在礼品卡所用--------------
+    /**
+     * max_give_friend_times
+     * 礼品卡最大可赠送次数
+     * 是
+     */
+    public $max_give_friend_times = NULL;
+
+    /**
+     * giftcard_info price
+     * 礼品卡的价格，以分为单位
+     *
+     * @var GiftcardInfo
+     */
+    public $giftcard_info = NULL;
+
+    /**
+     * use_dynamic_code
+     * 是否使用动态码
+     * 否
+     */
+    public $use_dynamic_code = NULL;
+
+    /**
+     * need_push_on_view
+     * true为用户点击进入礼品卡时是否推送事件。
+     * 否
+     */
+    public $need_push_on_view = NULL;
 
     public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info = NULL, Sku $sku = NULL)
     {
@@ -343,7 +373,7 @@ class BaseInfo
     {
         $this->use_all_locations = $use_all_locations;
     }
-    
+
     public function set_use_custom_code($use_custom_code)
     {
         $this->use_custom_code = $use_custom_code;
@@ -475,6 +505,27 @@ class BaseInfo
     {
         $this->promotion_url_name_type = $promotion_url_name_type;
     }
+    
+    // -----以下字段礼品卡所用--------------
+    public function set_max_give_friend_times($max_give_friend_times)
+    {
+        $this->max_give_friend_times = $max_give_friend_times;
+    }
+
+    public function set_giftcard_info($giftcard_info)
+    {
+        $this->giftcard_info = $giftcard_info;
+    }
+
+    public function set_use_dynamic_code($use_dynamic_code)
+    {
+        $this->use_dynamic_code = $use_dynamic_code;
+    }
+
+    public function set_need_push_on_view($need_push_on_view)
+    {
+        $this->need_push_on_view = $need_push_on_view;
+    }
 
     public function getParams()
     {
@@ -590,11 +641,19 @@ class BaseInfo
         if ($this->isNotNull($this->promotion_url_name_type)) {
             $params['promotion_url_name_type'] = $this->promotion_url_name_type;
         }
+        // -----以下字段在礼品卡所用--------------
+        if ($this->isNotNull($this->max_give_friend_times)) {
+            $params['max_give_friend_times'] = $this->max_give_friend_times;
+        }
+        if ($this->isNotNull($this->giftcard_info)) {
+            $params['giftcard_info'] = $this->giftcard_info->getParams();
+        }
+        if ($this->isNotNull($this->use_dynamic_code)) {
+            $params['use_dynamic_code'] = $this->use_dynamic_code;
+        }
+        if ($this->isNotNull($this->need_push_on_view)) {
+            $params['need_push_on_view'] = $this->need_push_on_view;
+        }
         return $params;
-    }
-
-    protected function isNotNull($var)
-    {
-        return ! is_null($var);
     }
 }

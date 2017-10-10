@@ -22,7 +22,7 @@ class Discount extends CardBase
         $this->discount = $discount;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         if ($this->isNotNull($this->discount)) {

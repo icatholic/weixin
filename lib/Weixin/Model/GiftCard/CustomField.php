@@ -1,30 +1,24 @@
 <?php
-namespace Weixin\Model;
+namespace Weixin\Model\GiftCard;
+
+use Weixin\Model\Base;
 
 /**
- * 会员卡类型专属营销入口，会员卡激活前后均显示
+ * 自定义会员信息类目结构体
+ *
+ * @author Administrator
+ *        
  */
-class CustomCell extends Base
+class CustomField extends Base
 {
 
     /**
-     * name
-     * 入口名称
-     * 是
+     * name 自定义信息类目名称 是
      */
     public $name = NULL;
 
     /**
-     * tips
-     * 入口右侧提示语，6个汉字内
-     * 否
-     */
-    public $tips = NULL;
-
-    /**
-     * url
-     * 入口跳转链接
-     * 是
+     * url 自定义信息类目跳转链接 是
      */
     public $url = NULL;
 
@@ -34,19 +28,12 @@ class CustomCell extends Base
         $this->url = $url;
     }
 
-    public function set_tips($tips)
-    {
-        $this->tips = $tips;
-    }
-
     public function getParams()
     {
         $params = array();
+        
         if ($this->isNotNull($this->name)) {
             $params['name'] = $this->name;
-        }
-        if ($this->isNotNull($this->tips)) {
-            $params['tips'] = $this->tips;
         }
         if ($this->isNotNull($this->url)) {
             $params['url'] = $this->url;

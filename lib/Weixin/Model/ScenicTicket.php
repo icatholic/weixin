@@ -38,7 +38,7 @@ class ScenicTicket extends CardBase
         $this->guide_url = $guide_url;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         

@@ -34,7 +34,7 @@ class MeetingTicket extends CardBase
         $this->map_url = $map_url;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         

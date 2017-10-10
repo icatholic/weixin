@@ -25,7 +25,7 @@ class MovieTicket extends CardBase
         $this->detail = $detail;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         

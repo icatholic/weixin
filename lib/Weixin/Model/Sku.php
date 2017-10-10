@@ -4,7 +4,7 @@ namespace Weixin\Model;
 /**
  * 商品信息
  */
-class Sku
+class Sku extends Base
 {
 
     /**
@@ -31,10 +31,5 @@ class Sku
         }
         
         return $params;
-    }
-
-    protected function isNotNull($var)
-    {
-        return ! is_null($var);
     }
 }

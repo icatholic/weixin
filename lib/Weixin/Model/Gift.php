@@ -22,7 +22,7 @@ class Gift extends CardBase
         $this->gift = $gift;
     }
 
-    protected function getParams()
+    public function getParams()
     {
         $params = array();
         if ($this->isNotNull($this->gift)) {

@@ -24,6 +24,7 @@ use Weixin\Manager\Ip;
 use Weixin\Manager\Datacube;
 use Weixin\Manager\Poi;
 use Weixin\Manager\Material;
+use Weixin\Manager\Giftcard;
 
 class Client
 {
@@ -229,6 +230,16 @@ class Client
     }
 
     /**
+     * 获取礼品卡券接口管理器
+     *
+     * @return \Weixin\Manager\Giftcard
+     */
+    public function getGiftCardManager()
+    {
+        return new Giftcard($this);
+    }
+
+    /**
      * 获取微信服务器IP地址管理器
      *
      * @return \Weixin\Manager\Ip
@@ -258,7 +269,7 @@ class Client
         return new Poi($this);
     }
 
-	/**
+    /**
      * 获取素材-永久素材管理器
      *
      * @return \Weixin\Manager\Material
@@ -267,7 +278,7 @@ class Client
     {
         return new Material($this);
     }
-	
+
     /**
      * 设置用户授权的token信息
      *

@@ -4,7 +4,7 @@ namespace Weixin\Model;
 /**
  * 自定义会员信息类
  */
-class CustomField
+class CustomField extends Base
 {
 
     /**
@@ -43,10 +43,5 @@ class CustomField
             $params['url'] = $this->url;
         }
         return $params;
-    }
-
-    protected function isNotNull($var)
-    {
-        return ! is_null($var);
     }
 }

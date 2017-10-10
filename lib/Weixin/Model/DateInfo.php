@@ -4,7 +4,7 @@ namespace Weixin\Model;
 /**
  * 使用日期，有效期的信息
  */
-class DateInfo
+class DateInfo extends Base
 {
 
     /**
@@ -49,15 +49,15 @@ class DateInfo
             exit("DateInfo.type must be integer");
         
         $this->type = $type;
-        if ($type == 1)         // 固定日期区间
-        {
+        if ($type == 1) // 固定日期区间
+{
             if (! is_int($begin_timestamp) || ! is_int($end_timestamp))
                 exit("begin_timestamp and  end_timestamp must be integer");
             $this->begin_timestamp = $begin_timestamp;
             $this->end_timestamp = $end_timestamp;
         } else 
-            if ($type == 2)             // 固定时长（自领取后多少天内有效）
-            {
+            if ($type == 2) // 固定时长（自领取后多少天内有效）
+{
                 if (! is_int($fixed_term) || ! is_int($fixed_begin_term))
                     exit("fixed_term must be integer");
                 $this->fixed_term = $fixed_term;
@@ -87,10 +87,5 @@ class DateInfo
         }
         
         return $params;
-    }
-    
-    protected function isNotNull($var)
-    {
-        return ! is_null($var);
     }
 }
