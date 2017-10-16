@@ -479,6 +479,7 @@ class Card
      * 字段说明
      * code 要查询的序列号
      * card_id 要消耗序列号所述的card_id ， 生成券时use_custom_code 填写true 时必填。非自定义code 不必填写。
+     * is_expire_dynamic_code 是否查询过期动态码，设置该参数为true时，开发者可以查询到超时的动态码，用于处理因断网导致的积压订单。默认为false
      * 返回数据说明
      * 数据示例：
      * {
@@ -502,12 +503,15 @@ class Card
      *
      * @return mixed
      */
-    public function codeGet($code, $card_id = "")
+    public function codeGet($code, $card_id = "", $is_expire_dynamic_code = NULL)
     {
         $params = array();
         $params['code'] = $code;
         if (! empty($card_id)) {
             $params['card_id'] = $card_id;
+        }
+        if (! is_null($is_expire_dynamic_code)) {
+            $params['is_expire_dynamic_code'] = $is_expire_dynamic_code;
         }
         $rst = $this->_request->payPost('card/code/get', $params);
         return $this->_client->rst($rst);
