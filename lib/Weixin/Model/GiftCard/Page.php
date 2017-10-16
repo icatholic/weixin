@@ -24,6 +24,11 @@ class Page extends Base
     public $page_title = NULL;
 
     /**
+     * support_multi 是否支持一次购买多张及发送至群，填 true 或者 false，若填 true 则支持，默认为 false 否
+     */
+    public $support_multi = NULL;
+
+    /**
      * banner_pic_url 礼品卡货架主题页顶部banner图片，须先将图片上传至CDN，建议尺寸为750px*630px 是
      */
     public $banner_pic_url = NULL;
@@ -90,6 +95,11 @@ class Page extends Base
         $this->need_receipt = $need_receipt;
     }
 
+    public function set_support_multi($support_multi)
+    {
+        $this->support_multi = $support_multi;
+    }
+
     public function getParams()
     {
         $params = array();
@@ -139,7 +149,9 @@ class Page extends Base
         if ($this->isNotNull($this->cell_2)) {
             $params['cell_2'] = $this->cell_2->getParams();
         }
-        
+        if ($this->isNotNull($this->support_multi)) {
+            $params['support_multi'] = $this->support_multi;
+        }
         return $params;
     }
 }
