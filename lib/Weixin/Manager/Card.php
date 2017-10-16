@@ -474,7 +474,8 @@ class Card
      * POST 数据
      * 数据示例：
      * {
-     * "code":"110201201245"
+     * "code":"110201201245",
+     * "is_expire_dynamic_code":false
      * }
      * 字段说明
      * code 要查询的序列号
