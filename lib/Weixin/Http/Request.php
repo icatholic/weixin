@@ -19,11 +19,11 @@ class Request
 
     private $_serviceBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
-    private $_serviceBaseUrl2 = 'http://api.weixin.qq.com/';
+    private $_serviceBaseUrl2 = 'https://api.weixin.qq.com/';
 
     private $_snsBaseUrl = 'https://api.weixin.qq.com/';
     
-    // private $_mediaBaseUrl = 'http://file.api.weixin.qq.com/cgi-bin/';
+    // private $_mediaBaseUrl = 'https://file.api.weixin.qq.com/cgi-bin/';
     private $_mediaBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
     private $_payBaseUrl = 'https://api.weixin.qq.com/';
