@@ -218,7 +218,7 @@ class Msg
      *
      * 参数说明
      *
-     * 参数	说明
+     * 参数 说明
      * is_add_friend_reply_open 关注后自动回复是否开启，0代表未开启，1代表开启
      * is_autoreply_open 消息自动回复是否开启，0代表未开启，1代表开启
      * add_friend_autoreply_info 关注后自动回复的信息

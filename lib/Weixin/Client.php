@@ -280,6 +280,16 @@ class Client
     }
 
     /**
+     * 获取小程序总调度器
+     *
+     * @return \Weixin\Wx\Client
+     */
+    public function getWxClient()
+    {
+        return new \Weixin\Wx\Client($this);
+    }
+
+    /**
      * 设置用户授权的token信息
      *
      * @param string $accessToken            
