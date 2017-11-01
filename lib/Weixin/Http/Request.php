@@ -298,6 +298,19 @@ class Request
     }
 
     /**
+     * 高清语音素材获取接口
+     * 公众号可以使用本接口获取从JSSDK的uploadVoice接口上传的临时语音素材，格式为speex，16K采样率。该音频比上文的临时素材获取接口（格式为amr，8K采样率）更加清晰，适合用作语音识别等对音质要求较高的业务。
+     *
+     * @param string $mediaId            
+     * @return array
+     */
+    public function download4Jssdk($mediaId)
+    {
+        $url = $this->_mediaBaseUrl . 'media/get/jssdk' . '?access_token=' . $this->_accessToken . '&media_id=' . $mediaId;
+        return $this->getFileByUrl($url);
+    }
+
+    /**
      * 获取微信服务器信息
      *
      * @param string $url            

@@ -25,6 +25,7 @@ use Weixin\Manager\Datacube;
 use Weixin\Manager\Poi;
 use Weixin\Manager\Material;
 use Weixin\Manager\Giftcard;
+use Weixin\Manager\Comment;
 
 class Client
 {
@@ -277,6 +278,16 @@ class Client
     public function getMaterialManager()
     {
         return new Material($this);
+    }
+
+    /**
+     * 评论数据管理器
+     *
+     * @return \Weixin\Manager\Comment
+     */
+    public function getCommentManager()
+    {
+        return new Comment($this);
     }
 
     /**

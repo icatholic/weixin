@@ -60,14 +60,16 @@ class Material
      * "digest": DIGEST,
      * "show_cover_pic": SHOW_COVER_PIC(0 / 1),
      * "content": CONTENT,
-     * "content_source_url": CONTENT_SOURCE_URL
+     * "content_source_url": CONTENT_SOURCE_URL,
+     * "need_open_comment" : NEED_OPEN_COMMENT（0/1）,
+     * "only_fans_can_comment" : ONLY_FANS_CAN_COMMENT（0/1）
      * },
      * //若新增的是多图文素材，则此处应还有几段articles结构
      * ]
      * }
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * title 是 标题
      * thumb_media_id 是 图文消息的封面图片素材id（必须是永久mediaID）
      * author 是 作者
@@ -75,6 +77,8 @@ class Material
      * show_cover_pic 是 是否显示封面，0为false，即不显示，1为true，即显示
      * content 是 图文消息的具体内容，支持HTML标签，必须少于2万字符，小于1M，且此处会去除JS
      * content_source_url 是 图文消息的原文地址，即点击“阅读原文”后的URL
+     * need_open_comment（新增字段） 否 Uint32 是否打开评论，0不打开，1打开
+     * only_fans_can_comment（新增字段） 否 Uint32 是否粉丝才可评论，0所有人可评论，1粉丝才可评论
      * 返回说明
      *
      * {
@@ -114,12 +118,14 @@ class Material
      * "digest": DIGEST,
      * "show_cover_pic": SHOW_COVER_PIC(0 / 1),
      * "content": CONTENT,
-     * "content_source_url": CONTENT_SOURCE_URL
+     * "content_source_url": CONTENT_SOURCE_URL,
+     * "need_open_comment" : NEED_OPEN_COMMENT（0/1）,
+     * "only_fans_can_comment" : ONLY_FANS_CAN_COMMENT（0/1）
      * }
      * }
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * media_id 是 要修改的图文消息的id
      * index 是 要更新的文章在图文消息中的位置（多图文消息时，此字段才有意义），第一篇为0
      * title 是 标题
@@ -129,6 +135,9 @@ class Material
      * show_cover_pic 是 是否显示封面，0为false，即不显示，1为true，即显示
      * content 是 图文消息的具体内容，支持HTML标签，必须少于2万字符，小于1M，且此处会去除JS
      * content_source_url 是 图文消息的原文地址，即点击“阅读原文”后的URL
+     * need_open_comment（新增字段） 否 Uint32 是否打开评论，0不打开，1打开
+     * only_fans_can_comment（新增字段） 否 Uint32 是否粉丝才可评论，0所有人可评论，1粉丝才可评论
+     *
      * 返回说明
      *
      * {
@@ -162,7 +171,7 @@ class Material
      * 调用示例（使用curl命令，用FORM表单方式新增一个其他类型的永久素材，curl命令的使用请自行查阅资料）
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * access_token 是 调用接口凭证
      * type 是 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
      * media 是 form-data中媒体文件标识，有filename、filelength、content-type等信息
@@ -179,7 +188,7 @@ class Material
      * curl "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=ACCESS_TOKEN" -F media=@media.file -F description='{"title":VIDEO_TITLE, "introduction":INTRODUCTION}'
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * title 是 视频素材的标题
      * introduction 是 视频素材的描述
      * 返回说明
@@ -189,7 +198,7 @@ class Material
      * }
      * 返回参数说明
      *
-     * 参数	描述
+     * 参数 描述
      * media_id 新增的永久素材的media_id
      * 错误情况下的返回JSON数据包示例如下（示例为无效媒体类型错误）：
      *
@@ -230,7 +239,7 @@ class Material
      * }
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * access_token 是 调用接口凭证
      * media_id 是 要获取的素材的media_id
      * 返回说明
@@ -266,7 +275,7 @@ class Material
      * curl "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=ACCESS_TOKEN" -d '{"media_id":"61224425"}' > file
      * 返回参数说明
      *
-     * 参数	描述
+     * 参数 描述
      * title 图文消息的标题
      * thumb_media_id 图文消息的封面图片素材id（必须是永久mediaID）
      * show_cover_pic 是否显示封面，0为false，即不显示，1为true，即显示
@@ -307,7 +316,7 @@ class Material
      * }
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * access_token 是 调用接口凭证
      * media_id 是 要获取的素材的media_id
      * 返回说明
@@ -351,7 +360,7 @@ class Material
      * }
      * 返回参数说明
      *
-     * 参数	描述
+     * 参数 描述
      * voice_count 语音总数量
      * video_count 视频总数量
      * image_count 图片总数量
@@ -389,7 +398,7 @@ class Material
      * }
      * 参数说明
      *
-     * 参数	是否必须	说明
+     * 参数 是否必须 说明
      * type 是 素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
      * offset 是 从全部素材的该偏移位置开始返回，0表示从第一个素材 返回
      * count 是 返回素材的数量，取值在1到20之间
@@ -436,7 +445,7 @@ class Material
      * }
      * 返回参数说明
      *
-     * 参数	描述
+     * 参数 描述
      * total_count 该类型的素材的总数
      * item_count 本次调用获取的素材的数量
      * title 图文消息的标题
