@@ -888,7 +888,7 @@ class Giftcard
      * errcode 错误码，0为正常
      * errmsg 错误信息
      */
-    public function generalcardUpdateuser($code, $card_id = '', $background_pic_url = '', $record_balance = '', $balance = null, $record_balance = '', $custom_field_value1 = '', $custom_field_value2 = '', $custom_field_value3 = '', $can_give_friend = null)
+    public function generalcardUpdateuser($code, $card_id = '', $background_pic_url = '', $balance = null, $record_balance = '', $custom_field_value1 = '', $custom_field_value2 = '', $custom_field_value3 = '', $can_give_friend = null)
     {
         $params = array();
         $params['code'] = $code;
@@ -897,9 +897,6 @@ class Giftcard
         }
         if (! empty($background_pic_url)) {
             $params['background_pic_url'] = $background_pic_url;
-        }
-        if (! empty($record_balance)) {
-            $params['record_balance'] = $record_balance;
         }
         if (! is_null($balance)) {
             $params['balance'] = $balance;
