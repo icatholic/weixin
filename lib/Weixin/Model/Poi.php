@@ -63,7 +63,20 @@ class Poi
     public $categories = NULL;
 
     /**
-     * offset_type 坐标类型，1 为火星坐标（目前只能选 1） 是
+     * offset_type 坐标类型， 是
+     * 1 为火星坐标
+     *
+     * 2 为sogou经纬度
+     *
+     * 3 为百度经纬度
+     *
+     * 4 为mapbar经纬度
+     *
+     * 5 为GPS坐标
+     *
+     * 6 为sogou墨卡托坐标
+     *
+     * 注：高德经纬度无需转换可直接使用
      */
     public $offset_type = NULL;
 
@@ -143,13 +156,12 @@ class Poi
     {
         $this->poi_id = $poi_id;
     }
-    
 
     public function set_available_state($available_state)
     {
         $this->available_state = $available_state;
     }
-    
+
     public function set_update_status($update_status)
     {
         $this->update_status = $update_status;
