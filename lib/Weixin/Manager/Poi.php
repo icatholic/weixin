@@ -315,6 +315,20 @@ class Poi
      * total_count 门店总数量
      * 注：其他字段同前
      *
+     * 13.升级流程 --- 从门店管理迁移到门店小程序
+     * 第一步：创建门店小程序审核成功后，拉取待迁移门店列表(poi/getpoilist是现网已经有的api，只是增加了三个新字段)：
+     * https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token=TOKEN
+     * 门店管理中每个门店有以下字段：
+     * upgrade_status 迁移状态 0 待迁移 1 失败 2 迁移中 3 成功 4 禁止迁移
+     * upgrade_comment 迁移驳回的理由（upgrade_status=1）
+     * mapid 腾讯地图的map_poi_id
+     * poi_id 门店的poi_id
+     *
+     * 第二步：
+     * upgrade_status为待迁移或者失败的门店，需要调用wxa/add_store进行门店迁移。
+     * upgrade_status为禁止迁移的门店，只能调用cgi-bin/poi/delpoi api(具体链接)进行删除
+     * 只有所有门店列表的upgrade_status变为成功，升级流程才算完成。
+     *
      * @return mixed
      */
     public function getPoiList($begin = 0, $limit = 20)
