@@ -5,6 +5,7 @@ use Weixin\Client;
 
 /**
  * 获取二维码
+ * https://mp.weixin.qq.com/debug/wxadoc/dev/api/qrcode.html
  *
  * @author guoyongrong <handsomegyr@gmail.com>
  * @author young <youngyang@icatholic.net.cn>

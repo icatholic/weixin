@@ -18,7 +18,7 @@ class Client
 
     private $_client;
 
-    public function __construct(Client $client)
+    public function __construct(\Weixin\Client $client)
     {
         $this->_client = $client;
     }
