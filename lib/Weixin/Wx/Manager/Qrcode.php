@@ -81,11 +81,11 @@ class Qrcode
      * }
      * })
      */
-    public function getwxacodeunlimit($scene, $path, $width, $auto_color = false, $line_color = array("r"=>"0","g"=>"0","b"=>"0"))
+    public function getwxacodeunlimit($scene, $page, $width, $auto_color = false, $line_color = array("r"=>"0","g"=>"0","b"=>"0"))
     {
         $params = array();
         $params['scene'] = $scene;
-        $params['path'] = $path;
+        $params['page'] = $page;
         $params['width'] = $width;
         $params['auto_color'] = $auto_color;
         if (empty($auto_color)) {
