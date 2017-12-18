@@ -18,6 +18,16 @@ class Item extends Base
     public $card_id = NULL;
 
     /**
+     * pic_url 商品图， 否
+     */
+    public $pic_url = NULL;
+
+    /**
+     * desc 商品详情， 否
+     */
+    public $desc = NULL;
+
+    /**
      * title 商品名，不填写默认为卡名称 否
      */
     public $title = NULL;
@@ -25,6 +35,16 @@ class Item extends Base
     public function __construct($card_id)
     {
         $this->card_id = $card_id;
+    }
+
+    public function set_pic_url($pic_url)
+    {
+        $this->pic_url = $pic_url;
+    }
+
+    public function set_desc($desc)
+    {
+        $this->desc = $desc;
     }
 
     public function set_title($title)
@@ -38,6 +58,14 @@ class Item extends Base
         
         if ($this->isNotNull($this->card_id)) {
             $params['card_id'] = $this->card_id;
+        }
+        
+        if ($this->isNotNull($this->pic_url)) {
+            $params['pic_url'] = $this->pic_url;
+        }
+        
+        if ($this->isNotNull($this->desc)) {
+            $params['desc'] = $this->desc;
         }
         
         if ($this->isNotNull($this->title)) {

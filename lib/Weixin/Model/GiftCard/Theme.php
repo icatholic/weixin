@@ -52,6 +52,11 @@ class Theme extends Base
      */
     public $is_banner = NULL;
 
+    /**
+     * participate_activity，表示该主题参与活动  否
+     */
+    public $participate_activity = NULL;
+    
     public function __construct($theme_pic_url, $title, $title_color, array $item_list, array $pic_item_list, $category_index)
     {
         $this->theme_pic_url = $theme_pic_url;
@@ -72,6 +77,11 @@ class Theme extends Base
         $this->is_banner = $is_banner;
     }
 
+    public function set_participate_activity($participate_activity)
+    {
+        $this->participate_activity = $participate_activity;
+    }
+    
     public function getParams()
     {
         $params = array();
@@ -107,6 +117,9 @@ class Theme extends Base
         }
         if ($this->isNotNull($this->is_banner)) {
             $params['is_banner'] = $this->is_banner;
+        }
+        if ($this->isNotNull($this->participate_activity)) {
+            $params['participate_activity'] = $this->participate_activity;
         }
         return $params;
     }
