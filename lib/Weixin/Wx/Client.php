@@ -7,7 +7,6 @@
  */
 namespace Weixin\Wx;
 
-use Weixin\Client;
 use Weixin\Wx\Manager\Msg;
 use Weixin\Wx\Manager\Qrcode;
 use Weixin\Wx\Manager\Merchant;
