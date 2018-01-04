@@ -964,4 +964,91 @@ class Giftcard
         $rst = $this->_request->payPost('card/giftcard/order/refund', $params);
         return $this->_client->rst($rst);
     }
+
+    /**
+     * 4.开通微信支付礼品卡权限
+     * 4.1.
+     * 申请微信支付礼品卡权限接口
+     * 4.1.1 URL
+     * https://api.weixin.qq.com/card/giftcard/pay/whitelist/add?access_token=TOKEN
+     * 4.1.2 请求示例
+     * {
+     * "sub_mch_id": "1900015421" //微信支付子商户号
+     * }
+     * 4.1.3 返回示例
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok","url":
+     * "https://pay.weixin.qq.com/index.php/public/product/detail?pid=61&productType=0"
+     * }
+     * 4.1.4 注意事项
+     * 1.传入的商户号须为普通服务商模式或者直连商户号，建议为礼品卡专用商户号 2.商户号
+     * 必须为公众号申请的商户号，否则报错 3.调用接口的 token 须为公众号对应的 token，否
+     * 则报错
+     */
+    public function paywhitelistAdd($sub_mch_id)
+    {
+        $params = array();
+        $params['sub_mch_id'] = $sub_mch_id;
+        
+        $rst = $this->_request->payPost('card/giftcard/pay/whitelist/add', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 4.3 绑定商户号到礼品卡小程序接口
+     * 4.3.1 URL
+     * https://api.weixin.qq.com/card/giftcard/pay/submch/bind?access_token=TOKEN
+     * 4.3.2 请求示例
+     * {
+     * "sub_mch_id": "1900015421" //微信支付子商户号
+     * "wxa_appid" : "wx8638fbedaf138a87" //小程序的 APPID
+     * }
+     * 4.3.3 返回示例
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok"
+     * }
+     * 4.3.4 注意事项
+     * 1.传入的商户号须为普通服务商模式或者直连商户号，建议为礼品卡专用商户号
+     * 2.商户号必须为公众号申请的商户号，否则报错
+     * 3.调用接口的 token 为公众号的 token
+     * 4.公众号须与礼品卡小程序进行关联绑定，详情请见：
+     * https://mp.weixin.qq.com/debug/wxadoc/introduction/#公众号关联小程序
+     */
+    public function paysubmchBind($sub_mch_id, $wxa_appid)
+    {
+        $params = array();
+        $params['sub_mch_id'] = $sub_mch_id;
+        $params['wxa_appid'] = $wxa_appid;
+        
+        $rst = $this->_request->payPost('card/giftcard/pay/submch/bind', $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 5.上传小程序代码
+     * 5.1 上传小程序代码
+     * 5.1.1 URL
+     * https://api.weixin.qq.com/card/giftcard/wxa/set?access_token=TOKEN
+     * 5.1.2 请求示例
+     * {
+     * "wxa_appid": "wx123456789",
+     * "page_id": "asdasdjkafkjaslfjasl+fjas="
+     * }
+     * 5.1.3 返回示例
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok"
+     * }
+     */
+    public function wxaSet($wxa_appid, $page_id)
+    {
+        $params = array();
+        $params['wxa_appid'] = $wxa_appid;
+        $params['page_id'] = $page_id;
+        
+        $rst = $this->_request->payPost('card/giftcard/wxa/set', $params);
+        return $this->_client->rst($rst);
+    }
 }
