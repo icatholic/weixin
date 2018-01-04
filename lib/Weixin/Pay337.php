@@ -1440,7 +1440,7 @@ class Pay337
         $postData = array();
         $postData["nonce_str"] = $nonce_str;
         $postData["partner_trade_no"] = $partner_trade_no;
-        $postData["mchid"] = $this->getMchid();
+        $postData["mch_id"] = $this->getMchid();
         $postData["appid"] = $mch_appid;
         
         $sign = $this->getSign($postData);
