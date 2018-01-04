@@ -1310,7 +1310,7 @@ class Pay337
      * PARAM_IS_NOT_UTF8 请求参数中包含非utf8编码字符 接口规范要求所有请求参数都必须为utf8编码 请关注接口使用规范
      * AMOUNT_LIMIT 付款失败，因你已违反《微信支付商户平台使用协议》，单笔单次付款下限已被调整为5元 商户号存在违反协议内容行为，单次付款下限提高 请遵守《微信支付商户平台使用协议》
      */
-    public function promotionTransfers($mch_appid, $openid, $amount, $partner_trade_no, $nonce_str, $desc, $spbill_create_ip, $check_name = "NO_CHECK", $re_user_name = "", $device_info = "")
+    public function promotionTransfers($openid, $amount, $partner_trade_no, $nonce_str, $desc, $spbill_create_ip, $check_name = "NO_CHECK", $re_user_name = "", $device_info = "")
     {
         /**
          * 商户账号appid mch_appid 是 wx8888888888888888 String 微信分配的账号ID（企业号corpid即为此appId）
@@ -1328,7 +1328,7 @@ class Pay337
          * Ip地址 spbill_create_ip 是 192.168.0.1 String(32) 调用接口的机器Ip地址
          */
         $postData = array();
-        $postData["mch_appid"] = $mch_appid;
+        $postData["mch_appid"] = $this->getAppId();
         $postData["mchid"] = $this->getMchid();
         $postData["nonce_str"] = $nonce_str;
         $postData["partner_trade_no"] = $partner_trade_no;
@@ -1428,7 +1428,7 @@ class Pay337
      * SYSTEMERROR 系统繁忙，请再试。 系统繁忙。
      * NOT_FOUND 指定单号数据不存在 查询单号对应的数据不存在，请使用正确的商户订单号查询
      */
-    public function gettransferinfo($nonce_str, $partner_trade_no, $mch_appid)
+    public function gettransferinfo($nonce_str, $partner_trade_no)
     {
         /**
          * 随机字符串 nonce_str 是 5K8264ILTKCH16CQ2502SI8ZNMTM67VS String(32) 随机字符串，不长于32位
@@ -1441,7 +1441,7 @@ class Pay337
         $postData["nonce_str"] = $nonce_str;
         $postData["partner_trade_no"] = $partner_trade_no;
         $postData["mch_id"] = $this->getMchid();
-        $postData["appid"] = $mch_appid;
+        $postData["appid"] = $this->getAppId();
         
         $sign = $this->getSign($postData);
         $postData["sign"] = $sign;
