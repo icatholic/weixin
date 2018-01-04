@@ -1330,13 +1330,15 @@ class Pay337
         $postData = array();
         $postData["mch_appid"] = $this->getAppId();
         $postData["mchid"] = $this->getMchid();
+        $postData["device_info"] = $device_info;
         $postData["nonce_str"] = $nonce_str;
         $postData["partner_trade_no"] = $partner_trade_no;
-        $postData["openid"] = $openid;
-        $postData["amount"] = $amount;
+        $postData["openid"] = $openid;        
+        $postData["check_name"] = $check_name;
+        $postData["re_user_name"] = $re_user_name;        
+        $postData["amount"] = intval($amount);
         $postData["desc"] = $desc;
         $postData["spbill_create_ip"] = $spbill_create_ip;
-        $postData["device_info"] = $device_info;
         
         $sign = $this->getSign($postData);
         $postData["sign"] = $sign;
