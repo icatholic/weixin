@@ -1739,6 +1739,64 @@ class Card
         $rst = $this->_request->post2('card/code/checkcode', $params);
         return $this->_client->rst($rst);
     }
+
+    /**
+     * Mark(占用)Code接口
+     *
+     * 朋友的券由于共享的特性，会出现多个消费者同时进入某一个卡券的自定义H5网页的情况，若该网页涉及线上下单、核销、支付等行为，会造成两个消费者同时使用同一张券，会有一个消费者使用失败的情况，为此我们设计了mark（占用）code接口。
+     *
+     * 对于出示核销（消费者点击“出示使用”按钮）的场景，开发者直接调用核销接口，无需考虑mark逻辑，此时由客户端代为完成。
+     *
+     * 对于消费者进入H5网页核销的情况，我们约定，开发者在帮助消费者核销卡券之前，必须帮助先将此code（卡券串码）与一个openid绑定（即mark住），才能进一步调用核销接口，否则报错。
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST https://api.weixin.qq.com/card/code/mark?access_token=TOKEN
+     * 参数说明
+     *
+     * 参数 是否必须 说明
+     * POST数据 是 JSON数据
+     * access_token 是 调用接口凭证
+     * POST数据
+     *
+     * {
+     * "code": "114567897765",
+     * "card_id": "pbxxxxxxxxhjahkdjad",
+     * "openid": "obcdkalgsdklkdooooooo",
+     * "is_mark": true
+     * }
+     * 参数名 必填 描述
+     * code 是 卡券的code码。
+     * card_id 是 卡券的ID。
+     * openid 是 用券用户的openid。
+     * is_mark 是 是否要mark（占用）这个code，填写true或者false，表示占用或解除占用。
+     * 返回数据
+     *
+     * 数据示例：
+     *
+     * {"errcode":0, "errmsg":"ok"}
+     * 参数名 描述
+     * errcode 错误码
+     * errmsg 错误信息
+     * 注意：
+     *
+     * 接口只支持未使用、正常状态的朋友的券，开发者调用前须查询code。
+     * is_mark不填默认为true。
+     * 重复用同一个openid mark，都返回成功。
+     * 用openid_a mark后，用openid_b mark会报错40146
+     * is_mark为false时取消mark，要求传入的openid和mark时一致，否则报错40416。
+     * 不调用接口解除mark的话，5分钟后自动解除。（时间可能根据产品策略调整）
+     */
+    public function codeMark($card_id, $code, $openid, $is_mark = true)
+    {
+        $params = array();
+        $params['card_id'] = $card_id;
+        $params['code'] = $code;
+        $params['openid'] = $openid;
+        $params['is_mark'] = $is_mark;
+        $rst = $this->_request->post2('card/code/mark', $params);
+        return $this->_client->rst($rst);
+    }
     
     // ------------以下接口在V2.0废弃了----------------
     // ------------以下门店接口废弃 改用POI门店接口----------------
