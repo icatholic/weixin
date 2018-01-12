@@ -15,6 +15,19 @@ class Pay337
 {
 
     private $_url = 'https://api.mch.weixin.qq.com/';
+    
+    // 设置是否沙箱环境测试
+    private $is_sandbox = false;
+
+    public function is_sandbox($is_sandbox)
+    {
+        $this->is_sandbox = $is_sandbox;
+        if ($is_sandbox) {
+            $this->_url = 'https://api.mch.weixin.qq.com/sandboxnew/';
+        } else {
+            $this->_url = 'https://api.mch.weixin.qq.com/';
+        }
+    }
 
     /**
      * 获取微信支付版本
@@ -1333,9 +1346,9 @@ class Pay337
         $postData["device_info"] = $device_info;
         $postData["nonce_str"] = $nonce_str;
         $postData["partner_trade_no"] = $partner_trade_no;
-        $postData["openid"] = $openid;        
+        $postData["openid"] = $openid;
         $postData["check_name"] = $check_name;
-        $postData["re_user_name"] = $re_user_name;        
+        $postData["re_user_name"] = $re_user_name;
         $postData["amount"] = intval($amount);
         $postData["desc"] = $desc;
         $postData["spbill_create_ip"] = $spbill_create_ip;
