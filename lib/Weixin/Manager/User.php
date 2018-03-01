@@ -97,15 +97,15 @@ class User
         $rst = $this->_request->post('user/info/updateremark', $params);
         return $this->_client->rst($rst);
     }
-    
+
     /**
      * 批量获取用户信息
      */
-    public function getUserInfoBatchget(array $userList){
+    public function getUserInfoBatchget(array $userList)
+    {
         $params = array();
         $params['user_list'] = $userList;
         $rst = $this->_request->post('user/info/batchget', $params);
         return $this->_client->rst($rst);
     }
-    
 }

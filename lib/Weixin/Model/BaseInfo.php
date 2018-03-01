@@ -172,6 +172,22 @@ class BaseInfo extends Base
     public $custom_url_sub_title = NULL;
 
     /**
+     * custom_app_brand_user_name
+     * 否
+     * string（128） gh_86a091e50ad4@app
+     * 卡券跳转的小程序的user_name，仅可跳转该 公众号绑定的小程序 。
+     */
+    public $custom_app_brand_user_name = NULL;
+
+    /**
+     * custom_app_brand_pass
+     * 否
+     * string（128） API/cardPage
+     * 卡券跳转的小程序的path
+     */
+    public $custom_app_brand_pass = NULL;
+
+    /**
      * promotion_url_name
      * 营销场景的自定义入口。
      * 否
@@ -191,6 +207,21 @@ class BaseInfo extends Base
      * 否
      */
     public $promotion_url_sub_title = NULL;
+
+    /**
+     * promotion_app_brand_user_name
+     * 否
+     * string（128） gh_86a091e50ad4@app
+     * 卡券跳转的小程序的user_name，仅可跳转该 公众号绑定的小程序 。
+     */
+    public $promotion_app_brand_user_name = NULL;
+
+    /**
+     * promotion_app_brand_pass
+     * 否 string（128） API/cardPage
+     * 卡券跳转的小程序的path
+     */
+    public $promotion_app_brand_pass = NULL;
 
     /**
      * center_title
@@ -215,6 +246,21 @@ class BaseInfo extends Base
      * 顶部居中的url，仅在卡券状态正常(可以核销)时显示。
      */
     public $center_url = NULL;
+
+    /**
+     * center_app_brand_user_name
+     * 否 string（128） gh_86a091e50ad4@app
+     * 卡券跳转的小程序的user_name，仅可跳转该 公众号绑定的小程序 。
+     */
+    public $center_app_brand_user_name = NULL;
+
+    /**
+     * center_app_brand_pass
+     * 否
+     * string（128） API/cardPage
+     * 卡券跳转的小程序的path
+     */
+    public $center_app_brand_pass = NULL;
 
     /**
      * status
@@ -426,6 +472,16 @@ class BaseInfo extends Base
         $this->center_url = $center_url;
     }
 
+    public function set_center_app_brand_user_name($center_app_brand_user_name)
+    {
+        $this->center_app_brand_user_name = $center_app_brand_user_name;
+    }
+
+    public function set_center_app_brand_pass($center_app_brand_pass)
+    {
+        $this->center_app_brand_pass = $center_app_brand_pass;
+    }
+
     public function set_custom_url_name($custom_url_name)
     {
         $this->custom_url_name = $custom_url_name;
@@ -441,6 +497,16 @@ class BaseInfo extends Base
         $this->custom_url_sub_title = $custom_url_sub_title;
     }
 
+    public function set_custom_app_brand_user_name($custom_app_brand_user_name)
+    {
+        $this->custom_app_brand_user_name = $custom_app_brand_user_name;
+    }
+
+    public function set_custom_app_brand_pass($custom_app_brand_pass)
+    {
+        $this->custom_app_brand_pass = $custom_app_brand_pass;
+    }
+
     public function set_promotion_url_name($promotion_url_name)
     {
         $this->promotion_url_name = $promotion_url_name;
@@ -454,6 +520,16 @@ class BaseInfo extends Base
     public function set_promotion_url_sub_title($promotion_url_sub_title)
     {
         $this->promotion_url_sub_title = $promotion_url_sub_title;
+    }
+
+    public function set_promotion_app_brand_user_name($promotion_app_brand_user_name)
+    {
+        $this->promotion_app_brand_user_name = $promotion_app_brand_user_name;
+    }
+
+    public function set_promotion_app_brand_pass($promotion_app_brand_pass)
+    {
+        $this->promotion_app_brand_pass = $promotion_app_brand_pass;
     }
 
     public function set_card_id($card_id)
@@ -596,6 +672,13 @@ class BaseInfo extends Base
         if ($this->isNotNull($this->custom_url_sub_title)) {
             $params['custom_url_sub_title'] = $this->custom_url_sub_title;
         }
+        if ($this->isNotNull($this->custom_app_brand_user_name)) {
+            $params['custom_app_brand_user_name'] = $this->custom_app_brand_user_name;
+        }
+        if ($this->isNotNull($this->custom_app_brand_pass)) {
+            $params['custom_app_brand_pass'] = $this->custom_app_brand_pass;
+        }
+        
         if ($this->isNotNull($this->promotion_url_name)) {
             $params['promotion_url_name'] = $this->promotion_url_name;
         }
@@ -605,6 +688,13 @@ class BaseInfo extends Base
         if ($this->isNotNull($this->promotion_url_sub_title)) {
             $params['promotion_url_sub_title'] = $this->promotion_url_sub_title;
         }
+        if ($this->isNotNull($this->promotion_app_brand_user_name)) {
+            $params['promotion_app_brand_user_name'] = $this->promotion_app_brand_user_name;
+        }
+        if ($this->isNotNull($this->promotion_app_brand_pass)) {
+            $params['promotion_app_brand_pass'] = $this->promotion_app_brand_pass;
+        }
+        
         
         if ($this->isNotNull($this->center_title)) {
             $params['center_title'] = $this->center_title;
@@ -615,6 +705,13 @@ class BaseInfo extends Base
         if ($this->isNotNull($this->center_url)) {
             $params['center_url'] = $this->center_url;
         }
+        if ($this->isNotNull($this->center_app_brand_user_name)) {
+            $params['center_app_brand_user_name'] = $this->center_app_brand_user_name;
+        }
+        if ($this->isNotNull($this->center_app_brand_pass)) {
+            $params['center_app_brand_pass'] = $this->center_app_brand_pass;
+        }
+        
         /**
          * 以下字段都是用以微信摇一摇的时候设置
          */

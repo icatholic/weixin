@@ -26,6 +26,7 @@ use Weixin\Manager\Poi;
 use Weixin\Manager\Material;
 use Weixin\Manager\Giftcard;
 use Weixin\Manager\Comment;
+use Weixin\Manager\Tags;
 
 class Client
 {
@@ -290,6 +291,14 @@ class Client
         return new Comment($this);
     }
 
+    /**
+     * 获取标签管理
+     */
+    public function getTagsManager()
+    {
+        return new Tags($this);
+    }
+    
     /**
      * 获取小程序总调度器
      *

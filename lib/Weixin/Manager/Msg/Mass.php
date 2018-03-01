@@ -152,12 +152,12 @@ class Mass
     /**
      * 发送卡券消息
      *
-     * @param string $group_id
-     * @param string $card_id
-     * @param array $card_ext
+     * @param string $group_id            
+     * @param string $card_id            
+     * @param array $card_ext            
      * @return array
      */
-    public function sendWxcardByGroup($group_id, $card_id, array $card_ext=array())
+    public function sendWxcardByGroup($group_id, $card_id, array $card_ext = array())
     {
         $ret = array();
         $ret['filter']['group_id'] = $group_id;
@@ -166,12 +166,12 @@ class Mass
         }
         $ret['msgtype'] = 'wxcard';
         $ret['wxcard']['card_id'] = $card_id;
-		if(!empty($card_ext)){
-			$ret['wxcard']['card_ext'] = json_encode($card_ext);
-		}        
+        if (! empty($card_ext)) {
+            $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        }
         return $this->sendAll($ret);
     }
-    
+
     /**
      * 根据OpenID列表群发
      *
@@ -288,23 +288,23 @@ class Mass
     /**
      * 发送卡券消息
      *
-     * @param array $toUsers
-     * @param string $card_id
-     * @param array $card_ext
+     * @param array $toUsers            
+     * @param string $card_id            
+     * @param array $card_ext            
      * @return array
      */
-    public function sendWxcardByOpenid(array $toUsers, $card_id, array $card_ext=array())
+    public function sendWxcardByOpenid(array $toUsers, $card_id, array $card_ext = array())
     {
         $ret = array();
         $ret['touser'] = $toUsers;
         $ret['msgtype'] = 'wxcard';
         $ret['wxcard']['card_id'] = $card_id;
-		if(!empty($card_ext)){
-			$ret['wxcard']['card_ext'] = json_encode($card_ext);
-		}
+        if (! empty($card_ext)) {
+            $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        }
         return $this->send($ret);
     }
-    
+
     /**
      * 删除群发
      *
@@ -329,6 +329,91 @@ class Mass
     public function preview($params)
     {
         $rst = $this->_client->getRequest()->post("message/mass/preview", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 查询群发消息发送状态【订阅号与服务号认证后均可用】
+     *
+     * @param array $params            
+     * @return array
+     */
+    public function get($msg_id)
+    {
+        $params = [
+            "msg_id" => $msg_id
+        ];
+        $rst = $this->_client->getRequest()->post("message/mass/get", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 控制群发速度
+     * 开发者可以使用限速接口来控制群发速度。
+     *
+     * 获取群发速度
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * https://api.weixin.qq.com/cgi-bin/message/mass/speed/get?access_token=ACCESS_TOKEN
+     * 返回说明 正常情况下的返回结果为：
+     *
+     * {
+     * "speed":3,
+     * "realspeed":15
+     * }
+     * 参数说明
+     *
+     * 参数 是否必须 说明
+     * speed 是 群发速度的级别
+     * realspeed 是 群发速度的真实值 单位：万/分钟
+     */
+    public function speedGet()
+    {
+        $params = array();
+        $rst = $this->_client->getRequest()->post("message/mass/speed/get", $params);
+        return $this->_client->rst($rst);
+    }
+
+    /**
+     * 设置群发速度
+     *
+     * 接口调用请求说明
+     *
+     * http请求方式: POST
+     * https://api.weixin.qq.com/cgi-bin/message/mass/speed/set?access_token=ACCESS_TOKEN
+     * 请求示例
+     *
+     * {
+     * "speed":1
+     * }
+     * 参数说明
+     *
+     * 参数 是否必须 说明
+     * speed 是 群发速度的级别
+     * 群发速度的级别，是一个0到4的整数，数字越大表示群发速度越慢。
+     *
+     * speed 与 realspeed 的关系如下：
+     *
+     * speed realspeed
+     * 0 80w/分钟
+     * 1 60w/分钟
+     * 2 45w/分钟
+     * 3 30w/分钟
+     * 4 10w/分钟
+     * 返回码说明
+     *
+     * 返回码 说明
+     * 45083 设置的 speed 参数不在0到4的范围内
+     * 45084 没有设置 speed 参数
+     */
+    public function speedSet($speed)
+    {
+        $params = array(
+            'speed' => $speed
+        );
+        $rst = $this->_client->getRequest()->post("message/mass/speed/set", $params);
         return $this->_client->rst($rst);
     }
 }
