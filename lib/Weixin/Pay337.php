@@ -1469,6 +1469,50 @@ class Pay337
     }
 
     /**
+     * 验证证书
+     * 由于SSL/TLS协议有多种实现版本(OpenSSL， NSS， GnuTLS， JSSE， Schannel等)，且在不同实现版本和操作系统中管理权威机构根CA证书的策略不一样，应用程序使用SSL/TLS的方法也存在差异。
+     * 为了确保微信支付更换服务证书后，不影响商户的正常交易。下面提供了两种方式供商户提前验证客户端是否支持了DigiCert的证书。
+     * 如你的验证结果为无影响，可忽略安装证书部分的内容。
+     * 方式一：调用微信支付沙箱环境的API接口验证
+     * 微信支付已经将新的服务器证书部署到了沙箱域名(apitest.mch.weixin.qq.com)， 由于服务器证书是支持多域名的，API域名(api.mch.weixin.qq.com)与沙箱域名(apitest.mch.weixin.qq.com)使用的是同一张证书。如果使用沙箱环境的接口能调用成功，通常表明客户端支持微信支付新的服务器证书。
+     * API接口调用说明：
+     * 请求Url https://apitest.mch.weixin.qq.com/sandboxnew/pay/getsignkey
+     * 是否需要证书 是
+     * 请求方式 POST
+     * 请求格式 XML
+     * 请求参数：
+     * 字段名 字段 必填 示例值 类型 说明
+     * 商户号 mch_id 是 1305638280 String(32) 微信支付分配的微信商户号
+     * 随机字符串 nonce_str 是 5K8264ILTKCH16CQ2502SI8ZNMTM67VS String(32) 随机字符串，不长于32位
+     * 签名 sign 是 5K8264ILTKCH16CQ2502SI8ZNMTM67VS String(32) 签名结果，详见签名生成算法
+     * 返回参数：
+     * 字段名 字段 必填 示例值 类型 说明
+     * 返回状态码 return_code 是 SUCCESS String(16) SUCCESS/FAIL
+     * 返回信息 return_msg 否 签名失败 String(128) 返回信息，如非空，为错误原因 ，签名失败 ，参数格式校验错误
+     * 以下字段在return_code 为SUCCESS的时有返回。
+     *
+     * 字段名 字段 必填 示例值 类型 说明
+     * 商户号 mch_id 是 1305638280 String(32) 微信支付分配的微信商户号
+     * 沙箱密钥 sandbox_signkey 否 013467007045764 String(32) 返回的沙箱密钥
+     * 当返回结果return_code为“SUCCESS”，说明当前客服端已支持DigCert证书，反之则需要根据安装证书部分的指引，升级证书。
+     */
+    public function sandboxnewPayGetsignkey($nonce_str)
+    {
+        $postData = array();
+        $postData["nonce_str"] = $nonce_str;
+        $postData["mch_id"] = $this->getMchid();
+        
+        $sign = $this->getSign($postData);
+        $postData["sign"] = $sign;
+        $xml = Helpers::arrayToXml($postData);
+        $options = array();
+        $options['cert'] = $this->getCert();
+        $options['ssl_key'] = $this->getCertKey();
+        $rst = $this->post('https://apitest.mch.weixin.qq.com/sandboxnew/pay/getsignkey', $xml, $options);
+        return $this->returnResult($rst);
+    }
+
+    /**
      * Sign签名生成方法
      *
      * @param array $para            
