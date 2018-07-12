@@ -129,6 +129,7 @@ class Helpers
      */
     public static function xmlToArray($xml)
     {
+        libxml_disable_entity_loader(true);
         $object = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
     }
