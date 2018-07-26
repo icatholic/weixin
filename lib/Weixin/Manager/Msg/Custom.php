@@ -214,13 +214,15 @@ class Custom
      * @param array $card_ext            
      * @return string
      */
-    public function sendWxcard($toUser, $card_id, array $card_ext)
+    public function sendWxcard($toUser, $card_id, array $card_ext = array())
     {
         $ret = array();
         $ret['touser'] = $toUser;
         $ret['msgtype'] = 'wxcard';
         $ret['wxcard']['card_id'] = $card_id;
-        $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        if (! empty($card_ext)) {
+            $ret['wxcard']['card_ext'] = json_encode($card_ext);
+        }
         return $this->send($ret);
     }
 
