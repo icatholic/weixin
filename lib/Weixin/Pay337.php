@@ -239,8 +239,46 @@ class Pay337
      * 交易类型trade_type是String(16)JSAPI、NATIVE、APP
      * 预支付IDprepay_id是String(64)微信生成的预支付ID，用于后续接口调用中使用
      * 二维码链接code_url否String(64)trade_type为NATIVE是有返回，此参数可直接生成二维码展示出来进行扫码支付
+     *
+     * 13 指定单笔交易支持支付后开票
+     * 接口说明
+     *
+     * 对于可以开具电子发票的商户，完成了微信商户号与开票平台的关联设置后，可以以单笔支付为单位，指定在支付成功消息上是否出现开发票的入口。让用户可以通过该入口发起开票。
+     *
+     * 请求方式
+     *
+     * 指定单笔交易支持支付后开票使用的接口协议、调用方式与线上
+     * 支付文档一致，本功能是在原支付接口上新增字段。
+     *
+     * 请求参数
+     *
+     * 用户确认下单后，商户在支付接口（统一下单/提交刷卡支付/委托代扣）中新增提交receipt字段作为标识需要开电子发票。字段参数说明如下：
+     *
+     * 参数 类型 是否必填 描述
+     * receipt string 否 Y ，传入 Y 时，支付成功消息和支付详情页将出现开票入口
+     * 返回结果
+     *
+     * 与原支付接口返回结果相一致。
+     *
+     * 示例代码
+     *
+     * <xml>
+     * <appid>wx2421b1c4370ec43b </appid>
+     * <attach>支付测试</attach>
+     * <body>JSAPI支付测试</body>
+     * <mch_id>10000100</mch_id>
+     * <receipt>Y</receipt>
+     * <nonce_str>1add1a30ac87aa2db72f57a2375d8fec</nonce_str>
+     * <notify_url>http://wxpay.wxutil.com/pub_v2/pay/notify.v2.php</notify_url>
+     * <openid>oUpF8uMuAJO_M2pxb1Q9zNjWeS6o</openid>
+     * <out_trade_no>1415659990</out_trade_no>
+     * <spbill_create_ip>14.23.150.211</spbill_create_ip>
+     * <total_fee>1</total_fee>
+     * <trade_type>JSAPI</trade_type>
+     * <sign>0CB01533B8C1EF103065174F50BCA001</sign>
+     * </xml>
      */
-    public function unifiedorder($device_info, $nonce_str, $body, $attach, $out_trade_no, $total_fee, $spbill_create_ip, $time_start, $time_expire, $goods_tag, $notify_url, $trade_type, $openid, $product_id)
+    public function unifiedorder($device_info, $nonce_str, $body, $attach, $out_trade_no, $total_fee, $spbill_create_ip, $time_start, $time_expire, $goods_tag, $notify_url, $trade_type, $openid, $product_id, $receipt = '')
     {
         $postData = array();
         $postData["appid"] = $this->getAppId();
@@ -259,6 +297,9 @@ class Pay337
         $postData["trade_type"] = $trade_type;
         $postData["openid"] = $openid;
         $postData["product_id"] = $product_id;
+        if (! empty($receipt)) {
+            $postData["receipt"] = $receipt;
+        }
         
         $sign = $this->getSign($postData);
         $postData["sign"] = $sign;
