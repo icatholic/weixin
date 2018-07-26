@@ -8,6 +8,14 @@ class CustomField extends Base
 {
 
     /**
+     * name
+     * 否
+     * string(24)
+     * 会员信息类目自定义名称，当开发者变更这类类目信息的value值时 不会触发系统模板消息通知用户
+     */
+    public $name = NULL;
+
+    /**
      * name_type
      * 会员信息类目名称,支持填入类型为：
      * FIELD_NAME_TYPE_LEVE 等级
@@ -33,6 +41,11 @@ class CustomField extends Base
         $this->url = $url;
     }
 
+    public function set_name($name)
+    {
+        $this->name = $name;
+    }
+
     public function getParams()
     {
         $params = array();
@@ -41,6 +54,9 @@ class CustomField extends Base
         }
         if ($this->isNotNull($this->url)) {
             $params['url'] = $this->url;
+        }        
+        if ($this->isNotNull($this->name)) {
+            $params['name'] = $this->name;
         }
         return $params;
     }
