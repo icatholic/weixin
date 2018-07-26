@@ -99,22 +99,86 @@ class MemberCard extends CardBase
 
     /**
      * 高级自定义字段
-     * @var unknown
      */
     public $advanced_info = NULL;
 
-    /***
+    /**
+     * *
      * 商家自定义会员卡背景图
-     * @var unknown
      */
     public $background_pic_url = NULL;
-    
+
     /**
      * activate_url
      * 激活会员卡的url，与“bind_old_card_url”字段二选一必填。
      * 否
      */
     public $activate_url = NULL;
+
+    /**
+     * activate_app_brand_user_name
+     * 否
+     * string（128）
+     * 激活会原卡url对应的小程序user_name，仅可跳转该公众号绑定的小程序
+     */
+    public $activate_app_brand_user_name = NULL;
+
+    /**
+     * activate_app_brand_pass
+     * 否
+     * string（128）
+     * 激活会原卡url对应的小程序path
+     */
+    public $activate_app_brand_pass = NULL;
+
+    /**
+     * auto_activate
+     * 否
+     * bool true
+     * 设置为true时用户领取会员卡后系统自动将其激活，无需调用激活接口，详情见自动激活。
+     */
+    public $auto_activate = NULL;
+
+    /**
+     * wx_activate
+     * 否
+     * bool
+     * true 设置为true时会员卡支持一键开卡，不允许同时传入activate_url字段，否则设置wx_activate失效。填入该字段后仍需调用接口设置开卡项方可生效，详情见一键开卡。
+     */
+    public $wx_activate = NULL;
+
+    /**
+     * bonus_url
+     * 否
+     * string(32)
+     * xxxx.com
+     * 设置跳转外链查看积分详情。仅适用于积分无法通过激活接口同步的情况下使用该字段。
+     */
+    public $bonus_url = NULL;
+
+    /**
+     * balance_url
+     * 否
+     * string(32)
+     * xxxx.com
+     * 设置跳转外链查看余额详情。仅适用于余额无法通过激活接口同步的情况下使用该字段。
+     */
+    public $balance_url = NULL;
+
+    /**
+     * bonus_rule
+     * 否
+     * json结构 见上述示例 积分规则。用于微信买单功能。
+     */
+    public $bonus_rule = NULL;
+
+    /**
+     * discount
+     * 否 int
+     * 10
+     * 折扣，该会员卡享受的折扣优惠,填10就是九折。
+     */
+    public $discount = NULL;
 
     public function __construct(BaseInfo $base_info, $supply_bonus, $supply_balance, $prerogative)
     {
@@ -202,6 +266,16 @@ class MemberCard extends CardBase
     }
 
     /**
+     * 卡面设计请遵循微信会员卡自定义背景设计规范 ,像素大小控制在1000像素*600像素以下
+     *
+     * @param string $background_pic_url            
+     */
+    public function set_background_pic_url($background_pic_url)
+    {
+        $this->background_pic_url = $background_pic_url;
+    }
+
+    /**
      * 封面摘要结构体名称
      *
      * @param string $abstract
@@ -266,15 +340,46 @@ class MemberCard extends CardBase
         $this->advanced_info['business_service'] = $business_service;
     }
 
-    /**
-     * 卡面设计请遵循微信会员卡自定义背景设计规范  ,像素大小控制在1000像素*600像素以下
-     * @param unknown $background_pic_url
-     */
-    public function set_background_pic_url($background_pic_url)
+    public function set_activate_app_brand_user_name($activate_app_brand_user_name)
     {
-        $this->background_pic_url = $background_pic_url;
+        $this->activate_app_brand_user_name = $activate_app_brand_user_name;
     }
-    
+
+    public function set_activate_app_brand_pass($activate_app_brand_pass)
+    {
+        $this->activate_app_brand_pass = $activate_app_brand_pass;
+    }
+
+    public function set_auto_activate($auto_activate)
+    {
+        $this->auto_activate = $auto_activate;
+    }
+
+    public function set_wx_activate($wx_activate)
+    {
+        $this->wx_activate = $wx_activate;
+    }
+
+    public function set_bonus_url($bonus_url)
+    {
+        $this->bonus_url = $bonus_url;
+    }
+
+    public function set_balance_url($balance_url)
+    {
+        $this->balance_url = $balance_url;
+    }
+
+    public function set_bonus_rule(BonusRule $bonus_rule)
+    {
+        $this->bonus_rule = $bonus_rule;
+    }
+
+    public function set_discount($discount)
+    {
+        $this->discount = $discount;
+    }
+
     public function getParams()
     {
         $params = array();
@@ -325,6 +430,38 @@ class MemberCard extends CardBase
         }
         if ($this->isNotNull($this->background_pic_url)) {
             $params['background_pic_url'] = $this->background_pic_url;
+        }
+        
+        if ($this->isNotNull($this->activate_app_brand_user_name)) {
+            $params['activate_app_brand_user_name'] = $this->activate_app_brand_user_name;
+        }
+        
+        if ($this->isNotNull($this->activate_app_brand_pass)) {
+            $params['activate_app_brand_pass'] = $this->activate_app_brand_pass;
+        }
+        
+        if ($this->isNotNull($this->auto_activate)) {
+            $params['auto_activate'] = $this->auto_activate;
+        }
+        
+        if ($this->isNotNull($this->wx_activate)) {
+            $params['wx_activate'] = $this->wx_activate;
+        }
+        
+        if ($this->isNotNull($this->bonus_url)) {
+            $params['bonus_url'] = $this->bonus_url;
+        }
+        
+        if ($this->isNotNull($this->balance_url)) {
+            $params['balance_url'] = $this->balance_url;
+        }
+                
+        if ($this->isNotNull($this->bonus_rule)) {
+            $params['bonus_rule'] = $this->bonus_rule->getParams();
+        }
+        
+        if ($this->isNotNull($this->discount)) {
+            $params['discount'] = $this->discount;
         }
         return $params;
     }
