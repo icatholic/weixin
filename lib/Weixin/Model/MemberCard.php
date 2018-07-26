@@ -7,6 +7,7 @@ namespace Weixin\Model;
 class MemberCard extends CardBase
 {
 
+    
     /**
      * supply_bonus
      * 是否支持积分，填写true 或false，如填写true，积分相关字段均为必填。填写false，积分字段无需填写。储值字段处理方式相同。
