@@ -28,6 +28,16 @@ class UserField extends Base
     public $show_email = 1;
 
     /**
+     * require_phone Int 否 电话号码是否必填,0为否，1为是
+     */
+    public $require_phone = 1;
+
+    /**
+     * require_email Int 否 邮箱是否必填，0位否，1为是
+     */
+    public $require_email = 1;
+
+    /**
      * custom_field Object 否 自定义字段
      *
      * @var CustomField
@@ -50,9 +60,45 @@ class UserField extends Base
         if ($this->isNotNull($this->show_email)) {
             $params['show_email'] = $this->show_email;
         }
+        if ($this->isNotNull($this->require_phone)) {
+            $params['require_phone'] = $this->require_phone;
+        }
+        if ($this->isNotNull($this->require_email)) {
+            $params['require_email'] = $this->require_email;
+        }
         if ($this->isNotNull($this->custom_field)) {
             $params['custom_field'] = $this->custom_field->getParams();
         }
         return $params;
+    }
+
+    public function set_show_title($show_title)
+    {
+        $this->show_title = $show_title;
+    }
+
+    public function set_show_phone($show_phone)
+    {
+        $this->show_phone = $show_phone;
+    }
+
+    public function set_show_email($show_email)
+    {
+        $this->show_email = $show_email;
+    }
+
+    public function set_require_phone($require_phone)
+    {
+        $this->require_phone = $require_phone;
+    }
+
+    public function set_require_email($require_email)
+    {
+        $this->require_email = $require_email;
+    }
+
+    public function set_custom_field($custom_field)
+    {
+        $this->custom_field = $custom_field;
     }
 }
