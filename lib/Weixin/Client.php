@@ -27,6 +27,7 @@ use Weixin\Manager\Material;
 use Weixin\Manager\Giftcard;
 use Weixin\Manager\Comment;
 use Weixin\Manager\Tags;
+use Weixin\Manager\Marketing;
 
 class Client
 {
@@ -298,7 +299,15 @@ class Client
     {
         return new Tags($this);
     }
-    
+
+    /**
+     * 获取H5/小程序广告转化行为数据接入管理
+     */
+    public function getMarketingManager()
+    {
+        return new Marketing($this);
+    }
+
     /**
      * 获取小程序总调度器
      *
