@@ -22,6 +22,7 @@ use Weixin\Client;
 class Qrcode
 {
 
+
     private $_client;
 
     private $_request;
