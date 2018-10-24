@@ -69,21 +69,21 @@ class Request
         }
     }
 
-    public function get2($url, $params = array())
+    public function get2($url, $params = array(), $headers = null, $options = array())
     {
         if ($url == 'sns/userinfo') {
             $client = new Client($this->_snsBaseUrl);
         } else {
-            $client = new Client($this->_serviceBaseUrl);
+            $client = new Client($this->_serviceBaseUrl2);
         }
         $params['access_token'] = $this->_accessToken;
-        $request = $client->get($url, array(), array(
+        $request = $client->get($url, $headers, array(
             'query' => $params
         ));
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
-            return $response->getBody(true);
+            return $this->getJson($response);
         } else {
             throw new Exception("微信服务器未有效的响应请求");
         }
@@ -120,14 +120,15 @@ class Request
      * @param array $params            
      * @return mixed
      */
-    public function post2($url, $params = array())
+    public function post2($url, $params = array(), $headers = null, $options = array())
     {
         $client = new Client($this->_serviceBaseUrl2);
         $client->setDefaultOption('query', array(
             'access_token' => $this->_accessToken
         ));
         $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
-        $request = $client->post($url);
+        // $request = $client->post($url);
+        $request = $client->post($url, $headers, null, $options);
         $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
         $response = $client->send($request);
         if ($response->isSuccessful()) {
