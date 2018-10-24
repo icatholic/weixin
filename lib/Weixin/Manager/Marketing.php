@@ -62,7 +62,9 @@ class Marketing
         $params['type'] = $type;
         $params['name'] = $name;
         $params['description'] = $description;
-        $rst = $this->_request->post2('marketing/user_action_sets/add?version=v1.0', $params);
+        $headers = array();
+        $headers['Content-Type'] = "application/json";
+        $rst = $this->_request->post2('marketing/user_action_sets/add?version=v1.0', $params, $headers);
         return $this->_client->rst($rst);
     }
 
@@ -95,7 +97,7 @@ class Marketing
     {
         $params = array();
         $params['user_action_set_id'] = $user_action_set_id;
-        $rst = $this->_request->post2('marketing/user_action_sets/get?version=v1.0', $params);
+        $rst = $this->_request->get2('marketing/user_action_sets/get?version=v1.0', $params);
         return $this->_client->rst($rst);
     }
 
@@ -157,10 +159,13 @@ class Marketing
         $info['action_param'] = $action_param;
         
         $params = array();
-        $info['actions'] = array(
+        $params['actions'] = array(
             $info
         );
-        $rst = $this->_request->post2('marketing/user_actions/add?version=v1.0', $params);
+        $headers = array();
+        $headers['Content-Type'] = "application/json";
+        
+        $rst = $this->_request->post2('marketing/user_actions/add?version=v1.0', $params, $headers);
         return $this->_client->rst($rst);
     }
 }
