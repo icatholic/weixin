@@ -350,4 +350,123 @@ class Template
         $rst = $this->_client->getRequest()->post('message/wxopen/template/send', $params);
         return $this->_client->rst($rst);
     }
+
+    /**
+     * sendUniformMessage
+     * 下发小程序和公众号统一的服务消息
+     *
+     * 请求地址
+     * POST https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=ACCESS_TOKEN
+     * 参数
+     * string access_token
+     * 接口调用凭证
+     *
+     * string touser
+     * 用户openid，可以是小程序的openid，也可以是mp_template_msg.appid对应的公众号的openid
+     *
+     * Object weapp_template_msg
+     * 小程序模板消息相关的信息，可以参考小程序模板消息接口; 有此节点则优先发送小程序模板消息
+     *
+     * 属性 类型 默认值 是否必填 说明 支持版本
+     * template_id string 是 小程序模板ID
+     * page string 是 小程序页面路径
+     * form_id string 是 小程序模板消息formid
+     * data string 是 小程序模板数据
+     * emphasis_keyword string 是 小程序模板放大关键词
+     * Object mp_template_msg
+     * 公众号模板消息相关的信息，可以参考公众号模板消息接口；有此节点并且没有weapp_template_msg节点时，发送公众号模板消息
+     *
+     * 属性 类型 默认值 是否必填 说明 支持版本
+     * appid string 是 公众号appid，要求与小程序有绑定且同主体
+     * template_id string 是 公众号模板id
+     * url string 是 公众号模板消息所要跳转的url
+     * miniprogram string 是 公众号模板消息所要跳转的小程序，小程序的必须与公众号具有绑定关系
+     * data string 是 公众号模板消息的数据
+     * 返回值
+     * Object
+     * 返回的 JSON 数据包
+     *
+     * 属性 类型 说明 支持版本
+     * errcode number 错误码
+     * errmsg string 错误信息
+     * 错误
+     * 错误码 错误信息 说明
+     * 40037 模板id不正确，weapp_template_msg.template_id或者mp_template_msg.template_id
+     * 41028 weapp_template_msg.form_id过期或者不正确
+     * 41029 weapp_template_msg.form_id已被使用
+     * 41030 weapp_template_msg.page不正确
+     * 45009 接口调用超过限额
+     * 40003 touser不是正确的openid
+     * 40013 appid不正确，或者不符合绑定关系要求
+     * POST 数据格式：JSON
+     * 请求数据示例
+     * {
+     * "touser":"OPENID",
+     * "weapp_template_msg":{
+     * "template_id":"TEMPLATE_ID",
+     * "page":"page/page/index",
+     * "form_id":"FORMID",
+     * "data":{
+     * "keyword1":{
+     * "value":"339208499"
+     * },
+     * "keyword2":{
+     * "value":"2015年01月05日 12:30"
+     * },
+     * "keyword3":{
+     * "value":"腾讯微信总部"
+     * },
+     * "keyword4":{
+     * "value":"广州市海珠区新港中路397号"
+     * }
+     * },
+     * "emphasis_keyword":"keyword1.DATA"
+     * },
+     * "mp_template_msg":{
+     * "appid":"APPID ",
+     * "template_id":"TEMPLATE_ID",
+     * "url":"http://weixin.qq.com/download",
+     * "miniprogram":{
+     * "appid":"xiaochengxuappid12345",
+     * "pagepath":"index?foo=bar"
+     * },
+     * "data":{
+     * "first":{
+     * "value":"恭喜你购买成功！",
+     * "color":"#173177"
+     * },
+     * "keyword1":{
+     * "value":"巧克力",
+     * "color":"#173177"
+     * },
+     * "keyword2":{
+     * "value":"39.8元",
+     * "color":"#173177"
+     * },
+     * "keyword3":{
+     * "value":"2014年9月22日",
+     * "color":"#173177"
+     * },
+     * "remark":{
+     * "value":"欢迎再次购买！",
+     * "color":"#173177"
+     * }
+     * }
+     * }
+     * }
+     * 返回数据示例
+     * {
+     * "errcode": 0,
+     * "errmsg": "ok"
+     * }
+     */
+    public function uniformSend($touser, array $mp_template_msg, array $weapp_template_msg)
+    {
+        $params = array();
+        $params['touser'] = $touser;
+        $params['mp_template_msg'] = $mp_template_msg;
+        $params['weapp_template_msg'] = $weapp_template_msg;
+        $rst = $this->_client->getRequest()->post('message/wxopen/template/uniform_send', $params);
+        return $this->_client->rst($rst);
+    }
 }
