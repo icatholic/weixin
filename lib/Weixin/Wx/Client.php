@@ -11,6 +11,7 @@ use Weixin\Wx\Manager\Msg;
 use Weixin\Wx\Manager\Qrcode;
 use Weixin\Wx\Manager\Merchant;
 use Weixin\Wx\Manager\Card;
+use Weixin\Wx\Manager\Mall;
 
 class Client
 {
@@ -60,5 +61,15 @@ class Client
     public function getCardManager()
     {
         return new Card($this->_client);
+    }
+
+    /**
+     * 获取小程序购物单管理器
+     *
+     * @return \Weixin\Wx\Manager\Mall
+     */
+    public function getMallManager()
+    {
+        return new Mall($this->_client);
     }
 }

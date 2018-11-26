@@ -2,7 +2,6 @@
 namespace Weixin;
 
 use Weixin\Http\Request2;
-use Weixin\Helpers;
 use Weixin\Exception;
 
 class Component
