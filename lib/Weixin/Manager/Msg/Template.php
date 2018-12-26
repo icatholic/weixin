@@ -360,6 +360,10 @@ class Template
      * “touser”:”OPENID”,
      * “template_id”:”TEMPLATE_ID”,
      * “url”:”URL”,
+     * “miniprogram”:{
+     * “appid”:“xiaochengxuappid12345”,
+     * “pagepath”:“index?foo=bar”
+     * },
      * “scene”:”SCENE”,
      * “title”:”TITLE”,
      * “data”:{
@@ -374,6 +378,9 @@ class Template
      * touser 是 填接收消息的用户openid
      * template_id 是 订阅消息模板ID
      * url 否 点击消息跳转的链接，需要有ICP备案
+     * miniprogram 否 跳小程序所需数据，不需跳小程序可不用传该数据
+     * appid 是 所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系，并且小程序要求是已发布的）
+     * pagepath 是 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar）
      * scene 是 订阅场景值
      * title 是 消息标题，15字以内
      * data 是 消息正文，value为消息内容文本（200字以内），没有固定格式，可用\n换行，color为整段消息内容的字体颜色（目前仅支持整段消息为一种颜色）
@@ -384,7 +391,7 @@ class Template
      * “errmsg”:”ok”
      * }
      */
-    public function subscribe($touser, $template_id, $url, $scene, $title, array $data)
+    public function subscribe($touser, $template_id, $url, $scene, $title, array $data, array $miniprogram = array())
     {
         $params = array();
         $params['touser'] = $touser;
@@ -393,6 +400,9 @@ class Template
         $params['scene'] = $scene;
         $params['title'] = $title;
         $params['data'] = $data;
+        if (! empty($miniprogram)) {
+            $params['miniprogram'] = $miniprogram;
+        }
         
         $rst = $this->_client->getRequest()->post('message/template/subscribe', $params);
         return $this->_client->rst($rst);

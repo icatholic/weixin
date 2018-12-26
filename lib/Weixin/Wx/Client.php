@@ -12,6 +12,7 @@ use Weixin\Wx\Manager\Qrcode;
 use Weixin\Wx\Manager\Merchant;
 use Weixin\Wx\Manager\Card;
 use Weixin\Wx\Manager\Mall;
+use Weixin\Wx\Manager\User;
 
 class Client
 {
@@ -71,5 +72,15 @@ class Client
     public function getMallManager()
     {
         return new Mall($this->_client);
+    }
+
+    /**
+     * 获取小程序用户管理器
+     *
+     * @return \Weixin\Wx\Manager\User
+     */
+    public function getUserManager()
+    {
+        return new User($this->_client);
     }
 }
