@@ -376,6 +376,34 @@ class BaseInfo extends Base
      */
     public $need_push_on_view = NULL;
 
+    /**
+     * pay_info
+     * 否
+     * JSON
+     * 支付功能结构体，swipe_card结构
+     *
+     * @var SwipeCard
+     */
+    public $pay_info = NULL;
+
+    /**
+     * swipe_card
+     * 否
+     * JSON
+     * 刷卡功能结构体，包含is_swipe_card字段
+     *
+     * @var SwipeCard
+     */
+    public $swipe_card = NULL;
+
+    /**
+     * is_pay_and_qrcode
+     * 否
+     * bool
+     * 是否设置该会员卡中部的按钮同时支持微信支付刷卡和会员卡二维码
+     */
+    public $is_pay_and_qrcode = NULL;
+
     public function __construct($logo_url, $brand_name, $code_type, $title, $color, $notice, $description, DateInfo $date_info = NULL, Sku $sku = NULL)
     {
         if ($this->isNotNull($date_info) && ! $date_info instanceof DateInfo)
@@ -603,6 +631,21 @@ class BaseInfo extends Base
         $this->need_push_on_view = $need_push_on_view;
     }
 
+    public function set_pay_info($pay_info)
+    {
+        $this->pay_info = $pay_info;
+    }
+
+    public function set_swipe_card($swipe_card)
+    {
+        $this->swipe_card = $swipe_card;
+    }
+
+    public function set_is_pay_and_qrcode($is_pay_and_qrcode)
+    {
+        $this->is_pay_and_qrcode = $is_pay_and_qrcode;
+    }
+
     public function getParams()
     {
         $params = array();
@@ -695,7 +738,6 @@ class BaseInfo extends Base
             $params['promotion_app_brand_pass'] = $this->promotion_app_brand_pass;
         }
         
-        
         if ($this->isNotNull($this->center_title)) {
             $params['center_title'] = $this->center_title;
         }
@@ -751,6 +793,17 @@ class BaseInfo extends Base
         if ($this->isNotNull($this->need_push_on_view)) {
             $params['need_push_on_view'] = $this->need_push_on_view;
         }
+        
+        if ($this->isNotNull($this->pay_info)) {
+            $params['pay_info'] = $this->pay_info->getParams();
+        }
+        if ($this->isNotNull($this->swipe_card)) {
+            $params['swipe_card'] = $this->swipe_card->getParams();
+        }
+        if ($this->isNotNull($this->is_pay_and_qrcode)) {
+            $params['is_pay_and_qrcode'] = $this->is_pay_and_qrcode;
+        }
+        
         return $params;
     }
 }
