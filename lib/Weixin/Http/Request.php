@@ -139,6 +139,31 @@ class Request
     }
 
     /**
+     * 推送消息给到微信服务器
+     *
+     * @param string $url
+     * @param array $params
+     * @return mixed
+     */
+    public function post3($url, $params = array(), $headers = null, $options = array())
+    {
+        $client = new Client($this->_serviceBaseUrl2);
+        $client->setDefaultOption('query', array(
+            'access_token' => $this->_accessToken
+        ));
+        $client->setDefaultOption('body', json_encode($params, JSON_UNESCAPED_UNICODE));
+        // $request = $client->post($url);
+        $request = $client->post($url, $headers, null, $options);
+        $request->getCurlOptions()->set(CURLOPT_SSLVERSION, 1); // CURL_SSLVERSION_TLSv1
+        $response = $client->send($request);
+        if ($response->isSuccessful()) {
+            return $response->getBody(true);
+        } else {
+            throw new Exception("微信服务器未有效的响应请求");
+        }
+    }
+    
+    /**
      * 上传微信多媒体文件
      *
      * @param string $type            
