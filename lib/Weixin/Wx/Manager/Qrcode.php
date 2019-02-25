@@ -154,7 +154,7 @@ class Qrcode
         }
         $result = json_decode($body, true);
         if (empty($result)) {
-            $ret['wxacode'] = base$body;
+            $ret['wxacode'] = $body;
             return $ret;
         } else {
             return $result;
