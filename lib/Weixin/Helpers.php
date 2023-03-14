@@ -35,7 +35,8 @@ class Helpers
     public static function paraFilter($para)
     {
         $para_filter = array();
-        while (list ($key, $val) = each($para)) {
+        //while (list ($key, $val) = each($para)) {
+        foreach($para as $key=>$val) {
             if (strtolower(trim($key)) === "sign" || trim($val) === "")
                 continue;
             else
@@ -66,7 +67,8 @@ class Helpers
     public static function createLinkstring($para)
     {
         $arg = "";
-        while (list ($key, $val) = each($para)) {
+        //while (list ($key, $val) = each($para)) {
+        foreach($para as $key=>$val) {
             $arg .= $key . "=" . $val . "&";
         }
         // 去掉最后一个&字符
@@ -83,7 +85,8 @@ class Helpers
     public static function createLinkstringUrlencode($para)
     {
         $arg = "";
-        while (list ($key, $val) = each($para)) {
+        //while (list ($key, $val) = each($para)) {
+        foreach($para as $key=>$val) {
             $arg .= $key . "=" . rawurlencode($val) . "&";
         }
         // 去掉最后一个&字符
@@ -129,7 +132,10 @@ class Helpers
      */
     public static function xmlToArray($xml)
     {
-        libxml_disable_entity_loader(true);
+        # 兼容8.0以上以及以下版本
+        if (PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
         $object = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         return @json_decode(preg_replace('/{}/', '""', @json_encode($object)), 1);
     }
