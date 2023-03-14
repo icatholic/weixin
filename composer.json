@@ -3,7 +3,8 @@
   "description" : "A simple PHP client library for weixin",
   "require" : {
     "php" : "^7.1||^8.0",
-    "guzzle/http" : "^3.8.1"
+    "guzzle/http" : "^3.8.1",
+    "shardj/zf1-future": "^1.22.0"
   },
   "authors" : [ {
     "name" : "icatholic",
