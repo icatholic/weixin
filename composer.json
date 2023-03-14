@@ -2,8 +2,8 @@
   "name" : "icatholic/weixin",
   "description" : "A simple PHP client library for weixin",
   "require" : {
-    "php" : ">=5.2.11",
-    "guzzle/http" : "~3.8.1"
+    "php" : "^7.1||^8.0",
+    "guzzle/http" : "^3.8.1"
   },
   "authors" : [ {
     "name" : "icatholic",
